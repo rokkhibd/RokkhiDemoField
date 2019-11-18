@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:id="@+id/fragment_myHome"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Ui.MyhomeFragment">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        style="@style/AppTheme.AppBarOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            android:background="?attr/colorPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/logo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </RelativeLayout>
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/myHomeFrag_cardview"
+        app:cardElevation="5dp"
+        app:cardCornerRadius="10dp"
+        android:layout_below="@id/appbar"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="180dp">
+
+        <RelativeLayout
+            android:background="@drawable/round_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ProgressBar
+                android:visibility="gone"
+                android:layout_centerInParent="true"
+                android:id="@+id/profile_progress"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"/>
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/fw_myhomefrag_image"
+                android:src="@drawable/maleone"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_centerVertical="true"
+                android:layout_width="100dp"
+                android:layout_height="100dp"/>
+
+            <RelativeLayout
+                android:layout_marginLeft="10dp"
+                android:orientation="vertical"
+                android:layout_toRightOf="@id/fw_myhomefrag_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:textSize="15sp"
+                    android:layout_marginTop="10dp"
+                    android:textStyle="italic"
+                    android:layout_marginLeft="5dp"
+                    android:id="@+id/txtname"
+                    android:text="Name: "
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+
+                    android:gravity="center_horizontal"
+                    android:layout_toRightOf="@id/txtname"
+                    android:layout_marginLeft="1dp"
+                    android:textColor="@color/black"
+                    android:textSize="17sp"
+                    android:layout_marginTop="8dp"
+                    android:id="@+id/myHome_frag_fwname"
+                    android:text="Md.Rejoan Rahman"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+
+                <LinearLayout
+                    android:id="@+id/layout_one"
+                    android:orientation="horizontal"
+                    android:layout_below="@id/txtname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+                    <TextView
+                        android:layout_gravity="center_vertical"
+                        android:textSize="15sp"
+                        android:layout_marginLeft="5dp"
+                        android:id="@+id/txt1"
+                        android:textStyle="italic"
+                        android:text="Total Earn:"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+
+                    <TextView
+
+                        android:layout_gravity="center_vertical"
+                        android:paddingLeft="10dp"
+                        android:textColor="@color/orange"
+                        android:fontFamily="@font/robotocondensebold"
+                        android:textSize="25sp"
+                        android:id="@+id/myHome_frag_fwtotlearn"
+                        android:textStyle="italic"
+                        android:text="800 tk"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
+
+                    android:orientation="horizontal"
+                    android:layout_below="@id/layout_one"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_gravity="center_vertical"
+                        android:visibility="visible"
+                        android:textSize="15sp"
+                        android:layout_marginLeft="5dp"
+                        android:id="@+id/txt2"
+                        android:textStyle="italic"
+                        android:text="Due Payment:"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:paddingLeft="10dp"
+                        android:visibility="visible"
+                        android:textColor="@color/orange"
+                        android:fontFamily="@font/robotocondensebold"
+                        android:textSize="25sp"
+                        android:id="@+id/myHome_frag_fwduepayment"
+                        android:textStyle="italic"
+                        android:text="400 tk"
+                        android:layout_toRightOf="@id/txt2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:textColor="@color/orange"
+        android:textSize="20sp"
+        android:layout_margin="10dp"
+        android:id="@+id/txt"
+        android:layout_below="@id/myHomeFrag_cardview"
+        android:text="Buildings Covered So far:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/myhome_frag_recyclerview"
+        android:layout_margin="10dp"
+        tools:listitem="@layout/home_list_layout"
+        android:layout_below="@id/txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_alignParentBottom="true"
+        android:layout_margin="20dp"
+        android:id="@+id/floating_btn"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/plus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+
+    <com.github.ybq.android.spinkit.SpinKitView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/spin_kit"
+        android:visibility="gone"
+        style="@style/SpinKitView.Large.Wave"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerInParent="true"
+        app:SpinKit_Color="@color/colorAccent" />
+
+
+    <ProgressBar
+        android:visibility="gone"
+        android:id="@+id/progressbar"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</RelativeLayout>
