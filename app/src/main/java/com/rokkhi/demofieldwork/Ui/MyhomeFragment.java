@@ -130,7 +130,7 @@ public class MyhomeFragment extends Fragment {
 
         spinKitProgress.setVisibility(View.VISIBLE);
         gettingAllHouseData();
-//        shoWorkerDetails();
+//      shoWorkerDetails();
 
         flotbtn = view.findViewById(R.id.floating_btn);
 
@@ -149,6 +149,7 @@ public class MyhomeFragment extends Fragment {
                 //mAuth.signOut();
                 new AlertDialog.Builder(getContext())
                         .setTitle("Logout")
+                        .setIcon(R.drawable.logout_black)
                         .setMessage("Are you sure you want to logout?")
                         .setNegativeButton(android.R.string.no, null)
                         .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -246,6 +247,7 @@ public class MyhomeFragment extends Fragment {
 
                             for (DocumentSnapshot d:list){
                                 FBuildings fb=d.toObject(FBuildings.class);
+                                fb.setDocId(d.getId());
                                 fBuildingsList.add(fb);
                             }
                             buildingsListAdapter.notifyDataSetChanged();

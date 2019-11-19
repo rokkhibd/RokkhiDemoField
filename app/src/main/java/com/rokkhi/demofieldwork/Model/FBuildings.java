@@ -8,7 +8,7 @@ import java.util.List;
 public class FBuildings implements Serializable {
 
     @Exclude
-    private String id;
+    private String docid;
 
 
     private String b_address;
@@ -73,12 +73,13 @@ public class FBuildings implements Serializable {
         this.b_imageUrl = b_imageUrl;
     }
 
-    public String getId() {
-        return id;
+
+    public String getDocId() {
+        return docid;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setDocId(String docid) {
+        this.docid = docid;
     }
 
     public List<String> getB_array_code() {
