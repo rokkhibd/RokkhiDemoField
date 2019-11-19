@@ -77,6 +77,7 @@ public class ProfileFragment extends Fragment {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
                 pro.setVisibility(View.GONE);
+
                 if (task.isSuccessful()){
                     DocumentSnapshot documentSnapshot=task.getResult();
 

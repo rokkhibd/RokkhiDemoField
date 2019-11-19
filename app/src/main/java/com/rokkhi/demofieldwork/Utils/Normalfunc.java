@@ -104,5 +104,24 @@ public class Normalfunc {
         Toast.makeText(context, currentDate, Toast.LENGTH_SHORT).show();
     }
 
+    private void getcalendar(){
+
+                        /*Calendar calendar=Calendar.getInstance();
+
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+
+                datePickerDialog = new DatePickerDialog(AddBuildingActivity.this,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                                b_follwing.setText(day + "/" + (month + 1) + "/" + year);
+                            }
+                        }, year, month, dayOfMonth);
+                datePickerDialog.show();*/
+
+    }
+
 
 }

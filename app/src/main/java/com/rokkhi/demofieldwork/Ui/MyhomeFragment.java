@@ -126,7 +126,7 @@ public class MyhomeFragment extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
 
         fBuildingsList=new ArrayList<>();
-        buildingsListAdapter=new BuildingsListAdapter(fBuildingsList);
+        buildingsListAdapter=new BuildingsListAdapter(fBuildingsList,getContext());
         recyclerView.setAdapter(buildingsListAdapter);
 
         spinKitProgress.setVisibility(View.VISIBLE);
@@ -261,6 +261,7 @@ public class MyhomeFragment extends Fragment {
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
                         .setAvailableProviders(Arrays.asList(phoneConfigWithDefaultNumber))
+                        .setTheme(R.style.AppTheme)
                         .build(),
                 RC_SIGN_IN);
 

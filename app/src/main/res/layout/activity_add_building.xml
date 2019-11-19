@@ -420,6 +420,8 @@
               />
 
 
+
+
               <ImageView
 
                   android:visibility="gone"
@@ -517,6 +519,18 @@
                   android:layout_width="match_parent"
                   android:layout_height="38dp"/>
 
+              <com.github.ybq.android.spinkit.SpinKitView
+                  xmlns:app="http://schemas.android.com/apk/res-auto"
+                  android:id="@+id/spin_kit_one"
+                  style="@style/SpinKitView.ThreeBounce"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:visibility="gone"
+                  android:layout_gravity="center"
+                  android:layout_marginTop="10dp"
+                  android:layout_toRightOf="@+id/bldng_edit_numberSave"
+                  android:layout_below="@+id/bldng_edit_theirnumber"
+                  app:SpinKit_Color="@color/colorAccent" />
 
 
               <ProgressBar

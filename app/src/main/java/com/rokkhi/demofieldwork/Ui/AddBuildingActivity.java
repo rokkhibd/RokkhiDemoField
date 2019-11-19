@@ -27,6 +27,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.github.ybq.android.spinkit.style.ThreeBounce;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -72,7 +73,7 @@ public class AddBuildingActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter;
 
     ProgressDialog progressDialog;
-    ProgressBar progressBar;
+    ProgressBar progressBar, spinkitProgress;
     CustomListAdapter customListAdapter;
 
     RelativeLayout relativeLayout;
@@ -83,68 +84,67 @@ public class AddBuildingActivity extends AppCompatActivity {
     StorageReference addbldngRef;
     String currentUser;
 
-    ListView roadNumberList, blockList, houseNoList, areaListView,peopleWeTalkList;
+    ListView roadNumberList, blockList, houseNoList, areaListView, peopleWeTalkList;
     EditText roadNumberEdit, blockEdit, houseNoEdit, areaEdit;
 
     Bitmap bitmap;
     Uri pickedImageUri;
     List<String> areaList = new ArrayList<>();
 
-    Normalfunc normalfunc=new Normalfunc();
+    Normalfunc normalfunc = new Normalfunc();
 
     CircleImageView circleImageView;
     EditText b_name, b_totalfloor, b_floorperflat, b_totalguard, b_ownername, b_ownernmbr, b_managername,
             b_managernmbr, b_lat, b_long, b_area, b_roadnumber, b_block, b_housenmbr, b_housefrmt,
-            b_visit, b_follwing, b_caretakername, b_caretakernmbr,b_code,b_guardname,b_guardnmbr,b_peoplesName,b_peopleNumber,people_we_talk;
+            b_visit, b_follwing, b_caretakername, b_caretakernmbr, b_code, b_guardname, b_guardnmbr, b_peoplesName, b_peopleNumber, people_we_talk;
 
-    Button saveBtn,tapCode,addInfoButton,checkHouseBtn,saveNumberBtn;
+    Button saveBtn, tapCode, addInfoButton, checkHouseBtn, saveNumberBtn;
 
-    String areaListCode,roadListCode,blockListCode,houseListCode,housefrmntListCode,totalHouseCode
-            ,status,flatformat,districtValue,downloadImageUri,totalCode;
+    String areaListCode, roadListCode, blockListCode, houseListCode, housefrmntListCode, totalHouseCode, status, flatformat, districtValue, downloadImageUri, totalCode;
 
-    String wholeAddress,currentDate;
+    String wholeAddress, currentDate;
 
-    ImageView visitCal, followpCal,statusMenu,flatfrmtMenu,district_Menu,designationMenu;
+    ImageView visitCal, followpCal, statusMenu, flatfrmtMenu, district_Menu, designationMenu;
 
     DatePickerDialog datePickerDialog;
 
-    AutoCompleteTextView b_status,b_flatfrmt,b_district;
+    AutoCompleteTextView b_status, b_flatfrmt, b_district;
 
     int areaCodePos;
-    List<Long>areaCodeList;
+    List<Long> areaCodeList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_building);
-        areaCodeList=new ArrayList<>();
+        areaCodeList = new ArrayList<>();
 
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
-        currentUser= FirebaseAuth.getInstance().getCurrentUser().getUid();
+        currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
         addbldngRef = FirebaseStorage.getInstance().getReference().child("fbldngs_photo");
 
-        progressDialog=new ProgressDialog(this);
-        progressBar=findViewById(R.id.progressbar);
+        progressDialog = new ProgressDialog(this);
 
-        relativeLayout=findViewById(R.id.housecheck_layout);
+        relativeLayout = findViewById(R.id.housecheck_layout);
+        progressBar = findViewById(R.id.progressbar);
 
-        b_peoplesName=findViewById(R.id.bldng_edit_theirname);
-        b_peopleNumber=findViewById(R.id.bldng_edit_theirnumber);
+        b_peoplesName = findViewById(R.id.bldng_edit_theirname);
+        b_peopleNumber = findViewById(R.id.bldng_edit_theirnumber);
         b_area = findViewById(R.id.bldng_edit_area);
         b_roadnumber = findViewById(R.id.bldng_edit_road);
         b_block = findViewById(R.id.bldng_edit_block);
         b_housenmbr = findViewById(R.id.bldng_edit_house);
         b_housefrmt = findViewById(R.id.bldng_edit_houseformat);
-        b_district=findViewById(R.id.bldng_edit_disctrict);
+        b_district = findViewById(R.id.bldng_edit_disctrict);
         b_name = findViewById(R.id.bldng_edit_husename);
         b_floorperflat = findViewById(R.id.bldng_edit_totalflt);
         b_totalfloor = findViewById(R.id.bldng_edit_totalfloor);
         b_totalguard = findViewById(R.id.bldng_edit_totalguard);
         b_ownername = findViewById(R.id.bldng_edit_ownername);
         b_ownernmbr = findViewById(R.id.bldng_edit_ownernmbr);
-        b_guardname=findViewById(R.id.bldng_edit_guardname);
-        b_guardnmbr=findViewById(R.id.bldng_edit_guardnmbr);
+        b_guardname = findViewById(R.id.bldng_edit_guardname);
+        b_guardnmbr = findViewById(R.id.bldng_edit_guardnmbr);
         b_managername = findViewById(R.id.bldng_edit_managername);
         b_managernmbr = findViewById(R.id.bldng_edit_managernmbr);
         b_caretakername = findViewById(R.id.bldng_edit_caretakername);
@@ -152,42 +152,42 @@ public class AddBuildingActivity extends AppCompatActivity {
         b_flatfrmt = findViewById(R.id.bldng_edit_flatformat);
         b_visit = findViewById(R.id.bldng_edit_visitdate);
         b_follwing = findViewById(R.id.bldng_edit_followingdate);
-        b_code=findViewById(R.id.bldng_edit_bcode);
-        b_status=findViewById(R.id.bldng_edit_status);
-        b_lat=findViewById(R.id.bldng_edit_lat);
-        b_long=findViewById(R.id.bldng_edit_long);
-        people_we_talk=findViewById(R.id.bldng_edit_buildingspeople);
+        b_code = findViewById(R.id.bldng_edit_bcode);
+        b_status = findViewById(R.id.bldng_edit_status);
+        b_lat = findViewById(R.id.bldng_edit_lat);
+        b_long = findViewById(R.id.bldng_edit_long);
+        people_we_talk = findViewById(R.id.bldng_edit_buildingspeople);
 
-        tapCode=findViewById(R.id.tap_bcode);
+        tapCode = findViewById(R.id.tap_bcode);
         circleImageView = findViewById(R.id.building_photo);
-        addInfoButton=findViewById(R.id.addblgnInfoBtn);
-        checkHouseBtn=findViewById(R.id.bldng_button_housecheck);
-        saveNumberBtn=findViewById(R.id.bldng_edit_numberSave);
+        addInfoButton = findViewById(R.id.addblgnInfoBtn);
+        checkHouseBtn = findViewById(R.id.bldng_button_housecheck);
+        saveNumberBtn = findViewById(R.id.bldng_edit_numberSave);
 
         visitCal = findViewById(R.id.visitcalimg);
         followpCal = findViewById(R.id.followingcalimg);
-        statusMenu=findViewById(R.id.statusMenu);
-        flatfrmtMenu=findViewById(R.id.flatformatMenu);
-        district_Menu=findViewById(R.id.districtMenu);
-        designationMenu=findViewById(R.id.choosePeopleMenu);
+        statusMenu = findViewById(R.id.statusMenu);
+        flatfrmtMenu = findViewById(R.id.flatformatMenu);
+        district_Menu = findViewById(R.id.districtMenu);
+        designationMenu = findViewById(R.id.choosePeopleMenu);
 
         allStringValues = new AllStringValues();
 
-        adapter=new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,allStringValues.status);
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, allStringValues.status);
         b_status.setAdapter(adapter);
 
-        adapter=new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,allStringValues.flatformat);
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, allStringValues.flatformat);
         b_flatfrmt.setAdapter(adapter);
 
-        adapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,allStringValues.district);
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, allStringValues.district);
         b_district.setAdapter(adapter);
 
-        adapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,allStringValues.designation);
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, allStringValues.designation);
 
 
         //TODO: get the current date
-        SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
-        currentDate=sdf.format(new Date());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        currentDate = sdf.format(new Date());
         //Toast.makeText(AddBuildingActivity.this, currentDate, Toast.LENGTH_SHORT).show();
 
         addInfoButton.setOnClickListener(new View.OnClickListener() {
@@ -202,7 +202,7 @@ public class AddBuildingActivity extends AppCompatActivity {
         saveNumberBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+               // spinkitProgress.setVisibility(View.VISIBLE);
                 createBuildingsContactInfo();
 
             }
@@ -212,7 +212,7 @@ public class AddBuildingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-              // AllStringValues.showCalendar(AddBuildingActivity.this,b_visit);
+                // AllStringValues.showCalendar(AddBuildingActivity.this,b_visit);
 
 
             }
@@ -221,22 +221,9 @@ public class AddBuildingActivity extends AppCompatActivity {
         b_follwing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Calendar calendar=Calendar.getInstance();
 
-                int year = calendar.get(Calendar.YEAR);
-                int month = calendar.get(Calendar.MONTH);
-                int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
 
-                datePickerDialog = new DatePickerDialog(AddBuildingActivity.this,
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                                b_follwing.setText(day + "/" + (month + 1) + "/" + year);
-                            }
-                        }, year, month, dayOfMonth);
-                datePickerDialog.show();*/
-
-                AllStringValues.showCalendar(AddBuildingActivity.this,b_follwing);
+                AllStringValues.showCalendar(AddBuildingActivity.this, b_follwing);
 
             }
         });
@@ -255,7 +242,7 @@ public class AddBuildingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 b_status.showDropDown();
-                status=b_status.getText().toString();
+                status = b_status.getText().toString();
             }
         });
 
@@ -263,7 +250,7 @@ public class AddBuildingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 b_flatfrmt.showDropDown();
-                flatformat=b_flatfrmt.getText().toString();
+                flatformat = b_flatfrmt.getText().toString();
             }
         });
 
@@ -271,7 +258,6 @@ public class AddBuildingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 b_district.showDropDown();
-
 
 
             }
@@ -351,38 +337,49 @@ public class AddBuildingActivity extends AppCompatActivity {
         checkHouseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String area=b_area.getText().toString();
-                String road=b_roadnumber.getText().toString();
-                String block=b_block.getText().toString();
-                String houseNmbr=b_housenmbr.getText().toString();
-                String housefrmt=b_housefrmt.getText().toString();
-                districtValue=b_district.getText().toString();
+
+                if (b_area.length()==0){
+                    b_area.setError("Insert the area name");
+                }else if (b_roadnumber.length()==0){
+                    b_roadnumber.setError("Insert the road number");
+                }else if (b_block.length()==0){
+                    b_block.setError("Insert the block number");
+                }else {
+
+                    String area = b_area.getText().toString();
+                    String road = b_roadnumber.getText().toString();
+                    String block = b_block.getText().toString();
+                    String houseNmbr = b_housenmbr.getText().toString();
+                    String housefrmt = b_housefrmt.getText().toString();
+                    districtValue = b_district.getText().toString();
 
 
-                String theWholeAddress=area+" "+road+block+" "+houseNmbr+housefrmt+" "+districtValue;
+                    String theWholeAddress = area + " " + road + block + " " + houseNmbr + housefrmt + " " + districtValue;
 
-                wholeAddress=theWholeAddress;
+                    wholeAddress = theWholeAddress;
 
-                districtValue= String.valueOf(1);
+                    districtValue = String.valueOf(1);
 
-                //Toast.makeText(AddBuildingActivity.this, districtValue, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(AddBuildingActivity.this, districtValue, Toast.LENGTH_SHORT).show();
 
-                totalCode=areaCodeList.get(areaCodePos)+"*"+roadListCode+"*"+blockListCode+"*"+houseListCode+"*"+housefrmntListCode+"*"+districtValue;
+                    totalCode = areaCodeList.get(areaCodePos) + "*" + roadListCode + "*" + blockListCode + "*" + houseListCode + "*" + housefrmntListCode + "*" + districtValue;
 
-                //Toast.makeText(AddBuildingActivity.this, ""+totalCode, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(AddBuildingActivity.this, ""+totalCode, Toast.LENGTH_SHORT).show();
 
 
-                totalHouseCode=areaListCode+""+roadListCode+""+blockListCode+""+houseListCode+""+housefrmntListCode+""+districtValue;
+                    totalHouseCode = areaListCode + "" + roadListCode + "" + blockListCode + "" + houseListCode + "" + housefrmntListCode + "" + districtValue;
 
-                //b_code.setText(totalHouseCode);
-                checkTheHouseAvailability(totalCode);
+                    //b_code.setText(totalHouseCode);
+                    checkTheHouseAvailability(totalCode);
+                }
+
             }
         });
 
     }
 
 
-    public void checkTheHouseAvailability(String s){
+    public void checkTheHouseAvailability(String s) {
 
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Executing action...");
@@ -390,28 +387,28 @@ public class AddBuildingActivity extends AppCompatActivity {
         progressDialog.show();
 
         CollectionReference buildRef;
-        buildRef=db.collection("f_buildings");
+        buildRef = db.collection("f_buildings");
 
-        Query buildingsQuery=buildRef.whereEqualTo("b_code",s);
+        Query buildingsQuery = buildRef.whereEqualTo("b_code", s);
         buildingsQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
-                if (task.isSuccessful()){
-                    if (task.getResult().size()>0){
-                        for (DocumentSnapshot documentSnapshot:task.getResult()){
-                            FBuildings fBuildings=documentSnapshot.toObject(FBuildings.class);
-                            String status=fBuildings.getB_status();
+                if (task.isSuccessful()) {
+                    if (task.getResult().size() > 0) {
+                        for (DocumentSnapshot documentSnapshot : task.getResult()) {
+                            FBuildings fBuildings = documentSnapshot.toObject(FBuildings.class);
+                            String status = fBuildings.getB_status();
 
-                            if (status.equalsIgnoreCase("done")){
-                               // Toast.makeText(AddBuildingActivity.this,"Done",Toast.LENGTH_SHORT).show();
-                            }else if (status.equalsIgnoreCase("pending")){
-                               // Toast.makeText(AddBuildingActivity.this, "pending", Toast.LENGTH_SHORT).show();
+                            if (status.equalsIgnoreCase("done")) {
+
+                            } else if (status.equalsIgnoreCase("pending")) {
+
                                 shoeAlertforPendingHouse();
                             }
                             progressDialog.dismiss();
                         }
-                    }else {
+                    } else {
                         //Toast.makeText(AddBuildingActivity.this, "No building found", Toast.LENGTH_SHORT).show();
                         shoeAlertforhouseNotfound();
                         progressDialog.dismiss();
@@ -428,7 +425,6 @@ public class AddBuildingActivity extends AppCompatActivity {
 
 
     }
-
 
     private void showAllAreas() {
 
@@ -447,12 +443,12 @@ public class AddBuildingActivity extends AppCompatActivity {
 
                     String area_eng = documentSnapshot.getString("english");
                     String area_ban = documentSnapshot.getString("bangla");
-                    Long area_code=documentSnapshot.getLong("code");
+                    Long area_code = documentSnapshot.getLong("code");
                     areaCodeList.add(area_code);
 
-                  //String bcode=documentSnapshot.getString("code");
+                    //String bcode=documentSnapshot.getString("code");
 
-                    areaList.add(area_eng + "("+area_ban+")");
+                    areaList.add(area_eng + "(" + area_ban + ")");
 
                 }
 
@@ -494,7 +490,7 @@ public class AddBuildingActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String areatxt = String.valueOf(parent.getItemAtPosition(position));
-                areaCodePos=position;
+                areaCodePos = position;
                 //areaListCode= (String.valueOf(position+1));
                 //Toast.makeText(AddBuildingActivity.this, areaListCode, Toast.LENGTH_SHORT).show();
                 b_area.setText(areatxt);
@@ -548,13 +544,13 @@ public class AddBuildingActivity extends AppCompatActivity {
         });
     }
 
-    public void showAvailableRoads(){
-        final AlertDialog.Builder alertDialog=new AlertDialog.Builder(this);
+    public void showAvailableRoads() {
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 
         View rowList = getLayoutInflater().inflate(R.layout.adress_list, null);
         roadNumberList = rowList.findViewById(R.id.listview);
-        roadNumberEdit=rowList.findViewById(R.id.search_edit);
-        adapter=new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,allStringValues.road_no);
+        roadNumberEdit = rowList.findViewById(R.id.search_edit);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, allStringValues.road_no);
         //customListAdapter=new CustomListAdapter(this,allStringValues.road_no);
         roadNumberList.setAdapter(adapter);
 
@@ -589,8 +585,8 @@ public class AddBuildingActivity extends AppCompatActivity {
         roadNumberList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String roadno=String.valueOf(parent.getItemAtPosition(position));
-                roadListCode=roadno;
+                String roadno = String.valueOf(parent.getItemAtPosition(position));
+                roadListCode = roadno;
                 b_roadnumber.setText(roadno);
                 dialog.dismiss();
             }
@@ -598,13 +594,13 @@ public class AddBuildingActivity extends AppCompatActivity {
 
     }
 
-    public void showAvailableBlock(){
-        final AlertDialog.Builder alertDialog=new AlertDialog.Builder(this);
+    public void showAvailableBlock() {
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 
         View rowList = getLayoutInflater().inflate(R.layout.adress_list, null);
         blockList = rowList.findViewById(R.id.listview);
-        blockEdit=rowList.findViewById(R.id.search_edit);
-        adapter=new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,allStringValues.block_numbers);
+        blockEdit = rowList.findViewById(R.id.search_edit);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, allStringValues.block_numbers);
         blockList.setAdapter(adapter);
         ColorDrawable color = new ColorDrawable(this.getResources().getColor(R.color.lightorange));
         blockList.setDivider(color);
@@ -637,24 +633,24 @@ public class AddBuildingActivity extends AppCompatActivity {
         blockList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String blockno=String.valueOf(parent.getItemAtPosition(position));
+                String blockno = String.valueOf(parent.getItemAtPosition(position));
                 b_block.setText(blockno);
-                blockListCode=String.valueOf(position+1);
+                blockListCode = String.valueOf(position + 1);
 
-                Toast.makeText(AddBuildingActivity.this,blockListCode,Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(AddBuildingActivity.this, blockListCode, Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
         });
 
     }
 
-    public void shoAvailableHouseNumner(){
-        final AlertDialog.Builder alertDialog=new AlertDialog.Builder(this);
+    public void shoAvailableHouseNumner() {
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 
         View rowList = getLayoutInflater().inflate(R.layout.adress_list, null);
         houseNoList = rowList.findViewById(R.id.listview);
-        houseNoEdit=rowList.findViewById(R.id.search_edit);
-        adapter=new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,allStringValues.road_no);
+        houseNoEdit = rowList.findViewById(R.id.search_edit);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, allStringValues.road_no);
         houseNoList.setAdapter(adapter);
         ColorDrawable color = new ColorDrawable(this.getResources().getColor(R.color.lightorange));
         houseNoList.setDivider(color);
@@ -687,10 +683,10 @@ public class AddBuildingActivity extends AppCompatActivity {
         houseNoList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String houseno=String.valueOf(parent.getItemAtPosition(position));
-                Toast.makeText(AddBuildingActivity.this,houseno,Toast.LENGTH_SHORT).show();
+                String houseno = String.valueOf(parent.getItemAtPosition(position));
+                //Toast.makeText(AddBuildingActivity.this, houseno, Toast.LENGTH_SHORT).show();
 
-                houseListCode=houseno;
+                houseListCode = houseno;
                 b_housenmbr.setText(houseno);
 
 
@@ -699,13 +695,13 @@ public class AddBuildingActivity extends AppCompatActivity {
         });
     }
 
-    public void showAvailableHouseFormat(){
-        final AlertDialog.Builder alertDialog=new AlertDialog.Builder(this);
+    public void showAvailableHouseFormat() {
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 
         View rowList = getLayoutInflater().inflate(R.layout.adress_list, null);
         blockList = rowList.findViewById(R.id.listview);
-        blockEdit=rowList.findViewById(R.id.search_edit);
-        adapter=new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,allStringValues.block_numbers);
+        blockEdit = rowList.findViewById(R.id.search_edit);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, allStringValues.block_numbers);
         blockList.setAdapter(adapter);
         ColorDrawable color = new ColorDrawable(this.getResources().getColor(R.color.lightorange));
         blockList.setDivider(color);
@@ -738,24 +734,24 @@ public class AddBuildingActivity extends AppCompatActivity {
         blockList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String blockno=String.valueOf(parent.getItemAtPosition(position));
-                housefrmntListCode=String.valueOf(position+1);
+                String blockno = String.valueOf(parent.getItemAtPosition(position));
+                housefrmntListCode = String.valueOf(position + 1);
                 b_housefrmt.setText(blockno);
                 dialog.dismiss();
             }
         });
     }
 
-    public void saveImageToStorage(){
-        final StorageReference filePath=addbldngRef.child(pickedImageUri.getLastPathSegment()+".jpg");
-        final UploadTask uploadTask=filePath.putFile(pickedImageUri);
+    public void saveImageToStorage() {
+        final StorageReference filePath = addbldngRef.child(pickedImageUri.getLastPathSegment() + ".jpg");
+        final UploadTask uploadTask = filePath.putFile(pickedImageUri);
 
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
 
                 progressBar.setVisibility(View.GONE);
-                Toast.makeText(AddBuildingActivity.this, "Error:"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddBuildingActivity.this, "Error:" + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -763,22 +759,22 @@ public class AddBuildingActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.GONE);
                 Toast.makeText(AddBuildingActivity.this, "Image Uploaded Successfully", Toast.LENGTH_SHORT).show();
 
-                Task<Uri> urlTask=uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                     @Override
                     public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
 
-                        if (!task.isSuccessful()){
+                        if (!task.isSuccessful()) {
                             throw task.getException();
                         }
-                        downloadImageUri=filePath.getDownloadUrl().toString();
+                        downloadImageUri = filePath.getDownloadUrl().toString();
 
                         return filePath.getDownloadUrl();
                     }
                 }).addOnCompleteListener(new OnCompleteListener<Uri>() {
                     @Override
                     public void onComplete(@NonNull Task<Uri> task) {
-                        if (task.isSuccessful()){
-                            downloadImageUri=task.getResult().toString();
+                        if (task.isSuccessful()) {
+                            downloadImageUri = task.getResult().toString();
                         }
                     }
                 });
@@ -787,130 +783,125 @@ public class AddBuildingActivity extends AppCompatActivity {
 
     }
 
-    public void saveBuildingDataInDB(){
+    public void saveBuildingDataInDB() {
 
-       String area=b_area.getText().toString();
-       String road=b_roadnumber.getText().toString();
-       String block=b_block.getText().toString();
-       String houseNmbr=b_housenmbr.getText().toString();
-       String housefrmt=b_housefrmt.getText().toString();
-       districtValue=b_district.getText().toString();
-
-
-       String theWholeAddress=area+" "+road+block+" "+houseNmbr+housefrmt+" "+districtValue;
-
-       wholeAddress=theWholeAddress;
-
-       districtValue= String.valueOf(1);
-       totalHouseCode=areaCodeList.get(areaCodePos)+""+roadListCode+""+blockListCode+""+houseListCode+""+housefrmntListCode+""+districtValue;
-
-
-       String housename=b_name.getText().toString();
-       String caretakrname=b_caretakername.getText().toString();
-       String caretakernmbr=b_caretakernmbr.getText().toString();
-
-       String care_number=add88withNumb(caretakernmbr);
-
-       String flatperfloor=b_floorperflat.getText().toString();
-       String followupdate=b_follwing.getText().toString();
-       String visit=b_visit.getText().toString();
-       String guardname=b_guardname.getText().toString();
-       String guardnmbr=b_guardnmbr.getText().toString();
-       String guard_number=add88withNumb(guardnmbr);
+        if (b_totalfloor.length()==0){
+            b_totalfloor.setError("Insert total floor");
+        }else if (b_floorperflat.length()==0){
+            b_floorperflat.setError("Insert number of floor per flat");
+        }else if (b_totalguard.length()==0){
+            b_totalguard.setError("Insert the number of guards");
+        }else if (b_flatfrmt.length()==0){
+            b_flatfrmt.setError("Insert the flat format");
+        }else if (b_name.length()==0){
+            b_name.setError("Insert the house name");
+        }else {
+            String area = b_area.getText().toString();
+            String road = b_roadnumber.getText().toString();
+            String block = b_block.getText().toString();
+            String houseNmbr = b_housenmbr.getText().toString();
+            String housefrmt = b_housefrmt.getText().toString();
+            districtValue = b_district.getText().toString();
+            status = b_status.getText().toString();
 
 
-       String ownername=b_ownername.getText().toString();
-       String ownernmbr=b_ownernmbr.getText().toString();
+            String theWholeAddress = area + " " + road + block + " " + houseNmbr + housefrmt + " " + districtValue;
 
-       String owner_number=add88withNumb(ownernmbr);
+            wholeAddress = theWholeAddress;
 
-       String guards=b_totalguard.getText().toString();
-       String totalfloor=b_totalfloor.getText().toString();
+            districtValue = String.valueOf(1);
+            totalHouseCode = areaCodeList.get(areaCodePos) + "" + roadListCode + "" + blockListCode + "" + houseListCode + "" + housefrmntListCode + "" + districtValue;
+
+            String housename = b_name.getText().toString();
+            String flatperfloor = b_floorperflat.getText().toString();
+            String followupdate = b_follwing.getText().toString();
+            String guards = b_totalguard.getText().toString();
+            String totalfloor = b_totalfloor.getText().toString();
 
 
-       Normalfunc normalfunc=new Normalfunc();
-       //Toast.makeText(this, ""+totalHouseCode.length(), Toast.LENGTH_SHORT).show();
+            Normalfunc normalfunc = new Normalfunc();
 
-        List<String> b_code_array=normalfunc.splitchar(totalHouseCode);
+            List<String> b_code_array = normalfunc.splitchar(totalHouseCode);
 
-        Map<String,Object> areaMap=new HashMap<>();
+            Map<String, Object> areaMap = new HashMap<>();
 
-       areaMap.put("b_address",wholeAddress);
-       areaMap.put("b_flatfrmt",flatformat);
-       areaMap.put("b_flatperfloor",flatperfloor);
-       areaMap.put("b_followupdate",followupdate);
-       //areaMap.put("b_guardname",guardname);
-      // areaMap.put("b_guardnmbr",guard_number);
-       areaMap.put("b_guards",guards);
-       areaMap.put("b_housename",housename);
-      // areaMap.put("b_ownername",ownername);
-      // areaMap.put("b_ownernmbr",owner_number);
-       areaMap.put("b_status",status);
-       areaMap.put("b_code",totalCode);
-       areaMap.put("b_imageUrl",downloadImageUri);
-       areaMap.put("b_code_array",b_code_array);
-       areaMap.put("b_totalfloor",totalfloor);
-       areaMap.put("b_visiteddate",currentDate);
-      // areaMap.put("b_caretakernam",caretakrname);
-      // areaMap.put("b_caretakernmbr",care_number);
-       areaMap.put("b_uid",currentUser);
+            areaMap.put("b_address", wholeAddress);
+            areaMap.put("b_flatfrmt", flatformat);
+            areaMap.put("b_flatperfloor", flatperfloor);
+            areaMap.put("b_followupdate", followupdate);
 
-        db.collection("f_buildings").document().set(areaMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
+            areaMap.put("b_guards", guards);
+            areaMap.put("b_housename", housename);
+            areaMap.put("b_status", status);
+            areaMap.put("b_code", totalCode);
+            areaMap.put("b_imageUrl", downloadImageUri);
+            areaMap.put("b_code_array", b_code_array);
+            areaMap.put("b_totalfloor", totalfloor);
+            areaMap.put("b_visiteddate", currentDate);
 
-                progressDialog.dismiss();
-                if (task.isSuccessful()){
-                    Toast.makeText(AddBuildingActivity.this,"Data Saved",Toast.LENGTH_SHORT).show();
+            areaMap.put("b_uid", currentUser);
 
+            db.collection("f_buildings").document().set(areaMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+
+                    progressBar.setVisibility(View.GONE);
+                    if (task.isSuccessful()) {
+                        Toast.makeText(AddBuildingActivity.this, "Data Saved", Toast.LENGTH_SHORT).show();
+
+
+                    }
                 }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                progressDialog.dismiss();
-                Toast.makeText(AddBuildingActivity.this,"Error"+e.getMessage(),Toast.LENGTH_SHORT).show();
-            }
-        });
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(AddBuildingActivity.this, "Error" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
 
-   }
 
-    public String add88withNumb(String s){
-        String number="+88"+s;
+
+    }
+
+    public String add88withNumb(String s) {
+        String number = "+88" + s;
         return number;
-   }
+    }
 
 
-    public void createBuildingsContactInfo(){
+    public void createBuildingsContactInfo() {
 
-        String design_type=people_we_talk.getText().toString();
-        String design_name=b_peoplesName.getText().toString();
-        String design_number=b_peopleNumber.getText().toString();
-        String numbers=add88withNumb(design_number);
+        String design_type = people_we_talk.getText().toString();
+        String design_name = b_peoplesName.getText().toString();
+        String design_number = b_peopleNumber.getText().toString();
+        String numbers = add88withNumb(design_number);
 
 
-        totalCode=areaCodeList.get(areaCodePos)+"*"+roadListCode+"*"+blockListCode+"*"+houseListCode+"*"+housefrmntListCode+"*"+districtValue;
-        totalHouseCode=areaCodeList.get(areaCodePos)+""+roadListCode+""+blockListCode+""+houseListCode+""+housefrmntListCode+""+districtValue;
+        totalCode = areaCodeList.get(areaCodePos) + "*" + roadListCode + "*" + blockListCode + "*" + houseListCode + "*" + housefrmntListCode + "*" + districtValue;
+        totalHouseCode = areaCodeList.get(areaCodePos) + "" + roadListCode + "" + blockListCode + "" + houseListCode + "" + housefrmntListCode + "" + districtValue;
 
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat mdformat = new SimpleDateFormat("HH:mm:ss");
         String strDate = mdformat.format(calendar.getTime());
 
-        Map<String,Object> map=new HashMap<>();
-        map.put("designation",design_type);
-        map.put("name",design_name);
-        map.put("number",numbers);
-        map.put("b_code",totalCode);
-        map.put("doc_id",design_number+totalHouseCode);
-        map.put("created_time",strDate);
-        map.put("update_time",strDate);
+        Map<String, Object> map = new HashMap<>();
+        map.put("designation", design_type);
+        map.put("name", design_name);
+        map.put("number", numbers);
+        map.put("b_code", totalCode);
+        map.put("doc_id", design_number + totalHouseCode);
+        map.put("created_time", strDate);
+        map.put("update_time", strDate);
 
-        db.collection("f_building_contact").document(design_number+totalHouseCode)
+        db.collection("f_building_contact").document(design_number + totalHouseCode)
                 .set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
 
-                if (task.isSuccessful()){
+//                spinkitProgress.setVisibility(View.GONE);
+                if (task.isSuccessful()) {
                     Toast.makeText(AddBuildingActivity.this, "number saved successfully", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -919,38 +910,38 @@ public class AddBuildingActivity extends AppCompatActivity {
 
     }
 
-    public void shoeAlertforhouseNotfound(){
-        AlertDialog.Builder alert= new AlertDialog.Builder(AddBuildingActivity.this);
-        View view=getLayoutInflater().inflate(R.layout.house_not_found,null);
+    public void shoeAlertforhouseNotfound() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(AddBuildingActivity.this);
+        View view = getLayoutInflater().inflate(R.layout.house_not_found, null);
 
-        Button btn=view.findViewById(R.id.btn);
+        Button btn = view.findViewById(R.id.btn);
         alert.setView(view);
 
-        final AlertDialog alertDialog1=alert.create();
+        final AlertDialog alertDialog1 = alert.create();
         alertDialog1.setCanceledOnTouchOutside(true);
         alertDialog1.show();
 
         btn.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
 
-               alertDialog1.dismiss();
-               relativeLayout.setVisibility(View.VISIBLE);
-           }
-       });
+                alertDialog1.dismiss();
+                relativeLayout.setVisibility(View.VISIBLE);
+            }
+        });
 
 
-   }
+    }
 
-    public void shoeAlertforPendingHouse(){
-        AlertDialog.Builder alert= new AlertDialog.Builder(AddBuildingActivity.this);
-        View view=getLayoutInflater().inflate(R.layout.house_status_pending,null);
+    public void shoeAlertforPendingHouse() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(AddBuildingActivity.this);
+        View view = getLayoutInflater().inflate(R.layout.house_status_pending, null);
 
-        Button btn=view.findViewById(R.id.btn);
-        TextView txt=view.findViewById(R.id.txt);
+        Button btn = view.findViewById(R.id.btn);
+        TextView txt = view.findViewById(R.id.txt);
         alert.setView(view);
 
-        final AlertDialog alertDialog1=alert.create();
+        final AlertDialog alertDialog1 = alert.create();
         alertDialog1.setCanceledOnTouchOutside(true);
         alertDialog1.show();
 
@@ -964,7 +955,7 @@ public class AddBuildingActivity extends AppCompatActivity {
         });
     }
 
-    public void showTypeofPeopleInbuilding(){
+    public void showTypeofPeopleInbuilding() {
 
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 
@@ -980,7 +971,6 @@ public class AddBuildingActivity extends AppCompatActivity {
                 for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
 
                     String area_eng = documentSnapshot.getString("type");
-
                     areaList.add(area_eng);
 
                 }
@@ -1003,12 +993,11 @@ public class AddBuildingActivity extends AppCompatActivity {
         peopleWeTalkList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String peoples=String.valueOf(parent.getItemAtPosition(position));
+                String peoples = String.valueOf(parent.getItemAtPosition(position));
                 people_we_talk.setText(peoples);
                 dialog.dismiss();
             }
         });
-
 
 
     }

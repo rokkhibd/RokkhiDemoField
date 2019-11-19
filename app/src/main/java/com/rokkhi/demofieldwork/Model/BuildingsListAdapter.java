@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.bumptech.glide.Glide;
 import com.rokkhi.demofieldwork.R;
 
 import java.util.List;
@@ -23,9 +25,10 @@ public class BuildingsListAdapter extends RecyclerView.Adapter<BuildingsListAdap
     public List<FBuildings> fBuildingsList;
 
 
-    public BuildingsListAdapter(List<FBuildings> fBuildingsList) {
+    public BuildingsListAdapter(List<FBuildings> fBuildingsList,Context context) {
 
         this.fBuildingsList = fBuildingsList;
+        this.context=context;
     }
 
     @NonNull
@@ -79,7 +82,12 @@ public class BuildingsListAdapter extends RecyclerView.Adapter<BuildingsListAdap
                 TextView followupDate=dialog.findViewById(R.id.followup_date);
                 followupDate.setText(fBuildings.getB_followupdate());
 
-                Toast.makeText(parent.getContext(), String.valueOf(bv.getAdapterPosition()), Toast.LENGTH_SHORT).show();
+
+                ImageView houseImage=dialog.findViewById(R.id.house_image);
+                String image_url=fBuildings.getB_imageUrl();
+                Glide.with(context).load(image_url).into(houseImage);
+
+               // Toast.makeText(parent.getContext(), String.valueOf(bv.getAdapterPosition()), Toast.LENGTH_SHORT).show();
                 dialog.show();
             }
         });

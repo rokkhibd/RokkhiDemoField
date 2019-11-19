@@ -478,7 +478,7 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
         View rowList = getLayoutInflater().inflate(R.layout.adress_list, null);
         roadNumberList = rowList.findViewById(R.id.listview);
         roadNumberEdit=rowList.findViewById(R.id.search_edit);
-        adapter=new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,allStringValues.road_no);
+        adapter=new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,allStringValues.block_numbers);
         roadNumberList.setAdapter(adapter);
         ColorDrawable color = new ColorDrawable(this.getResources().getColor(R.color.lightorange));
         roadNumberList.setDivider(color);
@@ -577,7 +577,7 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
         if (f_name.length()==0){
             f_name.setError("Insert your name");
             spinKitProgressBar.setVisibility(View.GONE);
-        }else if (f_area.length()==0 || f_road.length()==0 || f_block.length()==0 || f_houseno.length()==0){
+        }else if (f_area.length()==0){
             f_area.setError("Insert your area name");
             spinKitProgressBar.setVisibility(View.GONE);
         }else if (f_phone.length()==0){
@@ -586,7 +586,8 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
         }else if (f_nid.length()!=10){
             f_nid.setError("Your NID number is not correct");
             spinKitProgressBar.setVisibility(View.GONE);
-        }else {
+        }
+        else {
             String fw_name=f_name.getText().toString();
             String fw_area=f_area.getText().toString();
             String fw_road=f_road.getText().toString();
@@ -598,7 +599,7 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
             String fw_nogod=f_nogod.getText().toString();
 
             String phone=add88withNumb(fphone);
-            normalfunc.checklengthEmptyOrNot(f_nid,f_phone,f_mail,f_refId);
+            //normalfunc.checklengthEmptyOrNot(f_nid,f_phone,f_mail,f_refId);
 
             String fw_nid=f_nid.getText().toString();
             String fw_dob=f_dob.getText().toString();

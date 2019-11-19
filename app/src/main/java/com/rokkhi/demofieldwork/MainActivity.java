@@ -51,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setSelectedItemId(R.id.my_home);
     }
 
+    //TODO:show the exit button
+
     @Override
     public void onBackPressed() {
         new AlertDialog.Builder(this)
