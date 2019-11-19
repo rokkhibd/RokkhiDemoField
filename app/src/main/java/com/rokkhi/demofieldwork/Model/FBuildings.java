@@ -2,9 +2,10 @@ package com.rokkhi.demofieldwork.Model;
 
 import com.google.firebase.firestore.Exclude;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class FBuildings {
+public class FBuildings implements Serializable {
 
     @Exclude
     private String id;

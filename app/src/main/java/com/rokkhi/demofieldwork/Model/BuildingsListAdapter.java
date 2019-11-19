@@ -2,6 +2,7 @@ package com.rokkhi.demofieldwork.Model;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.rokkhi.demofieldwork.R;
+import com.rokkhi.demofieldwork.Ui.UpdateBldngInfoActivity;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class BuildingsListAdapter extends RecyclerView.Adapter<BuildingsListAdapter.BuildingViewholder>{
@@ -25,10 +28,10 @@ public class BuildingsListAdapter extends RecyclerView.Adapter<BuildingsListAdap
     public List<FBuildings> fBuildingsList;
 
 
-    public BuildingsListAdapter(List<FBuildings> fBuildingsList,Context context) {
+    public BuildingsListAdapter(List<FBuildings> fBuildingsList) {
 
         this.fBuildingsList = fBuildingsList;
-        this.context=context;
+        //this.context=context;
     }
 
     @NonNull
@@ -46,7 +49,7 @@ public class BuildingsListAdapter extends RecyclerView.Adapter<BuildingsListAdap
         dialog.setContentView(R.layout.show_buildinginfo_layout);
 
         //TODO:Show buildings info in a Dialogue
-        bv.relativeLayout.setOnClickListener(new View.OnClickListener() {
+/*        bv.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -90,7 +93,7 @@ public class BuildingsListAdapter extends RecyclerView.Adapter<BuildingsListAdap
                // Toast.makeText(parent.getContext(), String.valueOf(bv.getAdapterPosition()), Toast.LENGTH_SHORT).show();
                 dialog.show();
             }
-        });
+        });*/
 
         return bv;
     }
@@ -113,7 +116,7 @@ public class BuildingsListAdapter extends RecyclerView.Adapter<BuildingsListAdap
         return fBuildingsList.size();
     }
 
-    public class BuildingViewholder extends RecyclerView.ViewHolder {
+    public class BuildingViewholder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView build_name,build_address,build_status,build_lastVisit;
         RelativeLayout relativeLayout;
@@ -126,10 +129,17 @@ public class BuildingsListAdapter extends RecyclerView.Adapter<BuildingsListAdap
             build_status=itemView.findViewById(R.id.myhome_frag_bldngstatus);
             build_lastVisit=itemView.findViewById(R.id.myhome_frag_bldngvisitdate);
 
-
+            itemView.setOnClickListener(this);
 
         }
 
 
+        @Override
+        public void onClick(View v) {
+            FBuildings fBuildings=fBuildingsList.get(getAdapterPosition());
+            Intent intent=new Intent(v.getContext(), UpdateBldngInfoActivity.class);
+            intent.putExtra("fbuildings", fBuildings);
+            v.getContext().startActivity(intent);
+        }
     }
 }

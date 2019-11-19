@@ -368,6 +368,7 @@
             android:layout_height="36dp"/>
 
         <ImageView
+            android:visibility="gone"
             android:id="@+id/calendar_joining"
             android:layout_marginRight="5dp"
             android:src="@drawable/calendarlight"

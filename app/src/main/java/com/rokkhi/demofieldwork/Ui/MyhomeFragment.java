@@ -1,11 +1,13 @@
 package com.rokkhi.demofieldwork.Ui;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,6 +40,7 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.rokkhi.demofieldwork.MainActivity;
 import com.rokkhi.demofieldwork.Model.BuildingsListAdapter;
 import com.rokkhi.demofieldwork.Model.FBuildings;
 import com.rokkhi.demofieldwork.Model.Workers;
@@ -126,7 +129,7 @@ public class MyhomeFragment extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
 
         fBuildingsList=new ArrayList<>();
-        buildingsListAdapter=new BuildingsListAdapter(fBuildingsList,getContext());
+        buildingsListAdapter=new BuildingsListAdapter(fBuildingsList);
         recyclerView.setAdapter(buildingsListAdapter);
 
         spinKitProgress.setVisibility(View.VISIBLE);
@@ -147,7 +150,18 @@ public class MyhomeFragment extends Fragment {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAuth.signOut();
+                //mAuth.signOut();
+                new AlertDialog.Builder(getContext())
+                        .setTitle("Logout")
+                        .setMessage("Are you sure you want to logout?")
+                        .setNegativeButton(android.R.string.no, null)
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mAuth.signOut();
+                            }
+
+                        }).create().show();
             }
         });
 
