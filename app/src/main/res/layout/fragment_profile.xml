@@ -7,15 +7,11 @@
     android:orientation="vertical"
     android:background="@color/white"
     tools:context=".Ui.ProfileFragment">
-
-
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
-        android:visibility="gone"
         style="@style/AppTheme.AppBarOverlay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
 
         <androidx.appcompat.widget.Toolbar
             app:popupTheme="@style/AppTheme.PopupOverlay"
@@ -34,14 +30,12 @@
                     android:layout_height="wrap_content"/>
 
             </RelativeLayout>
+
         </androidx.appcompat.widget.Toolbar>
+
     </com.google.android.material.appbar.AppBarLayout>
 
-    <View
-        android:layout_below="@id/appbar"
-        android:background="@color/orange"
-        android:layout_width="match_parent"
-        android:layout_height="210dp"/>
+
 
     <LinearLayout
         android:id="@+id/one"
@@ -85,6 +79,7 @@
                         android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
+
 
                         <TextView
                             android:text="Md. Rajoan Rahman Rifat"
@@ -425,7 +420,6 @@
 
 
     </androidx.core.widget.NestedScrollView>
-
 
 
     <com.github.ybq.android.spinkit.SpinKitView

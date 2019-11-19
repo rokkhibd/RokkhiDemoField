@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "419408335722-duco0i4c0rjl0vbogiipe2tu6kop9dip.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rokkhi.demofieldwork",
+            "certificate_hash": "f1aabb6a92190f89abef8c6f204c85738ca58bd3"
+          }
+        },
+        {
           "client_id": "419408335722-2edsdld97quaupropd7trmkrlbu22cc8.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

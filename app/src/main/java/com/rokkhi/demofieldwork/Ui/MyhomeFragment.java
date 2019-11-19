@@ -20,14 +20,12 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
 import com.github.ybq.android.spinkit.style.Wave;
-import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -43,13 +41,11 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.rokkhi.demofieldwork.MainActivity;
 import com.rokkhi.demofieldwork.Model.BuildingsListAdapter;
 import com.rokkhi.demofieldwork.Model.FBuildings;
-import com.rokkhi.demofieldwork.Model.Workers;
+import com.rokkhi.demofieldwork.Model.FWorkers;
 import com.rokkhi.demofieldwork.R;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -68,7 +64,7 @@ public class MyhomeFragment extends Fragment {
     FirebaseFirestore db;
     BuildingsListAdapter buildingsListAdapter;
     ProgressBar progressBar;
-    Workers fworkers;
+    FWorkers fworkers;
     FirebaseAuth mAuth;
     FirebaseUser firebaseUser;
     String userID;
@@ -105,7 +101,7 @@ public class MyhomeFragment extends Fragment {
         db=FirebaseFirestore.getInstance();
         mAuth=FirebaseAuth.getInstance();
         firebaseUser=mAuth.getCurrentUser();
-        fworkers=new Workers();
+        fworkers=new FWorkers();
 
 
         f_name=view.findViewById(R.id.myHome_frag_fwname);
