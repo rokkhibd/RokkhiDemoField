@@ -29,6 +29,15 @@
                     android:src="@drawable/logo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
+
+                <ImageView
+                    android:id="@+id/logout_image"
+                    android:layout_marginRight="10dp"
+                    android:layout_centerInParent="true"
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/logout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
             </RelativeLayout>
         </androidx.appcompat.widget.Toolbar>
 
@@ -87,8 +96,8 @@
                     android:layout_toRightOf="@id/txtname"
                     android:layout_marginLeft="1dp"
                     android:textColor="@color/black"
-                    android:textSize="17sp"
-                    android:layout_marginTop="8dp"
+                    android:textSize="15sp"
+                    android:layout_marginTop="10dp"
                     android:id="@+id/myHome_frag_fwname"
                     android:text="Md.Rejoan Rahman"
                     android:layout_width="wrap_content"
@@ -96,6 +105,7 @@
 
 
                 <LinearLayout
+                    android:layout_marginTop="5dp"
                     android:id="@+id/layout_one"
                     android:orientation="horizontal"
                     android:layout_below="@id/txtname"
@@ -120,7 +130,7 @@
                         android:paddingLeft="10dp"
                         android:textColor="@color/orange"
                         android:fontFamily="@font/robotocondensebold"
-                        android:textSize="25sp"
+                        android:textSize="20sp"
                         android:id="@+id/myHome_frag_fwtotlearn"
                         android:textStyle="italic"
                         android:text="800 tk"
@@ -154,7 +164,7 @@
                         android:visibility="visible"
                         android:textColor="@color/orange"
                         android:fontFamily="@font/robotocondensebold"
-                        android:textSize="25sp"
+                        android:textSize="20sp"
                         android:id="@+id/myHome_frag_fwduepayment"
                         android:textStyle="italic"
                         android:text="400 tk"

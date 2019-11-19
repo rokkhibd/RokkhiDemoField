@@ -55,7 +55,9 @@ import com.vansuita.pickimage.bundle.PickSetup;
 import com.vansuita.pickimage.dialog.PickImageDialog;
 import com.vansuita.pickimage.listeners.IPickResult;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,7 +75,7 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
 
     Button saveData;
 
-    String userPhoneNumber;
+    String userPhoneNumber,currentDate;
 
     CustomListAdapter customListAdapter;
 
@@ -120,6 +122,11 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
 
         currentUser= FirebaseAuth.getInstance().getCurrentUser();
         userId =currentUser.getUid();
+
+        SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
+        currentDate=sdf.format(new Date());
+
+
 
         saveData=findViewById(R.id.fworker_data_btn);
         f_area=findViewById(R.id.fworker_address_area);
@@ -175,7 +182,7 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
             @Override
             public void onClick(View v) {
                 spinKitProgressBar.setVisibility(View.VISIBLE);
-                normalfunc.checklengthEmptyOrNot(f_nid,f_phone,f_mail,f_refId);
+
                 saveAllDataToFirestore();
 
 
@@ -566,82 +573,80 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
 
 
     public void saveAllDataToFirestore(){
-        String fw_name=f_name.getText().toString();
-        String fw_area=f_area.getText().toString();
-        String fw_road=f_road.getText().toString();
-        String fw_block=f_block.getText().toString();
-        String fw_housenmbr=f_houseno.getText().toString();
-        String fw_houseletter=f_roadletter.getText().toString();
-        String fphone=f_phone.getText().toString();
-        String fw_bkash=f_bkash.getText().toString();
-        String fw_nogod=f_nogod.getText().toString();
 
-        String phone=add88withNumb(fphone);
+        if (f_name.length()==0){
+            f_name.setError("Insert your name");
+            spinKitProgressBar.setVisibility(View.GONE);
+        }else if (f_area.length()==0 || f_road.length()==0 || f_block.length()==0 || f_houseno.length()==0){
+            f_area.setError("Insert your area name");
+            spinKitProgressBar.setVisibility(View.GONE);
+        }else if (f_phone.length()==0){
+            f_phone.setError("Insert your mobile number");
+            spinKitProgressBar.setVisibility(View.GONE);
+        }else if (f_nid.length()!=10){
+            f_nid.setError("Your NID number is not correct");
+            spinKitProgressBar.setVisibility(View.GONE);
+        }else {
+            String fw_name=f_name.getText().toString();
+            String fw_area=f_area.getText().toString();
+            String fw_road=f_road.getText().toString();
+            String fw_block=f_block.getText().toString();
+            String fw_housenmbr=f_houseno.getText().toString();
+            String fw_houseletter=f_roadletter.getText().toString();
+            String fphone=f_phone.getText().toString();
+            String fw_bkash=f_bkash.getText().toString();
+            String fw_nogod=f_nogod.getText().toString();
 
-        String fw_nid=f_nid.getText().toString();
-        String fw_dob=f_dob.getText().toString();
-        String fw_uni=f_uni.getText().toString();
-        String fw_joindate=f_joindate.getText().toString();
-        String fw_mail=f_mail.getText().toString();
-        String fw_gender=f_gender.getText().toString();
-        String fw_address=fw_area+" "+fw_road+fw_block+" "+fw_housenmbr+fw_houseletter;
+            String phone=add88withNumb(fphone);
+            normalfunc.checklengthEmptyOrNot(f_nid,f_phone,f_mail,f_refId);
 
-
-        List<String> fw_phone=normalfunc.splitstring(phone);
-
-        Map<String,Object> fw_map=new HashMap<>();
-        fw_map.put("fw_name",fw_name);
-        fw_map.put("fw_address",fw_address);
-        fw_map.put("fw_phone",fw_phone);
-        fw_map.put("fw_nid",fw_nid);
-        fw_map.put("fw_dob",fw_dob);
-        fw_map.put("fw_uni",fw_uni);
-        fw_map.put("fw_joindate",fw_joindate);
-        fw_map.put("fw_mail",fw_mail);
-        fw_map.put("fw_imageUrl",downloadImageUri);
-        fw_map.put("fw_gender",fw_gender);
-        fw_map.put("fw_uid",userId);
-        fw_map.put("fw_bkash",fw_bkash);
-        fw_map.put("fw_nogod",fw_nogod);
-        //fw_map.put("fw_rd")
-
-        SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        SharedPreferences.Editor editor=sharedPreferences.edit();
+            String fw_nid=f_nid.getText().toString();
+            String fw_dob=f_dob.getText().toString();
+            String fw_uni=f_uni.getText().toString();
+            String fw_joindate=f_joindate.getText().toString();
+            String fw_mail=f_mail.getText().toString();
+            String fw_gender=f_gender.getText().toString();
+            String fw_address=fw_area+" "+fw_road+fw_block+" "+fw_housenmbr+fw_houseletter;
 
 
-        editor.putString("fw_name",fw_name);
-        //editor.putString("fw_area",fw_area);
-        //editor.putString("fw_road",fw_road);
-        //editor.putString("fw_block",fw_block);
-       // editor.putString("fw_housenumber",fw_housenmbr);
-        editor.putString("fw_phone",fphone);
-        //editor.putString("fw_nid",fw_nid);
-        //editor.putString("fw_dob",fw_dob);
-        //editor.putString("fw_uni",fw_uni);
-        editor.putString("fw_joindate",fw_joindate);
-        //editor.putString("fw_mail",fw_mail);
-        //editor.putString("fw_gender",fw_gender);
-        editor.commit();
+            List<String> fw_phone=normalfunc.splitstring(phone);
+
+            Map<String,Object> fw_map=new HashMap<>();
+            fw_map.put("fw_name",fw_name);
+            fw_map.put("fw_address",fw_address);
+            fw_map.put("fw_phone",fw_phone);
+            fw_map.put("fw_nid",fw_nid);
+            fw_map.put("fw_dob",fw_dob);
+            fw_map.put("fw_uni",fw_uni);
+            fw_map.put("fw_joindate",currentDate);
+            fw_map.put("fw_mail",fw_mail);
+            fw_map.put("fw_imageUrl",downloadImageUri);
+            fw_map.put("fw_gender",fw_gender);
+            fw_map.put("fw_uid",userId);
+            fw_map.put("fw_bkash",fw_bkash);
+            fw_map.put("fw_nogod",fw_nogod);
 
 
+            db.collection("f_workers").document(userId).set(fw_map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
 
-        db.collection("f_workers").document(userId).set(fw_map).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-
-                if (task.isSuccessful()){
-                    spinKitProgressBar.setVisibility(View.GONE);
-                    Toast.makeText(FworkerProfileActivity.this,"Data saved!!",Toast.LENGTH_SHORT).show();
-                    stayAtMainActvity();
+                    if (task.isSuccessful()){
+                        spinKitProgressBar.setVisibility(View.GONE);
+                        Toast.makeText(FworkerProfileActivity.this,"Data saved!!",Toast.LENGTH_SHORT).show();
+                        stayAtMainActvity();
+                    }
                 }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                progressBar.setVisibility(View.GONE);
-                Toast.makeText(FworkerProfileActivity.this,"Error!!"+e,Toast.LENGTH_SHORT).show();
-            }
-        });
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(FworkerProfileActivity.this,"Error!!"+e,Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+
     }
 
     public void saveImageToStorage(){
@@ -694,10 +699,6 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
 
         finish();
 
-        //MyhomeFragment fragment = new MyhomeFragment();
-        //FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        //transaction.replace(R.id.fragment_myHome, fragment);
-        //transaction.commit();
 
     }
 
@@ -707,32 +708,6 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
     }
 
 
-    public void checkProfileActvty(){
-        SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        if (sharedPreferences.contains("fw_name") && sharedPreferences.contains("fw_nid") && sharedPreferences.contains("fw_phone")
-                && sharedPreferences.contains("fw_joindate")){
-            stayAtMainActvity();
-        }else {
-
-            String fw_name=sharedPreferences.getString("fw_name","");
-            String fw_phone=sharedPreferences.getString("fw_phone","");
-            String fw_area=sharedPreferences.getString("fw_area","");
-            String fw_road=sharedPreferences.getString("fw_road","");
-            String fw_block=sharedPreferences.getString("fw_block","");
-            String fw_housenumber=sharedPreferences.getString("fw_housenumber","");
-            String fw_nid=sharedPreferences.getString("fw_nid","");
-            String fw_dob=sharedPreferences.getString("fw_dob","");
-            String fw_uni=sharedPreferences.getString("fw_uni","");
-            String fw_joindate=sharedPreferences.getString("fw_joindate","");
-            String fw_gender=sharedPreferences.getString("fw_gender","");
-            String fw_mail=sharedPreferences.getString("fw_mail","");
-
-            f_name.setText(fw_name);
-            f_phone.setText(fw_phone);
-            f_area.setText(fw_area);
-
-        }
-    }
 
     public void getTheCurrentUserPhoneNumber(EditText s){
 

@@ -2,10 +2,14 @@ package com.rokkhi.demofieldwork.Utils;
 
 import android.content.Context;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.rokkhi.demofieldwork.Ui.AddBuildingActivity;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Normalfunc {
@@ -92,6 +96,12 @@ public class Normalfunc {
         }else if (s6.length()==0){
             s6.setError("");
         }
+    }
+
+    public void getTheCurrentDate(){
+        SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
+        String currentDate=sdf.format(new Date());
+        Toast.makeText(context, currentDate, Toast.LENGTH_SHORT).show();
     }
 
 

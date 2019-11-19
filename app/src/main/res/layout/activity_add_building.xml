@@ -251,6 +251,8 @@
 
 
           <RelativeLayout
+              android:id="@+id/housecheck_layout"
+              android:visibility="visible"
               android:layout_below="@id/bldng_button_housecheck"
               android:layout_width="match_parent"
               android:layout_height="wrap_content">
@@ -430,7 +432,8 @@
                   android:layout_height="wrap_content"/>
 
               <EditText
-
+                  android:focusableInTouchMode="false"
+                  android:visibility="gone"
                   android:layout_below="@id/bldng_edit_numberSave"
                   android:id="@+id/bldng_edit_visitdate"
                   android:paddingLeft="5dp"
@@ -443,7 +446,7 @@
                   android:layout_height="38dp"/>
 
               <ImageView
-
+                    android:visibility="gone"
                   android:id="@+id/visitcalimg"
                   android:layout_marginRight="10dp"
                   android:layout_alignBottom="@id/bldng_edit_visitdate"
@@ -454,7 +457,7 @@
                   android:layout_height="wrap_content"/>
 
               <EditText
-
+                  android:focusableInTouchMode="false"
                   android:layout_below="@id/bldng_edit_visitdate"
                   android:id="@+id/bldng_edit_followingdate"
                   android:paddingLeft="5dp"

@@ -14,15 +14,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
 import com.github.ybq.android.spinkit.style.Wave;
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -40,8 +43,10 @@ import com.rokkhi.demofieldwork.Model.FBuildings;
 import com.rokkhi.demofieldwork.Model.Workers;
 import com.rokkhi.demofieldwork.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -65,6 +70,8 @@ public class MyhomeFragment extends Fragment {
     FirebaseUser firebaseUser;
     String userID;
     CircleImageView profileImage;
+    ImageView logout;
+
     TextView f_name;
     ProgressBar profile_progressBar,spinKitProgress;
     FirebaseAuth.AuthStateListener mAuthListener;
@@ -98,11 +105,11 @@ public class MyhomeFragment extends Fragment {
         fworkers=new Workers();
 
 
-
         f_name=view.findViewById(R.id.myHome_frag_fwname);
         profile_progressBar=view.findViewById(R.id.profile_progress);
         spinKitProgress=view.findViewById(R.id.spin_kit);
         profileImage=view.findViewById(R.id.fw_myhomefrag_image);
+        logout=view.findViewById(R.id.logout_image);
 
         Wave wave=new Wave();
         spinKitProgress.setIndeterminateDrawable(wave);
@@ -134,6 +141,13 @@ public class MyhomeFragment extends Fragment {
                 Intent intent = new Intent(getContext(), AddBuildingActivity.class);
                 startActivity(intent);
 
+            }
+        });
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth.signOut();
             }
         });
 
@@ -182,7 +196,7 @@ public class MyhomeFragment extends Fragment {
     private void checkUserLogInOrNot() {
         final String user_id=mAuth.getCurrentUser().getUid();
 
-        db.collection("f_workers").document(user_id).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        db.collection("f_worker").document(user_id).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@javax.annotation.Nullable DocumentSnapshot documentSnapshot, @javax.annotation.Nullable FirebaseFirestoreException e) {
                 profile_progressBar.setVisibility(View.GONE);
@@ -246,8 +260,7 @@ public class MyhomeFragment extends Fragment {
         startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
-                        .setAvailableProviders(
-                                Arrays.asList(phoneConfigWithDefaultNumber))
+                        .setAvailableProviders(Arrays.asList(phoneConfigWithDefaultNumber))
                         .build(),
                 RC_SIGN_IN);
 
