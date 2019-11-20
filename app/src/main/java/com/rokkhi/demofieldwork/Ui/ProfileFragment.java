@@ -2,20 +2,26 @@ package com.rokkhi.demofieldwork.Ui;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import android.os.SystemClock;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -30,6 +36,9 @@ import com.rokkhi.demofieldwork.Model.FPayments;
 import com.rokkhi.demofieldwork.Model.Users;
 import com.rokkhi.demofieldwork.R;
 import com.rokkhi.demofieldwork.Utils.Normalfunc;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -50,7 +59,9 @@ public class ProfileFragment extends Fragment {
     Context context;
     ProgressBar pro;
     Normalfunc normalfunc;
+    String userid="none";
 
+    private long mLastClickTime = 0;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -89,9 +100,91 @@ public class ProfileFragment extends Fragment {
         tbuilding=view.findViewById(R.id.total_building);
         dbuilding=view.findViewById(R.id.due_building);
         abuilding=view.findViewById(R.id.active_building);
+        userid= FirebaseAuth.getInstance().getUid();
 
         normalfunc= new Normalfunc(context);
         showCurrentUserInfo();
+
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent= new Intent(context,EditProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        bkashno.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+                alertDialog.setCancelable(false);
+                LayoutInflater inflater = getLayoutInflater();
+                View convertView = (View) inflater.inflate(R.layout.confirm_bkash, null);
+                EditText input= convertView.findViewById(R.id.input);
+                Button done = convertView.findViewById(R.id.done);
+                ProgressBar progressBar= convertView.findViewById(R.id.pro);
+
+                done.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
+
+                        input.setError(null);
+                        // Store values at the time of the login attempt.
+                        final String bkashtext = input.getText().toString();
+
+
+                        boolean cancel = false;
+                        View focusView = null;
+
+
+                        if (TextUtils.isEmpty(bkashtext)) {
+                            input.setError(getString(R.string.error_field_required));
+                            focusView = input;
+                            cancel = true;
+
+                        }
+
+                        if (!normalfunc.isvalidphone11(bkashtext)) {
+                            input.setError(getString(R.string.fui_invalid_phone_number));
+                            focusView = input;
+                            cancel = true;
+
+                        }
+
+
+
+
+                        if (cancel) {
+                            // There was an error; don't attempt login and focus the first
+                            // form field with an error.
+                            focusView.requestFocus();
+                            //progressBar.setVisibility(View.GONE);
+                        } else {
+                            String bkashtext2=normalfunc.makephone14(bkashtext);
+                            pro.setVisibility(View.VISIBLE);
+                            firebaseFirestore.collection(getString(R.string.col_fPayment))
+                                    .document(userid).update("bkash_no",bkashtext2)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()){
+                                                pro.setVisibility(View.GONE);
+                                                alertDialog.dismiss();
+                                            }
+                                        }
+                                    });
+                        }
+                    }
+                });
+
+                alertDialog.setView(convertView);
+                alertDialog.show();
+            }
+        });
 
     }
 
@@ -134,10 +227,20 @@ public class ProfileFragment extends Fragment {
                         }
 
                         if(documentSnapshot.exists()){
+                            pro.setVisibility(View.GONE);
+
+//                            TextView tearning,dearning,tref,dref,tmeeting,dmeeting,tbuilding,dbuilding,abuilding;
                             FPayments fPayments= documentSnapshot.toObject(FPayments.class);
                             bkashno.setText(fPayments.getBkash_no());
-//                            mailid.setText(users.getMail());
-//                            joiningDate.setText(normalfunc.getDateMMMdyyyy(users.getJoindate()));
+                            tearning.setText(fPayments.getTotal_earning());
+                            dearning.setText(fPayments.getDue_earning());
+                            tref.setText(fPayments.getTotal_referral());
+                            dref.setText(fPayments.getDue_referral());
+                            tmeeting.setText(fPayments.getTotal_meeting());
+                            dmeeting.setText(fPayments.getDue_meeting());
+                            tbuilding.setText(fPayments.getTotal_buildings());
+                            dbuilding.setText(fPayments.getDue_buildings());
+                            abuilding.setText(fPayments.getActive_buildings());
                         }
 
 
