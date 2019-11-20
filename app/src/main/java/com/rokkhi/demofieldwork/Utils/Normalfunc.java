@@ -20,10 +20,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.functions.FirebaseFunctions;
-import com.rokkhi.rokkhi.MainActivity;
-import com.rokkhi.rokkhi.Model.LogSession;
-import com.rokkhi.rokkhi.R;
+
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -37,7 +34,7 @@ import java.util.Random;
 
 public class Normalfunc {
 
-    FirebaseFunctions firebaseFunctions;
+   // FirebaseFunctions firebaseFunctions;
     FirebaseFirestore firebaseFirestore;
     Context context;
     private static final String TAG = "Normalfunc";
@@ -45,13 +42,13 @@ public class Normalfunc {
     SharedPreferences.Editor editor;
 
     public Normalfunc() {
-        firebaseFunctions = FirebaseFunctions.getInstance();
+        //firebaseFunctions = FirebaseFunctions.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
 
     }
 
     public Normalfunc(Context context) {
-        firebaseFunctions = FirebaseFunctions.getInstance();
+        //firebaseFunctions = FirebaseFunctions.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         this.context = context;
         sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
@@ -59,7 +56,7 @@ public class Normalfunc {
 
     }
 
-    public void removeTokenId() {
+    /*public void removeTokenId() {
 
 //        if(signoutintent.getExtras().getBoolean("signout",false)) FirebaseAuth.getInstance().signOut();
 
@@ -85,7 +82,7 @@ public class Normalfunc {
 
 
 
-    }
+    }*/
 
     public String getchatID(String u1, String u2) {
         String xx = "";

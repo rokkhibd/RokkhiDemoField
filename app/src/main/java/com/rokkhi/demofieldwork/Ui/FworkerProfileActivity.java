@@ -185,7 +185,7 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
                 spinKitProgressBar.setVisibility(View.VISIBLE);
 
                 saveDataToUserCollection();
-              //  saveAllDataToFirestore();
+                saveAllDataToFirestore();
 
 
             }
@@ -619,15 +619,15 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
             fw_map.put("fw_address",fw_address);
             fw_map.put("fw_phone",fw_phone);
             fw_map.put("fw_nid",fw_nid);
-            fw_map.put("fw_dob",fw_dob);
+            //fw_map.put("fw_dob",fw_dob);
             fw_map.put("fw_uni",fw_uni);
-            fw_map.put("fw_joindate",currentDate);
-            fw_map.put("fw_mail",fw_mail);
+            //fw_map.put("fw_joindate",currentDate);
+            //fw_map.put("fw_mail",fw_mail);
             fw_map.put("fw_imageUrl",downloadImageUri);
             fw_map.put("fw_gender",fw_gender);
             fw_map.put("fw_uid",userId);
-            fw_map.put("fw_bkash",fw_bkash);
-            fw_map.put("fw_nogod",fw_nogod);
+            //fw_map.put("fw_bkash",fw_bkash);
+            //fw_map.put("fw_nogod",fw_nogod);
 
 
             db.collection("f_workers").document(userId).set(fw_map).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -674,6 +674,7 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
         fw_map.put("name",fname);
         fw_map.put("bday",fw_dob);
         fw_map.put("gender",fw_gender);
+        fw_map.put("joindate",currentDate);
         fw_map.put("u_array",u_array);
         fw_map.put("pic",downloadImageUri);
 
@@ -683,14 +684,14 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
 
                 if (task.isSuccessful()){
                     spinKitProgressBar.setVisibility(View.GONE);
-                    Toast.makeText(FworkerProfileActivity.this,"Data saved!!",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FworkerProfileActivity.this,"Saving Data...Wait",Toast.LENGTH_SHORT).show();
                     //stayAtMainActvity();
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                progressBar.setVisibility(View.GONE);
+                spinKitProgressBar.setVisibility(View.GONE);
                 Toast.makeText(FworkerProfileActivity.this,"Error!!"+e,Toast.LENGTH_SHORT).show();
             }
         });

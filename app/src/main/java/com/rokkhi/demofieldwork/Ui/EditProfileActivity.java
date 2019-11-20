@@ -68,7 +68,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class EditProfileActivity extends AppCompatActivity  { //implements IPickResult
 
-    FirebaseFirestore firebaseFirestore;
+    /*FirebaseFirestore firebaseFirestore;
 
     SharedPreferences sharedPref;
     CircleImageView propic;
@@ -462,5 +462,5 @@ public class EditProfileActivity extends AppCompatActivity  { //implements IPick
 //
 //        }
 //
-//    }
+//    }*/
 }

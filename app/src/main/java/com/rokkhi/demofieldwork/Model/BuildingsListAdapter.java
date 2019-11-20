@@ -103,7 +103,7 @@ public class BuildingsListAdapter extends RecyclerView.Adapter<BuildingsListAdap
 
         FBuildings fBuildings=fBuildingsList.get(position);
 
-      //  holder.build_address.setText("Building Address: "+fBuildings.getB_address());
+        //  holder.build_address.setText("Building Address: "+fBuildings.getB_address());
        // holder.build_name.setText("Building Name: "+fBuildings.getB_housename());
        // holder.build_status.setText("Current Status: "+fBuildings.getB_status());
        // holder.build_lastVisit.setText("Visit Date: "+fBuildings.getB_visiteddate());

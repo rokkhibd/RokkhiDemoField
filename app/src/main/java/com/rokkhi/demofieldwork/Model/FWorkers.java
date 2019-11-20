@@ -33,8 +33,8 @@ public class FWorkers {
         this.fw_birthday = fw_birthday;
         this.created_at = created_at;
         this.updated_at = updated_at;
-        this.fw_mail = fw_mail;
-        this.fw_pic = fw_pic;
+        //this.fw_mail = fw_mail;
+        //this.fw_pic = fw_pic;
         this.thumb_fw_pic = thumb_fw_pic;
         this.u_array = u_array;
     }
@@ -111,7 +111,7 @@ public class FWorkers {
         this.updated_at = updated_at;
     }
 
-    public String getFw_mail() {
+    /*public String getFw_mail() {
         return fw_mail;
     }
 
@@ -125,7 +125,7 @@ public class FWorkers {
 
     public void setFw_pic(String fw_pic) {
         this.fw_pic = fw_pic;
-    }
+    }*/
 
     public String getThumb_fw_pic() {
         return thumb_fw_pic;
