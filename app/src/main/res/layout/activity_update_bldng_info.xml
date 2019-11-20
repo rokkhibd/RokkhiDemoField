@@ -258,6 +258,121 @@
 
         </LinearLayout>
 
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="37dp">
+
+            <TextView
+                android:textColor="@color/lightorange"
+                android:paddingLeft="5dp"
+                android:text="Owner Name:"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+            <EditText
+                android:focusableInTouchMode="false"
+                android:paddingLeft="10dp"
+                android:id="@+id/update_bldng_ownername"
+                android:background="@drawable/round_edittext2"
+                android:layout_weight="2"
+                android:layout_width="0dp"
+                android:layout_marginRight="10dp"
+                android:layout_height="35dp"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="37dp">
+
+            <TextView
+                android:textColor="@color/lightorange"
+                android:paddingLeft="5dp"
+                android:text="Owner Number:"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+            <EditText
+                android:focusableInTouchMode="false"
+                android:paddingLeft="10dp"
+                android:id="@+id/update_bldng_ownernmbr"
+                android:background="@drawable/round_edittext2"
+                android:layout_weight="2"
+                android:layout_width="0dp"
+                android:layout_marginRight="10dp"
+                android:layout_height="35dp"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="37dp">
+
+            <TextView
+                android:textColor="@color/lightorange"
+                android:paddingLeft="5dp"
+                android:text="Manager Name:"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+            <EditText
+                android:focusableInTouchMode="false"
+                android:paddingLeft="10dp"
+                android:id="@+id/update_bldng_managername"
+                android:background="@drawable/round_edittext2"
+                android:layout_weight="2"
+                android:layout_width="0dp"
+                android:layout_marginRight="10dp"
+                android:layout_height="35dp"/>
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="37dp">
+
+            <TextView
+                android:textColor="@color/lightorange"
+                android:paddingLeft="5dp"
+                android:text="Manager Number:"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+            <EditText
+                android:focusableInTouchMode="false"
+                android:paddingLeft="10dp"
+                android:id="@+id/update_bldng_managernumber"
+                android:background="@drawable/round_edittext2"
+                android:layout_weight="2"
+                android:layout_width="0dp"
+                android:layout_marginRight="10dp"
+                android:layout_height="35dp"/>
+
+
+        </LinearLayout>
+
+
         <LinearLayout
             android:orientation="horizontal"
             android:layout_marginLeft="10dp"

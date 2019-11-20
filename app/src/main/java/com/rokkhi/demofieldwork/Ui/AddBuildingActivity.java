@@ -94,9 +94,8 @@ public class AddBuildingActivity extends AppCompatActivity {
     Normalfunc normalfunc = new Normalfunc();
 
     CircleImageView circleImageView;
-    EditText b_name, b_totalfloor, b_floorperflat, b_totalguard, b_ownername, b_ownernmbr, b_managername,
-            b_managernmbr, b_lat, b_long, b_area, b_roadnumber, b_block, b_housenmbr, b_housefrmt,
-            b_visit, b_follwing, b_caretakername, b_caretakernmbr, b_code, b_guardname, b_guardnmbr, b_peoplesName, b_peopleNumber, people_we_talk;
+    EditText b_name, b_totalfloor, b_floorperflat, b_totalguard, b_lat, b_long, b_area, b_roadnumber, b_block, b_housenmbr, b_housefrmt,
+            b_visit, b_follwing, b_code, b_peoplesName, b_peopleNumber, people_we_talk;
 
     Button saveBtn, tapCode, addInfoButton, checkHouseBtn, saveNumberBtn;
 
@@ -141,14 +140,6 @@ public class AddBuildingActivity extends AppCompatActivity {
         b_floorperflat = findViewById(R.id.bldng_edit_totalflt);
         b_totalfloor = findViewById(R.id.bldng_edit_totalfloor);
         b_totalguard = findViewById(R.id.bldng_edit_totalguard);
-        b_ownername = findViewById(R.id.bldng_edit_ownername);
-        b_ownernmbr = findViewById(R.id.bldng_edit_ownernmbr);
-        b_guardname = findViewById(R.id.bldng_edit_guardname);
-        b_guardnmbr = findViewById(R.id.bldng_edit_guardnmbr);
-        b_managername = findViewById(R.id.bldng_edit_managername);
-        b_managernmbr = findViewById(R.id.bldng_edit_managernmbr);
-        b_caretakername = findViewById(R.id.bldng_edit_caretakername);
-        b_caretakernmbr = findViewById(R.id.bldng_edit_caretakernmbr);
         b_flatfrmt = findViewById(R.id.bldng_edit_flatformat);
         b_visit = findViewById(R.id.bldng_edit_visitdate);
         b_follwing = findViewById(R.id.bldng_edit_followingdate);
@@ -202,7 +193,7 @@ public class AddBuildingActivity extends AppCompatActivity {
         saveNumberBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // spinkitProgress.setVisibility(View.VISIBLE);
+
                 createBuildingsContactInfo();
 
             }
@@ -211,8 +202,6 @@ public class AddBuildingActivity extends AppCompatActivity {
         b_visit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                // AllStringValues.showCalendar(AddBuildingActivity.this,b_visit);
 
 
             }
@@ -398,7 +387,7 @@ public class AddBuildingActivity extends AppCompatActivity {
                     if (task.getResult().size() > 0) {
                         for (DocumentSnapshot documentSnapshot : task.getResult()) {
                             FBuildings fBuildings = documentSnapshot.toObject(FBuildings.class);
-                            String status = fBuildings.getB_status();
+                            String status = fBuildings.getStatus();
 
                             if (status.equalsIgnoreCase("done")) {
 

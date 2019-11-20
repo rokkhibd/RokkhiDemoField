@@ -247,7 +247,7 @@ public class MyhomeFragment extends Fragment {
 
                             for (DocumentSnapshot d:list){
                                 FBuildings fb=d.toObject(FBuildings.class);
-                                fb.setDocId(d.getId());
+                                //fb.setDocId(d.getId());
                                 fBuildingsList.add(fb);
                             }
                             buildingsListAdapter.notifyDataSetChanged();

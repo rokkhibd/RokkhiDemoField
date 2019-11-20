@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,20 +22,26 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
 import com.rokkhi.demofieldwork.Model.AllStringValues;
+import com.rokkhi.demofieldwork.Model.FBPeople;
 import com.rokkhi.demofieldwork.Model.FBuildings;
 import com.rokkhi.demofieldwork.R;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class UpdateBldngInfoActivity extends AppCompatActivity implements View.OnClickListener {
 
     ImageView houseImage;
-    EditText house_name,total_guards,building_status,followup_date,total_floor,flat_floor,house_address,flat_format;
+    EditText house_name,total_guards,building_status,followup_date,total_floor,flat_floor,house_address,flat_format,
+            owner_name,owner_number,manager_name,manager_number;
     FBuildings fBuildings;
     AllStringValues allStringValues;
+    FBPeople fbPeople;
     Button updateInfo_Button;
 
     FirebaseAuth mAuth;
@@ -42,6 +49,7 @@ public class UpdateBldngInfoActivity extends AppCompatActivity implements View.O
     ProgressBar spinKitProgress;
     DocumentReference docRef;
     DocumentSnapshot documentSnapshot;
+    List<FBPeople> fbPeopleList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +59,8 @@ public class UpdateBldngInfoActivity extends AppCompatActivity implements View.O
         fBuildings=(FBuildings) getIntent().getSerializableExtra("fbuildings");
         mAuth=FirebaseAuth.getInstance();
         db=FirebaseFirestore.getInstance();
+        fbPeople=new FBPeople();
+        fbPeopleList=new ArrayList<>();
 
         house_name=findViewById(R.id.update_bldng_houseName);
         houseImage=findViewById(R.id.update_bldng_image);
@@ -61,13 +71,21 @@ public class UpdateBldngInfoActivity extends AppCompatActivity implements View.O
         flat_floor=findViewById(R.id.update_bldng_flatpfloor);
         house_address=findViewById(R.id.update_bldng_houseAddress);
         flat_format=findViewById(R.id.update_bldng_flatformat);
+        owner_name=findViewById(R.id.update_bldng_ownername);
+        owner_number=findViewById(R.id.update_bldng_ownernmbr);
+        manager_name=findViewById(R.id.update_bldng_managername);
+        manager_number=findViewById(R.id.update_bldng_managernumber);
+
+        getThePeoplesInfo();
+
+
         updateInfo_Button=findViewById(R.id.update_bldng_updatebtn);
 
         spinKitProgress=findViewById(R.id.spin_kit);
         Wave wave=new Wave();
         spinKitProgress.setIndeterminateDrawable(wave);
 
-        house_name.setText(fBuildings.getB_housename());
+        /*house_name.setText(fBuildings.getB_housename());
         total_guards.setText(fBuildings.getB_guards());
         building_status.setText(fBuildings.getB_status());
         followup_date.setText(fBuildings.getB_followupdate());
@@ -76,7 +94,7 @@ public class UpdateBldngInfoActivity extends AppCompatActivity implements View.O
         house_address.setText(fBuildings.getB_address());
         flat_format.setText(fBuildings.getB_flatfrmt());
         Glide.with(this).load(fBuildings.getB_imageUrl()).into(houseImage);
-
+*/
         allStringValues=new AllStringValues();
         followup_date.setOnClickListener(this);
         total_guards.setOnClickListener(this);
@@ -84,22 +102,23 @@ public class UpdateBldngInfoActivity extends AppCompatActivity implements View.O
 
     }
 
+
+
     @Override
     public void onClick(View v) {
         if (v.getId()==R.id.update_bldng_followupDate){
             AllStringValues.showCalendar(this,followup_date);
-
         }else if (v.getId()==R.id.update_bldng_totalGuards){
             total_guards.setFocusableInTouchMode(true);
         }else if (v.getId()==R.id.update_bldng_bldngStatus){
             building_status.setFocusableInTouchMode(true);
         }else if (v.getId()==R.id.update_bldng_updatebtn){
             spinKitProgress.setVisibility(View.VISIBLE);
-            updateBuildingInfo();
+            //updateBuildingInfo();
         }
     }
 
-    private void updateBuildingInfo() {
+    /*private void updateBuildingInfo() {
 
         WriteBatch batch=db.batch();
 
@@ -127,7 +146,23 @@ public class UpdateBldngInfoActivity extends AppCompatActivity implements View.O
             }
         });
 
+    }*/
 
+    private void getThePeoplesInfo() {
+
+        db.collection("f_building_contact").whereEqualTo("b_code",fBuildings.getB_code()).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        for (DocumentSnapshot documentSnapshot:task.getResult()){
+                            FBPeople fbPeople=documentSnapshot.toObject(FBPeople.class);
+                            Log.e("xxxx",fbPeople.getDesignation());
+                            Log.e("xxxx",fbPeople.getName());
+                            Log.e("xxxx",fbPeople.getNumber());
+
+                        }
+                    }
+                });
 
     }
 }

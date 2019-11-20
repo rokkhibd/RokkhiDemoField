@@ -9,7 +9,6 @@ import java.util.List;
 
 public class FBuildings implements Serializable {
 
-    @Exclude
     private String build_id;
     private String b_address;
     private String b_code;
@@ -25,7 +24,8 @@ public class FBuildings implements Serializable {
     private Date created_at=new Date();
     private Date updated_at=new Date();
     private String status;
-    private ArrayList<String> b_imageUrl;
+    //private ArrayList<String> b_imageUrl;
+    private String b_imageUrl;
     private ArrayList<String> b_array;
     private int latitude;
     private int longitude;
@@ -35,7 +35,7 @@ public class FBuildings implements Serializable {
     }
 
 
-    public FBuildings(String build_id, String b_address, String b_code, String b_houseno, String b_roadno, String b_district, String b_area, String flatformat, int flatperfloor, Date followupdate, String housename, int totalfloor, Date created_at, Date updated_at, String status, ArrayList<String> b_imageUrl, ArrayList<String> b_array, int latitude, int longitude) {
+    public FBuildings(String build_id, String b_address, String b_code, String b_houseno, String b_roadno, String b_district, String b_area, String flatformat, int flatperfloor, Date followupdate, String housename, int totalfloor, Date created_at, Date updated_at, String status, String b_imageUrl, ArrayList<String> b_array, int latitude, int longitude) {
         this.build_id = build_id;
         this.b_address = b_address;
         this.b_code = b_code;
@@ -177,13 +177,22 @@ public class FBuildings implements Serializable {
         this.status = status;
     }
 
-    public ArrayList<String> getB_imageUrl() {
+    /*public ArrayList<String> getB_imageUrl() {
         return b_imageUrl;
     }
 
     public void setB_imageUrl(ArrayList<String> b_imageUrl) {
         this.b_imageUrl = b_imageUrl;
+    }*/
+
+    public  String getB_imageUrl(){
+        return b_imageUrl;
     }
+
+    public void setB_imageUrl(){
+        this.b_imageUrl=b_imageUrl;
+    }
+
 
     public ArrayList<String> getB_array() {
         return b_array;

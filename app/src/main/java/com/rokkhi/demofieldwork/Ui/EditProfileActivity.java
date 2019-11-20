@@ -45,10 +45,9 @@ import com.google.firebase.firestore.WriteBatch;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.rokkhi.rokkhi.Model.Admins;
-import com.rokkhi.rokkhi.Model.UDetails;
-import com.rokkhi.rokkhi.Utils.Normalfunc;
-import com.rokkhi.rokkhi.Utils.StringAdapter;
+import com.rokkhi.demofieldwork.R;
+import com.rokkhi.demofieldwork.Utils.Normalfunc;
+
 import com.vansuita.pickimage.bean.PickResult;
 import com.vansuita.pickimage.bundle.PickSetup;
 import com.vansuita.pickimage.dialog.PickImageDialog;
@@ -65,9 +64,9 @@ import java.util.Locale;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class EditProfileActivity extends AppCompatActivity implements IPickResult {
+public class EditProfileActivity extends AppCompatActivity  { //implements IPickResult
 
-    FirebaseFirestore firebaseFirestore;
+   /* FirebaseFirestore firebaseFirestore;
 
     SharedPreferences sharedPref;
     CircleImageView propic;
@@ -140,12 +139,9 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
 
     public void initdialog(){
         mdialog=new Dialog(context);
-
         mdialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
         mdialog.setContentView(R.layout.custom_progress);
         mdialog.getWindow ().setBackgroundDrawableResource (android.R.color.transparent);
-
     }
 
     public void showdialog(){
@@ -507,5 +503,5 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
 
         }
 
-    }
+    }*/
 }
