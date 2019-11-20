@@ -9,7 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.Toast;
@@ -62,7 +62,7 @@ public class Normalfunc {
     public void removeTokenId() {
 
 //        if(signoutintent.getExtras().getBoolean("signout",false)) FirebaseAuth.getInstance().signOut();
-
+        //sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
         String token= sharedPref.getString("token","none");
         String userid = FirebaseAuth.getInstance().getUid();
         String logID = firebaseFirestore.collection(context.getString(R.string.col_logoutsession)).document().getId();

@@ -3,6 +3,7 @@ package com.rokkhi.demofieldwork.Ui;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import androidx.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
@@ -38,14 +41,19 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.rokkhi.demofieldwork.MainActivity;
 import com.rokkhi.demofieldwork.Model.BuildingsListAdapter;
 import com.rokkhi.demofieldwork.Model.FBuildings;
 import com.rokkhi.demofieldwork.Model.FWorkers;
+import com.rokkhi.demofieldwork.Model.LogSession;
 import com.rokkhi.demofieldwork.R;
+import com.rokkhi.demofieldwork.Utils.Normalfunc;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -68,8 +76,16 @@ public class MyhomeFragment extends Fragment {
     FirebaseAuth mAuth;
     FirebaseUser firebaseUser;
     String userID;
+    String utoken="";
     CircleImageView profileImage;
     ImageView logout;
+    Normalfunc normalfunc;
+
+    SharedPreferences.Editor editor;
+    SharedPreferences sharedPref;
+
+    boolean signoutstate=false;
+
 
     TextView f_name;
     ProgressBar profile_progressBar,spinKitProgress;
@@ -102,7 +118,9 @@ public class MyhomeFragment extends Fragment {
         mAuth=FirebaseAuth.getInstance();
         firebaseUser=mAuth.getCurrentUser();
         fworkers=new FWorkers();
-
+        normalfunc=new Normalfunc();
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
+        editor = sharedPref.edit();
 
         f_name=view.findViewById(R.id.myHome_frag_fwname);
         profile_progressBar=view.findViewById(R.id.profile_progress);
@@ -155,7 +173,9 @@ public class MyhomeFragment extends Fragment {
                         .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                normalfunc.removeTokenId();
                                 mAuth.signOut();
+
                             }
 
                         }).create().show();
@@ -172,10 +192,9 @@ public class MyhomeFragment extends Fragment {
 
                 if(firebaseUser==null){
                     gotoLogIN();
-
                 }
                 else{
-
+                    userID=firebaseUser.getUid();
                     final String user_id=firebaseAuth.getCurrentUser().getUid();
 
                     db.collection("fWorkers").document(user_id).addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -188,6 +207,36 @@ public class MyhomeFragment extends Fragment {
                                 String imageurl=documentSnapshot.getString("fw_imageUrl");
                                 f_name.setText(name);
                                 Glide.with(getContext()).load(imageurl).into(profileImage);
+
+
+                                final List< String > usertoken = fworkers.getAtoken();
+
+                                FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(getActivity(), new OnSuccessListener<InstanceIdResult>() {
+                                    @Override
+                                    public void onSuccess(InstanceIdResult instanceIdResult) {
+                                        utoken = instanceIdResult.getToken();
+                                        editor.putString("token", utoken);
+                                        editor.apply();
+                                        // Log.d(TAG, "onSuccess: tokenxx "+ useertoken +"xx"+ utoken);
+                                        Log.d(TAG, "onSuccess: tttt7 "+signoutstate);
+                                        //signoutstate=true;
+
+                                        if (usertoken != null && !usertoken.contains(utoken)  ) {
+                                            String logID= db.collection(getString(R.string.col_loginsession)).document().getId();
+                                            LogSession logSession= new LogSession(logID,userID,utoken,"FieldWork", Calendar.getInstance().getTime());
+                                            db.collection(getString(R.string.col_loginsession)).document(logID).set(logSession)
+                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            Toast.makeText(getContext(),"Welcome!",Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    });
+                                        }
+
+
+                                    }
+                                });
+
 
                             }else {
                                 gotoFworkerActivty();

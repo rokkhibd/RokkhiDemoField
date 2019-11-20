@@ -35,6 +35,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -90,6 +91,7 @@ public class AddBuildingActivity extends AppCompatActivity {
     Bitmap bitmap;
     Uri pickedImageUri;
     List<String> areaList = new ArrayList<>();
+    DocumentReference docref;
 
     Normalfunc normalfunc = new Normalfunc();
 
@@ -112,6 +114,8 @@ public class AddBuildingActivity extends AppCompatActivity {
     int areaCodePos;
     List<Long> areaCodeList;
 
+    String doc_id="";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,7 +125,13 @@ public class AddBuildingActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        addbldngRef = FirebaseStorage.getInstance().getReference().child("fbldngs_photo");
+
+        docref=db.collection("fBuildings").document();
+
+        //addbldngRef = FirebaseStorage.getInstance().getReference().child("fbldngs_photo");
+        addbldngRef = FirebaseStorage.getInstance().getReference()
+                .child("fBuildings/" + currentUser + "/pic");
+
 
         progressDialog = new ProgressDialog(this);
 
@@ -828,10 +838,13 @@ public class AddBuildingActivity extends AppCompatActivity {
             areaMap.put("b_code_array", b_code_array);
             areaMap.put("b_totalfloor", totlflr);
             areaMap.put("b_visiteddate", currentDate);
-
+            areaMap.put("build_id",docref.getId());
             areaMap.put("b_uid", currentUser);
 
-            db.collection("fBuildings").document().set(areaMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+            //String build_id=docref.getId();
+
+            db.collection("fBuildings").document(docref.getId()).set(areaMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
 
