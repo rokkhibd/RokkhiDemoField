@@ -3,107 +3,66 @@ package com.rokkhi.demofieldwork.Model;
 import com.google.firebase.firestore.Exclude;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class FBuildings implements Serializable {
 
     @Exclude
-    private String docid;
-
-
+    private String build_id;
     private String b_address;
-    private String b_caretakernam;
-    private String b_caretakernmbr;
     private String b_code;
-    private String b_flatfrmt;
-    private String b_flatperfloor;
-    private String b_followupdate;
-    private String b_guardname;
-    private String b_guardnmbr;
-    private String b_guards;
-    private String b_housename;
-    private String b_ownername;
-    private String b_ownernmbr;
-    private String b_totalfloor;
-    private String b_visiteddate;
-    private String b_status;
-    private String b_imageUrl;
-    private List<String> b_array_code;
-    private String b_lat;
-    private String b_long;
+    private String b_houseno;
+    private String b_roadno;
+    private String b_district;
+    private String b_area;
+    private String flatformat;
+    private int flatperfloor;
+    private Date followupdate;
+    private String housename;
+    private int totalfloor;
+    private Date created_at=new Date();
+    private Date updated_at=new Date();
+    private String status;
+    private ArrayList<String> b_imageUrl;
+    private ArrayList<String> b_array;
+    private int latitude;
+    private int longitude;
 
 
     public FBuildings() {
     }
 
 
-    public FBuildings(String b_address, String b_caretakernam, String b_caretakernmbr, String b_code,
-                      String b_flatfrmt, String b_flatperfloor, String b_followupdate, String b_guardname,
-                      String b_guardnmbr, String b_guards, String b_housename, String b_ownername,
-                      String b_ownernmbr, String b_totalfloor, String b_visiteddate, String b_status
-                      ,String b_lat,String b_imageUrl, String b_long,List<String> b_array_code) {
+    public FBuildings(String build_id, String b_address, String b_code, String b_houseno, String b_roadno, String b_district, String b_area, String flatformat, int flatperfloor, Date followupdate, String housename, int totalfloor, Date created_at, Date updated_at, String status, ArrayList<String> b_imageUrl, ArrayList<String> b_array, int latitude, int longitude) {
+        this.build_id = build_id;
         this.b_address = b_address;
-        this.b_caretakernam = b_caretakernam;
-        this.b_caretakernmbr = b_caretakernmbr;
         this.b_code = b_code;
-        this.b_flatfrmt = b_flatfrmt;
-        this.b_flatperfloor = b_flatperfloor;
-        this.b_followupdate = b_followupdate;
-        this.b_guardname = b_guardname;
-        this.b_guardnmbr = b_guardnmbr;
-        this.b_guards = b_guards;
-        this.b_housename = b_housename;
-        this.b_ownername = b_ownername;
-        this.b_ownernmbr = b_ownernmbr;
-        this.b_totalfloor = b_totalfloor;
-        this.b_visiteddate = b_visiteddate;
-        this.b_status=b_status;
-        this.b_lat=b_lat;
-        this.b_long=b_long;
-        this.b_array_code=b_array_code;
-        this.b_imageUrl=b_imageUrl;
-    }
-
-
-    public String getB_imageUrl() {
-        return b_imageUrl;
-    }
-
-    public void setB_imageUrl(String b_imageUrl) {
+        this.b_houseno = b_houseno;
+        this.b_roadno = b_roadno;
+        this.b_district = b_district;
+        this.b_area = b_area;
+        this.flatformat = flatformat;
+        this.flatperfloor = flatperfloor;
+        this.followupdate = followupdate;
+        this.housename = housename;
+        this.totalfloor = totalfloor;
+        this.created_at = created_at;
+        this.updated_at = updated_at;
+        this.status = status;
         this.b_imageUrl = b_imageUrl;
+        this.b_array = b_array;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
-
-    public String getDocId() {
-        return docid;
+    public String getBuild_id() {
+        return build_id;
     }
 
-    public void setDocId(String docid) {
-        this.docid = docid;
-    }
-
-    public List<String> getB_array_code() {
-        return b_array_code;
-    }
-
-    public void setB_array_code(List<String> b_array_code) {
-        this.b_array_code = b_array_code;
-    }
-
-    public String getB_lat() {
-        return b_lat;
-    }
-
-    public void setB_lat(String b_lat) {
-        this.b_lat = b_lat;
-    }
-
-    public String getB_long() {
-        return b_long;
-    }
-
-    public void setB_long(String b_long) {
-        this.b_long = b_long;
+    public void setBuild_id(String build_id) {
+        this.build_id = build_id;
     }
 
     public String getB_address() {
@@ -114,22 +73,6 @@ public class FBuildings implements Serializable {
         this.b_address = b_address;
     }
 
-    public String getB_caretakernam() {
-        return b_caretakernam;
-    }
-
-    public void setB_caretakernam(String b_caretakernam) {
-        this.b_caretakernam = b_caretakernam;
-    }
-
-    public String getB_caretakernmbr() {
-        return b_caretakernmbr;
-    }
-
-    public void setB_caretakernmbr(String b_caretakernmbr) {
-        this.b_caretakernmbr = b_caretakernmbr;
-    }
-
     public String getB_code() {
         return b_code;
     }
@@ -138,99 +81,131 @@ public class FBuildings implements Serializable {
         this.b_code = b_code;
     }
 
-    public String getB_flatfrmt() {
-        return b_flatfrmt;
+    public String getB_houseno() {
+        return b_houseno;
     }
 
-    public void setB_flatfrmt(String b_flatfrmt) {
-        this.b_flatfrmt = b_flatfrmt;
+    public void setB_houseno(String b_houseno) {
+        this.b_houseno = b_houseno;
     }
 
-    public String getB_flatperfloor() {
-        return b_flatperfloor;
+    public String getB_roadno() {
+        return b_roadno;
     }
 
-    public void setB_flatperfloor(String b_flatperfloor) {
-        this.b_flatperfloor = b_flatperfloor;
+    public void setB_roadno(String b_roadno) {
+        this.b_roadno = b_roadno;
     }
 
-    public String getB_followupdate() {
-        return b_followupdate;
+    public String getB_district() {
+        return b_district;
     }
 
-    public void setB_followupdate(String b_followupdate) {
-        this.b_followupdate = b_followupdate;
+    public void setB_district(String b_district) {
+        this.b_district = b_district;
     }
 
-    public String getB_guardname() {
-        return b_guardname;
+    public String getB_area() {
+        return b_area;
     }
 
-    public void setB_guardname(String b_guardname) {
-        this.b_guardname = b_guardname;
+    public void setB_area(String b_area) {
+        this.b_area = b_area;
     }
 
-    public String getB_guardnmbr() {
-        return b_guardnmbr;
+    public String getFlatformat() {
+        return flatformat;
     }
 
-    public void setB_guardnmbr(String b_guardnmbr) {
-        this.b_guardnmbr = b_guardnmbr;
+    public void setFlatformat(String flatformat) {
+        this.flatformat = flatformat;
     }
 
-    public String getB_guards() {
-        return b_guards;
+    public int getFlatperfloor() {
+        return flatperfloor;
     }
 
-    public void setB_guards(String b_guards) {
-        this.b_guards = b_guards;
+    public void setFlatperfloor(int flatperfloor) {
+        this.flatperfloor = flatperfloor;
     }
 
-    public String getB_housename() {
-        return b_housename;
+    public Date getFollowupdate() {
+        return followupdate;
     }
 
-    public void setB_housename(String b_housename) {
-        this.b_housename = b_housename;
+    public void setFollowupdate(Date followupdate) {
+        this.followupdate = followupdate;
     }
 
-    public String getB_ownername() {
-        return b_ownername;
+    public String getHousename() {
+        return housename;
     }
 
-    public void setB_ownername(String b_ownername) {
-        this.b_ownername = b_ownername;
+    public void setHousename(String housename) {
+        this.housename = housename;
     }
 
-    public String getB_ownernmbr() {
-        return b_ownernmbr;
+    public int getTotalfloor() {
+        return totalfloor;
     }
 
-    public void setB_ownernmbr(String b_ownernmbr) {
-        this.b_ownernmbr = b_ownernmbr;
+    public void setTotalfloor(int totalfloor) {
+        this.totalfloor = totalfloor;
     }
 
-    public String getB_totalfloor() {
-        return b_totalfloor;
+    public Date getCreated_at() {
+        return created_at;
     }
 
-    public void setB_totalfloor(String b_totalfloor) {
-        this.b_totalfloor = b_totalfloor;
+    public void setCreated_at(Date created_at) {
+        this.created_at = created_at;
     }
 
-    public String getB_visiteddate() {
-        return b_visiteddate;
+    public Date getUpdated_at() {
+        return updated_at;
     }
 
-    public void setB_visiteddate(String b_visiteddate) {
-        this.b_visiteddate = b_visiteddate;
+    public void setUpdated_at(Date updated_at) {
+        this.updated_at = updated_at;
     }
 
-    public String getB_status() {
-        return b_status;
+    public String getStatus() {
+        return status;
     }
 
-    public void setB_status(String b_status) {
-        this.b_status = b_status;
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public ArrayList<String> getB_imageUrl() {
+        return b_imageUrl;
+    }
+
+    public void setB_imageUrl(ArrayList<String> b_imageUrl) {
+        this.b_imageUrl = b_imageUrl;
+    }
+
+    public ArrayList<String> getB_array() {
+        return b_array;
+    }
+
+    public void setB_array(ArrayList<String> b_array) {
+        this.b_array = b_array;
+    }
+
+    public int getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(int latitude) {
+        this.latitude = latitude;
+    }
+
+    public int getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(int longitude) {
+        this.longitude = longitude;
     }
 }

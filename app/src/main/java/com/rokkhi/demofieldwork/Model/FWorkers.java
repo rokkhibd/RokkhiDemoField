@@ -13,7 +13,6 @@ public class FWorkers {
     private String fw_university;
     private String fw_address;
     private String fw_birthday;
-    private Date fw_joindate;
     private Date created_at;
     private Date updated_at;
     private String fw_mail;
@@ -24,7 +23,7 @@ public class FWorkers {
     public FWorkers() {
     }
 
-    public FWorkers(String fw_name, String user_id, String fw_nid, String fw_phone, String fw_university, String fw_address, String fw_birthday, Date fw_joindate, Date created_at, Date updated_at, String fw_mail, String fw_pic, String thumb_fw_pic, List<String> u_array) {
+    public FWorkers(String fw_name, String user_id, String fw_nid, String fw_phone, String fw_university, String fw_address, String fw_birthday, Date created_at, Date updated_at, String fw_mail, String fw_pic, String thumb_fw_pic, List<String> u_array) {
         this.fw_name = fw_name;
         this.user_id = user_id;
         this.fw_nid = fw_nid;
@@ -32,7 +31,6 @@ public class FWorkers {
         this.fw_university = fw_university;
         this.fw_address = fw_address;
         this.fw_birthday = fw_birthday;
-        this.fw_joindate = fw_joindate;
         this.created_at = created_at;
         this.updated_at = updated_at;
         this.fw_mail = fw_mail;
@@ -95,14 +93,6 @@ public class FWorkers {
 
     public void setFw_birthday(String fw_birthday) {
         this.fw_birthday = fw_birthday;
-    }
-
-    public Date getFw_joindate() {
-        return fw_joindate;
-    }
-
-    public void setFw_joindate(Date fw_joindate) {
-        this.fw_joindate = fw_joindate;
     }
 
     public Date getCreated_at() {

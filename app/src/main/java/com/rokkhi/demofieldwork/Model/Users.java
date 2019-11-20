@@ -16,13 +16,13 @@ public class Users {
     private String gender="none";
     private String mail="none";
     private String phone="none";
+    private Date joindate=new Date();
     private List<String> u_array= new ArrayList<>();
 
     public Users() {
     }
 
-
-    public Users(String name, String thumb, String pic, String user_id, Date bday, String gender, String mail, String phone, List<String> u_array) {
+    public Users(String name, String thumb, String pic, String user_id, Date bday, String gender, String mail, String phone, Date joindate, List<String> u_array) {
         this.name = name;
         this.thumb = thumb;
         this.pic = pic;
@@ -31,6 +31,7 @@ public class Users {
         this.gender = gender;
         this.mail = mail;
         this.phone = phone;
+        this.joindate = joindate;
         this.u_array = u_array;
     }
 
@@ -96,6 +97,14 @@ public class Users {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public Date getJoindate() {
+        return joindate;
+    }
+
+    public void setJoindate(Date joindate) {
+        this.joindate = joindate;
     }
 
     public List<String> getU_array() {
