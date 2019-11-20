@@ -2,11 +2,11 @@ package com.rokkhi.demofieldwork.Model;
 
 public class FBPeople {
 
-    private String b_code;
-    private String designation;
-    private String doc_id;
-    private String name;
-    private String number;
+    private String b_code="none";
+    private String designation="none";
+    private String doc_id="none";
+    private String name="none";
+    private String number="none";
 
 
     public FBPeople() {

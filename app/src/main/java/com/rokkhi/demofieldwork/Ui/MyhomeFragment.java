@@ -129,7 +129,7 @@ public class MyhomeFragment extends Fragment {
         recyclerView.setAdapter(buildingsListAdapter);
 
         spinKitProgress.setVisibility(View.VISIBLE);
-        gettingAllHouseData();
+        //gettingAllHouseData();
 //      shoWorkerDetails();
 
         flotbtn = view.findViewById(R.id.floating_btn);
@@ -181,7 +181,7 @@ public class MyhomeFragment extends Fragment {
 
                     final String user_id=firebaseAuth.getCurrentUser().getUid();
 
-                    db.collection("f_workers").document(user_id).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    db.collection("fWorkers").document(user_id).addSnapshotListener(new EventListener<DocumentSnapshot>() {
                         @Override
                         public void onEvent(@javax.annotation.Nullable DocumentSnapshot documentSnapshot, @javax.annotation.Nullable FirebaseFirestoreException e) {
                             profile_progressBar.setVisibility(View.GONE);

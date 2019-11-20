@@ -6,15 +6,15 @@ import java.util.List;
 
 public class FWorkers {
 
-    private String user_id;
-    private String fw_nid;
-    private String fw_phone;
-    private String fw_university;
-    private String fw_address;
-    private String fw_birthday;
-    private Date created_at;
-    private Date updated_at;
-    private String thumb_fw_pic;
+    private String user_id="none";
+    private String fw_nid="none";
+    private String fw_phone="none";
+    private String fw_university="none";
+    private String fw_address="none";
+    private String fw_birthday="none";
+    private Date created_at=new Date();
+    private Date updated_at=new Date();
+    private String thumb_fw_pic="none";
     private List<String> u_array= new ArrayList<>();
 
 

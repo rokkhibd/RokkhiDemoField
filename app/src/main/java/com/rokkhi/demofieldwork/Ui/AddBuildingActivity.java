@@ -376,7 +376,7 @@ public class AddBuildingActivity extends AppCompatActivity {
         progressDialog.show();
 
         CollectionReference buildRef;
-        buildRef = db.collection("f_buildings");
+        buildRef = db.collection("fBuildings");
 
         Query buildingsQuery = buildRef.whereEqualTo("b_code", s);
         buildingsQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -793,7 +793,6 @@ public class AddBuildingActivity extends AppCompatActivity {
             districtValue = b_district.getText().toString();
             status = b_status.getText().toString();
 
-
             String theWholeAddress = area + " " + road + block + " " + houseNmbr + housefrmt + " " + districtValue;
 
             wholeAddress = theWholeAddress;
@@ -807,6 +806,8 @@ public class AddBuildingActivity extends AppCompatActivity {
             String guards = b_totalguard.getText().toString();
             String totalfloor = b_totalfloor.getText().toString();
 
+            int flatperFloor=Integer.parseInt(flatperfloor);
+            int totlflr=Integer.parseInt(totalfloor);
 
             Normalfunc normalfunc = new Normalfunc();
 
@@ -816,7 +817,7 @@ public class AddBuildingActivity extends AppCompatActivity {
 
             areaMap.put("b_address", wholeAddress);
             areaMap.put("b_flatfrmt", flatformat);
-            areaMap.put("b_flatperfloor", flatperfloor);
+            areaMap.put("b_flatperfloor", flatperFloor);
             areaMap.put("b_followupdate", followupdate);
 
             areaMap.put("b_guards", guards);
@@ -825,12 +826,12 @@ public class AddBuildingActivity extends AppCompatActivity {
             areaMap.put("b_code", totalCode);
             areaMap.put("b_imageUrl", downloadImageUri);
             areaMap.put("b_code_array", b_code_array);
-            areaMap.put("b_totalfloor", totalfloor);
+            areaMap.put("b_totalfloor", totlflr);
             areaMap.put("b_visiteddate", currentDate);
 
             areaMap.put("b_uid", currentUser);
 
-            db.collection("f_buildings").document().set(areaMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+            db.collection("fBuildings").document().set(areaMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
 
@@ -884,7 +885,7 @@ public class AddBuildingActivity extends AppCompatActivity {
         map.put("created_time", strDate);
         map.put("update_time", strDate);
 
-        db.collection("f_building_contact").document(design_number + totalHouseCode)
+        db.collection("fBbuildingContacts").document(design_number + totalHouseCode)
                 .set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {

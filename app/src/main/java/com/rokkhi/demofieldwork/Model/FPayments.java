@@ -4,26 +4,27 @@ import java.util.Date;
 
 public class FPayments {
 
-    private String user_id;
-    private String ref_id;
-    private String fw_phone;
-    private String total_earning;
-    private String due_earning;
-    private String total_buildings;
-    private String active_buildings;
-    private String due_buildings;
-    private String bkash_no;
-    private String nogod_no;
-    private Date created_at;
-    private Date updated_at;
-    private Date working_from;
-    private String total_meeting;
-    private String due_meeting;
-    private String total_referral;
-    private String due_referral;
+    private String user_id="none";
+    private String ref_id="none";
+    private String fw_phone="none";
+    private String total_earning="none";
+    private String due_earning="none";
+    private String total_buildings="none";
+    private String active_buildings="none";
+    private String due_buildings="none";
+    private String bkash_no="none";
+    private String nogod_no="none";
+    private Date created_at=new Date();
+    private Date updated_at=new Date();
+    private Date working_from=new Date();
+    private String total_meeting="none";
+    private String due_meeting="none";
+    private String total_referral="none";
+    private String due_referral="none";
 
 
     public FPayments() {
+
     }
 
     public FPayments(String user_id, String ref_id, String fw_phone, String total_earning, String due_earning, String total_buildings, String active_buildings, String due_buildings, String bkash_no, String nogod_no, Date created_at, Date updated_at, Date working_from, String total_meeting, String due_meeting, String total_referral, String due_referral) {

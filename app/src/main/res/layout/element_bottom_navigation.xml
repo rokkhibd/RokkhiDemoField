@@ -5,7 +5,10 @@
         android:id="@+id/navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:attr/windowBackground"
+        app:itemIconTint="@color/orange"
+        app:itemTextColor="@color/orange"
+
+    android:background="?android:attr/windowBackground"
         app:menu="@menu/bottom_nav_menu"
         />
 

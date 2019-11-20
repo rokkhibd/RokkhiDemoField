@@ -9,28 +9,29 @@ import java.util.List;
 
 public class FBuildings implements Serializable {
 
-    private String build_id;
-    private String b_address;
-    private String b_code;
-    private String b_houseno;
-    private String b_roadno;
-    private String b_district;
-    private String b_area;
-    private String flatformat;
-    private int flatperfloor;
-    private Date followupdate;
-    private String housename;
-    private int totalfloor;
+    private String build_id="none";
+    private String b_address="none";
+    private String b_code="none";
+    private String b_houseno="none";
+    private String b_roadno="none";
+    private String b_district="none";
+    private String b_area="none";
+    private String flatformat="none";
+    private int flatperfloor=0;
+    private Date followupdate=new Date();
+    private String housename="none";
+    private int totalfloor=0;
     private Date created_at=new Date();
     private Date updated_at=new Date();
-    private String status;
+    private String status="none";
     private ArrayList<String> b_imageUrl;
     private ArrayList<String> b_array;
-    private int latitude;
-    private int longitude;
+    private int latitude=0;
+    private int longitude=0;
 
 
     public FBuildings() {
+
     }
 
 

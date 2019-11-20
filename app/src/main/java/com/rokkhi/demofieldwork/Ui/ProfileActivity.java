@@ -22,7 +22,7 @@ public class ProfileActivity extends BaseActivity {
         viewPager=(ViewPager)findViewById(R.id.profile_viewpager);
 
         ViewPagerAdapter viewPagerAdapter=new ViewPagerAdapter(getSupportFragmentManager());
-        viewPagerAdapter.addFragment(new ProfileFragment(),"Rock Music Section");
+        viewPagerAdapter.addFragment(new ProfileFragment()," ");
 
         viewPager.setAdapter(viewPagerAdapter);
 

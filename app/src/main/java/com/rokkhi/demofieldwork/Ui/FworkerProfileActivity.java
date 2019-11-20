@@ -25,6 +25,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedDispatcherOwner;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -47,6 +48,7 @@ import com.google.firebase.storage.UploadTask;
 import com.rokkhi.demofieldwork.MainActivity;
 import com.rokkhi.demofieldwork.Model.AllStringValues;
 import com.rokkhi.demofieldwork.Model.CustomListAdapter;
+import com.rokkhi.demofieldwork.Model.FPayments;
 import com.rokkhi.demofieldwork.R;
 import com.rokkhi.demofieldwork.Utils.Normalfunc;
 
@@ -58,6 +60,7 @@ import com.vansuita.pickimage.listeners.IPickResult;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -77,6 +80,7 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
     Button saveData;
 
     String userPhoneNumber,currentDate;
+    Date date;
 
     CustomListAdapter customListAdapter;
 
@@ -127,7 +131,7 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
         SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
         currentDate=sdf.format(new Date());
 
-
+        date= Calendar.getInstance().getTime();
 
         saveData=findViewById(R.id.fworker_data_btn);
         f_area=findViewById(R.id.fworker_address_area);
@@ -186,6 +190,7 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
 
                 saveDataToUserCollection();
                 saveAllDataToFirestore();
+                savePaymentData();
 
 
             }
@@ -600,7 +605,7 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
             String fw_bkash=f_bkash.getText().toString();
             String fw_nogod=f_nogod.getText().toString();
 
-            String phone=add88withNumb(fphone);
+           // String phone=add88withNumb(fphone);
             //normalfunc.checklengthEmptyOrNot(f_nid,f_phone,f_mail,f_refId);
 
             String fw_nid=f_nid.getText().toString();
@@ -612,7 +617,7 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
             String fw_address=fw_area+" "+fw_road+fw_block+" "+fw_housenmbr+fw_houseletter;
 
 
-            List<String> fw_phone=normalfunc.splitstring(phone);
+            List<String> fw_phone=normalfunc.splitstring(fphone);
 
             Map<String,Object> fw_map=new HashMap<>();
             fw_map.put("fw_name",fw_name);
@@ -630,7 +635,7 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
             //fw_map.put("fw_nogod",fw_nogod);
 
 
-            db.collection("f_workers").document(userId).set(fw_map).addOnCompleteListener(new OnCompleteListener<Void>() {
+            db.collection("fWorkers").document(userId).set(fw_map).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
 
@@ -677,6 +682,7 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
         fw_map.put("joindate",currentDate);
         fw_map.put("u_array",u_array);
         fw_map.put("pic",downloadImageUri);
+        fw_map.put("thumb",downloadImageUri);
 
         db.collection("users").document(userId).set(fw_map).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -698,6 +704,49 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
     }
 
 
+    public void savePaymentData(){
+
+        String ref_id=f_refId.getText().toString();
+        String fw_phone=f_phone.getText().toString();
+        String fw_bkash=f_bkash.getText().toString();
+        String fw_nogod=f_nogod.getText().toString();
+
+
+        Map<String,Object> paymentMap=new HashMap<>();
+        paymentMap.put("user_id",userId);
+        paymentMap.put("ref_id",f_refId.getText().toString());
+        paymentMap.put("fw_phone",f_phone.getText().toString());
+        paymentMap.put("total_earning","");
+        paymentMap.put("due_earning"," ");
+        paymentMap.put("total_buildings"," ");
+        paymentMap.put("active_buildings"," ");
+        paymentMap.put("due_buildings"," ");
+        paymentMap.put("bkash_no",f_bkash.getText().toString());
+        paymentMap.put("nogod_no",f_nogod.getText().toString());
+        paymentMap.put("total_meeting"," ");
+        paymentMap.put("due_meeting"," ");
+        paymentMap.put("total_referral"," ");
+        paymentMap.put("due_referral"," ");
+        paymentMap.put("created_at",date);
+        paymentMap.put("updated_at",date);
+        paymentMap.put("working_from",date);
+
+
+        db.collection("fPayment").document().set(paymentMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+                    Toast.makeText(FworkerProfileActivity.this, "payment data saved", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(FworkerProfileActivity.this, "Error:"+e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
 
 
     public void saveImageToStorage(){
