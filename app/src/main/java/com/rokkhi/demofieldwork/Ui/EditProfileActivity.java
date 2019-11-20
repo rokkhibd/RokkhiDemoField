@@ -411,9 +411,7 @@ public class EditProfileActivity extends AppCompatActivity  implements IPickResu
         if (bitmap != null) {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-
             byte[] data = baos.toByteArray();
-
             UploadTask uploadTask = photoRef.putBytes(data);
             uploadTask
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -421,7 +419,9 @@ public class EditProfileActivity extends AppCompatActivity  implements IPickResu
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             // Upload succeeded
                             dismissdialog();
-//                            Intent intent= new Intent(context,);
+                            Intent intent= new Intent(context,ProfileActivity.class);
+                            startActivity(intent);
+                            finish();
                             Toast.makeText(context, "Picture Update successful!!", Toast.LENGTH_SHORT).show();
 
                             // [END_EXCLUDE]

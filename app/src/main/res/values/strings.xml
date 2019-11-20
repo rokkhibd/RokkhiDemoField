@@ -17,5 +17,9 @@
     <string name="error_field_required">This field is required</string>
 
     <string name="col_users">users</string>
+    <string name="col_fBuildings">fBuildings</string>
+    <string name="col_fWorkers">fWorkers</string>
+    <string name="col_fPayment">fPayment</string>
+    <string name="col_fBbuildingContacts">fBbuildingContacts</string>
 
 </resources>

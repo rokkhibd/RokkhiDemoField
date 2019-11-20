@@ -14,14 +14,15 @@ public class FWorkers {
     private String fw_birthday="none";
     private Date created_at=new Date();
     private Date updated_at=new Date();
-    private String thumb_fw_pic="none";
     private List<String> u_array= new ArrayList<>();
+    private List<String> atoken= new ArrayList<>();
+    private List<String> itoken= new ArrayList<>();
 
 
     public FWorkers() {
     }
 
-    public FWorkers(String user_id, String fw_nid, String fw_phone, String fw_university, String fw_address, String fw_birthday, Date created_at, Date updated_at, String thumb_fw_pic, List<String> u_array) {
+    public FWorkers(String user_id, String fw_nid, String fw_phone, String fw_university, String fw_address, String fw_birthday, Date created_at, Date updated_at, List<String> u_array, List<String> atoken, List<String> itoken) {
         this.user_id = user_id;
         this.fw_nid = fw_nid;
         this.fw_phone = fw_phone;
@@ -30,8 +31,9 @@ public class FWorkers {
         this.fw_birthday = fw_birthday;
         this.created_at = created_at;
         this.updated_at = updated_at;
-        this.thumb_fw_pic = thumb_fw_pic;
         this.u_array = u_array;
+        this.atoken = atoken;
+        this.itoken = itoken;
     }
 
     public String getUser_id() {
@@ -98,20 +100,28 @@ public class FWorkers {
         this.updated_at = updated_at;
     }
 
-    public String getThumb_fw_pic() {
-        return thumb_fw_pic;
-    }
-
-    public void setThumb_fw_pic(String thumb_fw_pic) {
-        this.thumb_fw_pic = thumb_fw_pic;
-    }
-
     public List<String> getU_array() {
         return u_array;
     }
 
     public void setU_array(List<String> u_array) {
         this.u_array = u_array;
+    }
+
+    public List<String> getAtoken() {
+        return atoken;
+    }
+
+    public void setAtoken(List<String> atoken) {
+        this.atoken = atoken;
+    }
+
+    public List<String> getItoken() {
+        return itoken;
+    }
+
+    public void setItoken(List<String> itoken) {
+        this.itoken = itoken;
     }
 }
 

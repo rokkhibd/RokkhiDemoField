@@ -161,9 +161,6 @@ public class MyhomeFragment extends Fragment {
                         }).create().show();
             }
         });
-
-
-
     }
 
     private void checkUserExistence() {
