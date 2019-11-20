@@ -11,7 +11,6 @@ public class FWorkers {
     private String fw_phone="none";
     private String fw_university="none";
     private String fw_address="none";
-    private String fw_birthday="none";
     private Date created_at=new Date();
     private Date updated_at=new Date();
     private List<String> u_array= new ArrayList<>();
@@ -22,13 +21,12 @@ public class FWorkers {
     public FWorkers() {
     }
 
-    public FWorkers(String user_id, String fw_nid, String fw_phone, String fw_university, String fw_address, String fw_birthday, Date created_at, Date updated_at, List<String> u_array, List<String> atoken, List<String> itoken) {
+    public FWorkers(String user_id, String fw_nid, String fw_phone, String fw_university, String fw_address, Date created_at, Date updated_at, List<String> u_array, List<String> atoken, List<String> itoken) {
         this.user_id = user_id;
         this.fw_nid = fw_nid;
         this.fw_phone = fw_phone;
         this.fw_university = fw_university;
         this.fw_address = fw_address;
-        this.fw_birthday = fw_birthday;
         this.created_at = created_at;
         this.updated_at = updated_at;
         this.u_array = u_array;
@@ -74,14 +72,6 @@ public class FWorkers {
 
     public void setFw_address(String fw_address) {
         this.fw_address = fw_address;
-    }
-
-    public String getFw_birthday() {
-        return fw_birthday;
-    }
-
-    public void setFw_birthday(String fw_birthday) {
-        this.fw_birthday = fw_birthday;
     }
 
     public Date getCreated_at() {

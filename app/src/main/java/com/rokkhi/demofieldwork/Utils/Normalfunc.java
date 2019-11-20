@@ -20,6 +20,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.rokkhi.demofieldwork.MainActivity;
+import com.rokkhi.demofieldwork.Model.LogSession;
+import com.rokkhi.demofieldwork.R;
 
 
 import java.text.SimpleDateFormat;
@@ -56,14 +59,14 @@ public class Normalfunc {
 
     }
 
-    /*public void removeTokenId() {
+    public void removeTokenId() {
 
 //        if(signoutintent.getExtras().getBoolean("signout",false)) FirebaseAuth.getInstance().signOut();
 
         String token= sharedPref.getString("token","none");
         String userid = FirebaseAuth.getInstance().getUid();
         String logID = firebaseFirestore.collection(context.getString(R.string.col_logoutsession)).document().getId();
-        LogSession logSession = new LogSession(logID, userid, token, Calendar.getInstance().getTime());
+        LogSession logSession = new LogSession(logID, userid, token,"FieldWork", Calendar.getInstance().getTime());
 
         firebaseFirestore.collection(context.getString(R.string.col_logoutsession)).document(logID).set(logSession)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -80,9 +83,7 @@ public class Normalfunc {
                 });
 
 
-
-
-    }*/
+    }
 
     public String getchatID(String u1, String u2) {
         String xx = "";
@@ -98,32 +99,7 @@ public class Normalfunc {
         String number = phoneno.substring(6);
         return number;
     }
-//   public void updateToken(String token,String userid,List<String> usertoken){
-//        if(FirebaseAuth.getInstance().getCurrentUser()==null) return;
-//
-//       Map<String, Object> data = new HashMap<>();
-//       usertoken.add(token);
-//       data.put("atoken", usertoken);
-//
-//
-//        firebaseFirestore.collection(context.getString(R.string.col_udetails)).document(userid)
-//                .set(data, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
-//            @Override
-//            public void onComplete( Task<Void> task) {
-//                if(task.isSuccessful()){
-//                    Toast.makeText(context,"Welcome!",Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
-//   }
 
-
-//    public void addUser(String utoken, String ulogin, String userid, String gender, String mailid, String name, final Bitmap bitmap) {
-//        // Create the arguments to the callable function.
-//
-//
-//
-//    }
 
     public List<String> splitstring(String ss) {
 
