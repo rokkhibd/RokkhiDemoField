@@ -6,7 +6,6 @@ import java.util.List;
 
 public class FWorkers {
 
-    private String fw_name;
     private String user_id;
     private String fw_nid;
     private String fw_phone;
@@ -18,13 +17,11 @@ public class FWorkers {
     private String thumb_fw_pic;
     private List<String> u_array= new ArrayList<>();
 
+
     public FWorkers() {
     }
 
-    public FWorkers(String fw_name, String user_id, String fw_nid, String fw_phone, String fw_university,
-                    String fw_address, String fw_birthday, Date created_at, Date updated_at, String fw_mail,
-                    String fw_pic, String thumb_fw_pic, List<String> u_array) {
-        this.fw_name = fw_name;
+    public FWorkers(String user_id, String fw_nid, String fw_phone, String fw_university, String fw_address, String fw_birthday, Date created_at, Date updated_at, String thumb_fw_pic, List<String> u_array) {
         this.user_id = user_id;
         this.fw_nid = fw_nid;
         this.fw_phone = fw_phone;
@@ -33,18 +30,8 @@ public class FWorkers {
         this.fw_birthday = fw_birthday;
         this.created_at = created_at;
         this.updated_at = updated_at;
-        //this.fw_mail = fw_mail;
-        //this.fw_pic = fw_pic;
         this.thumb_fw_pic = thumb_fw_pic;
         this.u_array = u_array;
-    }
-
-    public String getFw_name() {
-        return fw_name;
-    }
-
-    public void setFw_name(String fw_name) {
-        this.fw_name = fw_name;
     }
 
     public String getUser_id() {
@@ -110,22 +97,6 @@ public class FWorkers {
     public void setUpdated_at(Date updated_at) {
         this.updated_at = updated_at;
     }
-
-    /*public String getFw_mail() {
-        return fw_mail;
-    }
-
-    public void setFw_mail(String fw_mail) {
-        this.fw_mail = fw_mail;
-    }
-
-    public String getFw_pic() {
-        return fw_pic;
-    }
-
-    public void setFw_pic(String fw_pic) {
-        this.fw_pic = fw_pic;
-    }*/
 
     public String getThumb_fw_pic() {
         return thumb_fw_pic;

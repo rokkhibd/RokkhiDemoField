@@ -70,6 +70,7 @@ public class ProfileFragment extends Fragment {
 
     }
 
+
     private void showCurrentUserInfo() {
 
         db.collection("f_workers").document(userId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

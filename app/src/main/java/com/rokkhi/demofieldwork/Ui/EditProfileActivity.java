@@ -3,6 +3,7 @@ package com.rokkhi.demofieldwork.Ui;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -24,11 +25,9 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -66,9 +65,9 @@ import java.util.Locale;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class EditProfileActivity extends AppCompatActivity  { //implements IPickResult
+public class EditProfileActivity extends AppCompatActivity  implements IPickResult{ //
 
-    /*FirebaseFirestore firebaseFirestore;
+    FirebaseFirestore firebaseFirestore;
 
     SharedPreferences sharedPref;
     CircleImageView propic;
@@ -173,9 +172,7 @@ public class EditProfileActivity extends AppCompatActivity  { //implements IPick
                                 if(!picurl.equals("none") && !picurl.isEmpty()) Glide.with(getApplicationContext()).load(picurl).into(propic);
                             }
                         }
-                        else {
-                            normalfunc.removeTokenId();
-                        }
+
                     }
                 });
 
@@ -353,7 +350,7 @@ public class EditProfileActivity extends AppCompatActivity  { //implements IPick
                 } else {
                     initdialog();
                     showdialog();
-//                    uploaddata();
+                    uploaddata();
                 }
 
 
@@ -364,103 +361,102 @@ public class EditProfileActivity extends AppCompatActivity  { //implements IPick
 
     }
 
-//    private void uploaddata() {
-//
-//        photoRef = FirebaseStorage.getInstance().getReference()
-//                .child("users/" + userid + "/pic");
-//
-//        String userphone= FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
-//
-//        List<String> ll= normalfunc.splitstring(name.getText().toString());
-//        ll.addAll(normalfunc.splitchar(userphone.getText().toString().toLowerCase()));
-//        ll.addAll(normalfunc.splitchar(usermail.getText().toString().toLowerCase()));
-//
-//
-//
-//
-//
-//
-//
-//        users2= new UDetails(userid,name.getText().toString(),users.getPic(),users.getThumb_pic(),mdate,gender.getText().toString(),usermail.getText().toString(),users.isToken(),
-//                users.getPhone(),users.getFlat_id(),users.getF_no(),users.getBuild_id(),users.getComm_id(),users.getWho_add(),users.getAtoken(),users.getItoken()
-//                ,users.isAdmin(),users.getFjoindate(),users.getLastActive(),users.isActive(),ll);
-//
-//        WriteBatch batch = firebaseFirestore.batch();
-//
-//
-//        DocumentReference setinoffice = firebaseFirestore.collection(getString(R.string.col_udetails)).document(userid);
-//
-//        batch.set(setinoffice, users2, SetOptions.merge());
-//
-//        //TODO cloud function here
-//
-//        if(!users2.equals(users))batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
-//            @Override
-//            public void onComplete( Task<Void> task) {
-//                //progressBar.setVisibility(View.GONE);
-//
-//                if (task.isSuccessful()) {
-//                    if(bitmap==null){
-//                        dismissdialog();
-//                        Toast.makeText(context, "Data Update successful!!", Toast.LENGTH_SHORT).show();
-//                    }
-//
-//                } else {
-//                    Toast.makeText(context, "Error connection!!", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
-//
-//
-//
-//        if (bitmap != null) {
-//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-//
-//            byte[] data = baos.toByteArray();
-//
-//            UploadTask uploadTask = photoRef.putBytes(data);
-//            uploadTask
-//                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                        @Override
-//                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                            // Upload succeeded
-//                            dismissdialog();
-//                            Toast.makeText(context, "Picture Update successful!!", Toast.LENGTH_SHORT).show();
-//
-//                            // [END_EXCLUDE]
-//                        }
-//                    })
-//                    .addOnFailureListener(new OnFailureListener() {
-//                        @Override
-//                        public void onFailure( Exception exception) {
-//                            // Upload failed
-//                            Log.w(TAG, "uploadFromUri:onFailure", exception);
-//
-//                            // [END_EXCLUDE]
-//                        }
-//                    });
-//        }
-//
-//
-//    }
-//
-//
-//    @Override
-//    public void onPickResult(PickResult r) {
-//        if (r.getError() == null) {
-//            //progressBar.setVisibility(View.VISIBLE);
-//
-//            propic.setImageBitmap(null);
-//
-//            mFileUri = r.getUri().toString();
-//            bitmap = r.getBitmap();
-//            propic.setImageBitmap(r.getBitmap());
-//
-//        } else {
-//            Toast.makeText(context, r.getError().getMessage(), Toast.LENGTH_LONG).show();
-//
-//        }
-//
-//    }*/
+    private void uploaddata() {
+
+        photoRef = FirebaseStorage.getInstance().getReference()
+                .child("users/" + userid + "/pic");
+
+        String userphone= FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber().replace("+88","");
+
+        List<String> ll= normalfunc.splitstring(name.getText().toString());
+        ll.add(userphone);
+        ll.add(usermail.getText().toString().toLowerCase());
+
+
+
+
+
+
+
+        users2= new Users();
+
+        WriteBatch batch = firebaseFirestore.batch();
+
+
+        DocumentReference setinoffice = firebaseFirestore.collection(getString(R.string.col_users)).document(userid);
+
+        batch.set(setinoffice, users2, SetOptions.merge());
+
+        //TODO cloud function here
+
+        if(!users2.equals(users))batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete( Task<Void> task) {
+                //progressBar.setVisibility(View.GONE);
+
+                if (task.isSuccessful()) {
+                    if(bitmap==null){
+                        dismissdialog();
+                        Toast.makeText(context, "Data Update successful!!", Toast.LENGTH_SHORT).show();
+                    }
+
+                } else {
+                    Toast.makeText(context, "Error connection!!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
+
+        if (bitmap != null) {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+
+            byte[] data = baos.toByteArray();
+
+            UploadTask uploadTask = photoRef.putBytes(data);
+            uploadTask
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            // Upload succeeded
+                            dismissdialog();
+//                            Intent intent= new Intent(context,);
+                            Toast.makeText(context, "Picture Update successful!!", Toast.LENGTH_SHORT).show();
+
+                            // [END_EXCLUDE]
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure( Exception exception) {
+                            // Upload failed
+                            Log.w(TAG, "uploadFromUri:onFailure", exception);
+
+                            // [END_EXCLUDE]
+                        }
+                    });
+        }
+
+
+    }
+
+
+    @Override
+    public void onPickResult(PickResult r) {
+        if (r.getError() == null) {
+            //progressBar.setVisibility(View.VISIBLE);
+
+            propic.setImageBitmap(null);
+
+            mFileUri = r.getUri().toString();
+            bitmap = r.getBitmap();
+            propic.setImageBitmap(r.getBitmap());
+
+        } else {
+            Toast.makeText(context, r.getError().getMessage(), Toast.LENGTH_LONG).show();
+
+        }
+
+    }
 }
