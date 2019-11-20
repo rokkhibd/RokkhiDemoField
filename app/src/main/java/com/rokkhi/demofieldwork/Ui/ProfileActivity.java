@@ -25,6 +25,8 @@ public class ProfileActivity extends BaseActivity {
         viewPagerAdapter.addFragment(new ProfileFragment(),"Rock Music Section");
 
         viewPager.setAdapter(viewPagerAdapter);
+
+        //mjhjdhfjdf
     }
 
     @Override
