@@ -57,6 +57,7 @@ import com.vansuita.pickimage.listeners.IPickResult;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -183,7 +184,8 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
             public void onClick(View v) {
                 spinKitProgressBar.setVisibility(View.VISIBLE);
 
-                saveAllDataToFirestore();
+                saveDataToUserCollection();
+              //  saveAllDataToFirestore();
 
 
             }
@@ -649,6 +651,53 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
 
 
     }
+
+    public void saveDataToUserCollection(){
+        String fname=f_name.getText().toString();
+        String fphone=f_phone.getText().toString();
+        String fw_dob=f_dob.getText().toString();
+        String fw_gender=f_gender.getText().toString();
+        String fw_mail=f_mail.getText().toString();
+
+       // String phone=add88withNumb(fphone);
+        List<String> fw_name=normalfunc.splitstring(fname);
+
+        String totalString=fw_mail+","+fphone+","+fw_name;
+
+        String[] tagArray=totalString.split("\\s*,\\s*");
+
+
+        List<String> u_array= Arrays.asList(tagArray);
+
+
+        Map<String,Object> fw_map=new HashMap<>();
+        fw_map.put("name",fname);
+        fw_map.put("bday",fw_dob);
+        fw_map.put("gender",fw_gender);
+        fw_map.put("u_array",u_array);
+        fw_map.put("pic",downloadImageUri);
+
+        db.collection("users").document(userId).set(fw_map).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+                if (task.isSuccessful()){
+                    spinKitProgressBar.setVisibility(View.GONE);
+                    Toast.makeText(FworkerProfileActivity.this,"Data saved!!",Toast.LENGTH_SHORT).show();
+                    //stayAtMainActvity();
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(FworkerProfileActivity.this,"Error!!"+e,Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+
 
     public void saveImageToStorage(){
         final StorageReference filePath=storageRef.child(pickedImageUri.getLastPathSegment()+".jpg");

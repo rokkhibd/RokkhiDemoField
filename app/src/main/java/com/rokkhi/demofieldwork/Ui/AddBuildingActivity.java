@@ -836,8 +836,8 @@ public class AddBuildingActivity extends AppCompatActivity {
 
                     progressBar.setVisibility(View.GONE);
                     if (task.isSuccessful()) {
-                        Toast.makeText(AddBuildingActivity.this, "Data Saved", Toast.LENGTH_SHORT).show();
 
+                        Toast.makeText(AddBuildingActivity.this, "Data Saved", Toast.LENGTH_SHORT).show();
 
                     }
                 }
