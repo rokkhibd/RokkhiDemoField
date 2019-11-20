@@ -45,9 +45,11 @@ import com.google.firebase.firestore.WriteBatch;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.rokkhi.demofieldwork.Model.Users;
 import com.rokkhi.demofieldwork.R;
 import com.rokkhi.demofieldwork.Utils.Normalfunc;
 
+import com.rokkhi.demofieldwork.Utils.StringAdapter;
 import com.vansuita.pickimage.bean.PickResult;
 import com.vansuita.pickimage.bundle.PickSetup;
 import com.vansuita.pickimage.dialog.PickImageDialog;
@@ -66,11 +68,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class EditProfileActivity extends AppCompatActivity  { //implements IPickResult
 
-   /* FirebaseFirestore firebaseFirestore;
+    FirebaseFirestore firebaseFirestore;
 
     SharedPreferences sharedPref;
     CircleImageView propic;
-    TextView upload, isadmin,userphone;
+    TextView upload;
     EditText name,usermail,gender,bday;
     Button done;
     String picurl;
@@ -82,13 +84,13 @@ public class EditProfileActivity extends AppCompatActivity  { //implements IPick
     StorageReference photoRef;
     Normalfunc normalfunc;
     Context context;
-    UDetails users;
+    Users users;
     ImageView datepicker;
     ArrayList<String> types;
     DatePickerDialog.OnDateSetListener datedialog;
     Date mdate = new Date();
     Calendar myCalendar;
-    UDetails users2;
+    Users users2;
 
     String flatid = "", buildid = "", commid = "",famid="",userid="";
 
@@ -96,7 +98,7 @@ public class EditProfileActivity extends AppCompatActivity  { //implements IPick
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_edit_profile);
+        setContentView(R.layout.activity_edit_profile);
         firebaseFirestore = FirebaseFirestore.getInstance();
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         flatid = sharedPref.getString("flatid", "none");
@@ -116,12 +118,10 @@ public class EditProfileActivity extends AppCompatActivity  { //implements IPick
         propic = findViewById(R.id.user_photo);
         upload = findViewById(R.id.changeProfilePhoto);
         name = findViewById(R.id.user_name);
-        userphone= findViewById(R.id.time);
         gender = findViewById(R.id.gender);
         bday = findViewById(R.id.bday);
         // building = findViewById(R.id.bda);
         done = findViewById(R.id.done);
-        isadmin = findViewById(R.id.isadmin);
         //pass = findViewById(R.id.gatepass);
         usermail = findViewById(R.id.usermail);
         progressBar = findViewById(R.id.progressBar1);
@@ -154,16 +154,15 @@ public class EditProfileActivity extends AppCompatActivity  { //implements IPick
 
 
     public void init() {
-        firebaseFirestore.collection(getString(R.string.col_udetails)).document(userid)
+        firebaseFirestore.collection(getString(R.string.col_users)).document(userid)
                 .addSnapshotListener(new EventListener<DocumentSnapshot>() {
                     @Override
                     public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                         if(e!=null)return;
                         if(documentSnapshot.exists()){
-                            users = documentSnapshot.toObject(UDetails.class);
+                            users = documentSnapshot.toObject(Users.class);
                             name.setText(users.getName());
                             usermail.setText(users.getMail());
-                            userphone.setText(users.getPhone());
                             picurl = users.getPic();
                             gender.setText(users.getGender());
                             if(users.getBday()!=null && Calendar.getInstance().getTime().compareTo(users.getBday())>0)bday.setText(normalfunc.convertDate(users.getBday()));
@@ -173,55 +172,13 @@ public class EditProfileActivity extends AppCompatActivity  { //implements IPick
                                 Log.d(TAG, "onEvent:");
                                 if(!picurl.equals("none") && !picurl.isEmpty()) Glide.with(getApplicationContext()).load(picurl).into(propic);
                             }
-
-                            if(flatid.isEmpty() || flatid.equals("none")){
-                                isadmin.setText("You don't belong to a registered building");
-                                isadmin.setTextColor(Color.RED);
-                            }
-                            else if(users.isAdmin()){
-                                isadmin.setText("Congrats! you are an admin! ");
-                                isadmin.setTextColor(Color.GREEN);
-                            }
-                            else {
-                                isadmin.setText("You are not an admin ! ");
-                                isadmin.setTextColor(Color.RED);
-                            }
-//                            UniversalImageLoader.setImage(picurl, propic, null, "");
                         }
                         else {
-
                             normalfunc.removeTokenId();
                         }
                     }
                 });
 
-        firebaseFirestore.collection(getString(R.string.col_admins)).document(userid).get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete( Task<DocumentSnapshot> task) {
-                        DocumentSnapshot documentSnapshot= task.getResult();
-                        if(documentSnapshot.exists()){
-                            Admins admins= documentSnapshot.toObject(Admins.class);
-                            if(flatid.isEmpty() || flatid.equals("none")){
-                                isadmin.setText("You don't belong to a registered building");
-                                isadmin.setTextColor(Color.RED);
-                            }
-                            else if(admins.getBuild_id().equals(buildid)){
-                                isadmin.setText("Congrats! you are an admin! ");
-                                isadmin.setTextColor(Color.GREEN);
-                            }
-                            else {
-                                isadmin.setText("You are not an admin ! ");
-                                isadmin.setTextColor(Color.RED);
-                            }
-                        }
-
-                        else{
-                            isadmin.setText("You are not an admin ! ");
-                            isadmin.setTextColor(Color.RED);
-                        }
-                    }
-                });
 
     }
 
@@ -396,7 +353,7 @@ public class EditProfileActivity extends AppCompatActivity  { //implements IPick
                 } else {
                     initdialog();
                     showdialog();
-                    uploaddata();
+//                    uploaddata();
                 }
 
 
@@ -407,101 +364,103 @@ public class EditProfileActivity extends AppCompatActivity  { //implements IPick
 
     }
 
-    private void uploaddata() {
-
-        photoRef = FirebaseStorage.getInstance().getReference()
-                .child("userdetails/" + userid + "/pic");
-
-        List<String> ll= normalfunc.splitstring(name.getText().toString());
-        ll.addAll(normalfunc.splitchar(userphone.getText().toString().toLowerCase()));
-        ll.addAll(normalfunc.splitchar(usermail.getText().toString().toLowerCase()));
-
-
-
-
-
-
-
-        users2= new UDetails(userid,name.getText().toString(),users.getPic(),users.getThumb_pic(),mdate,gender.getText().toString(),usermail.getText().toString(),users.isToken(),
-                users.getPhone(),users.getFlat_id(),users.getF_no(),users.getBuild_id(),users.getComm_id(),users.getWho_add(),users.getAtoken(),users.getItoken()
-                ,users.isAdmin(),users.getFjoindate(),users.getLastActive(),users.isActive(),ll);
-
-        WriteBatch batch = firebaseFirestore.batch();
-
-
-        DocumentReference setinoffice = firebaseFirestore.collection(getString(R.string.col_udetails)).document(userid);
-
-        batch.set(setinoffice, users2, SetOptions.merge());
-
-        //TODO cloud function here
-
-        if(!users2.equals(users))batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete( Task<Void> task) {
-                //progressBar.setVisibility(View.GONE);
-
-                if (task.isSuccessful()) {
-                    if(bitmap==null){
-                        dismissdialog();
-                        Toast.makeText(context, "Data Update successful!!", Toast.LENGTH_SHORT).show();
-                    }
-
-                } else {
-                    Toast.makeText(context, "Error connection!!", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-
-
-        if (bitmap != null) {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-
-            byte[] data = baos.toByteArray();
-
-            UploadTask uploadTask = photoRef.putBytes(data);
-            uploadTask
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            // Upload succeeded
-                            dismissdialog();
-                            Toast.makeText(context, "Picture Update successful!!", Toast.LENGTH_SHORT).show();
-
-                            // [END_EXCLUDE]
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure( Exception exception) {
-                            // Upload failed
-                            Log.w(TAG, "uploadFromUri:onFailure", exception);
-
-                            // [END_EXCLUDE]
-                        }
-                    });
-        }
-
-
-    }
-
-
-    @Override
-    public void onPickResult(PickResult r) {
-        if (r.getError() == null) {
-            //progressBar.setVisibility(View.VISIBLE);
-
-            propic.setImageBitmap(null);
-
-            mFileUri = r.getUri().toString();
-            bitmap = r.getBitmap();
-            propic.setImageBitmap(r.getBitmap());
-
-        } else {
-            Toast.makeText(context, r.getError().getMessage(), Toast.LENGTH_LONG).show();
-
-        }
-
-    }*/
+//    private void uploaddata() {
+//
+//        photoRef = FirebaseStorage.getInstance().getReference()
+//                .child("users/" + userid + "/pic");
+//
+//        String userphone= FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
+//
+//        List<String> ll= normalfunc.splitstring(name.getText().toString());
+//        ll.addAll(normalfunc.splitchar(userphone.getText().toString().toLowerCase()));
+//        ll.addAll(normalfunc.splitchar(usermail.getText().toString().toLowerCase()));
+//
+//
+//
+//
+//
+//
+//
+//        users2= new UDetails(userid,name.getText().toString(),users.getPic(),users.getThumb_pic(),mdate,gender.getText().toString(),usermail.getText().toString(),users.isToken(),
+//                users.getPhone(),users.getFlat_id(),users.getF_no(),users.getBuild_id(),users.getComm_id(),users.getWho_add(),users.getAtoken(),users.getItoken()
+//                ,users.isAdmin(),users.getFjoindate(),users.getLastActive(),users.isActive(),ll);
+//
+//        WriteBatch batch = firebaseFirestore.batch();
+//
+//
+//        DocumentReference setinoffice = firebaseFirestore.collection(getString(R.string.col_udetails)).document(userid);
+//
+//        batch.set(setinoffice, users2, SetOptions.merge());
+//
+//        //TODO cloud function here
+//
+//        if(!users2.equals(users))batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
+//            @Override
+//            public void onComplete( Task<Void> task) {
+//                //progressBar.setVisibility(View.GONE);
+//
+//                if (task.isSuccessful()) {
+//                    if(bitmap==null){
+//                        dismissdialog();
+//                        Toast.makeText(context, "Data Update successful!!", Toast.LENGTH_SHORT).show();
+//                    }
+//
+//                } else {
+//                    Toast.makeText(context, "Error connection!!", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
+//
+//
+//
+//        if (bitmap != null) {
+//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+//
+//            byte[] data = baos.toByteArray();
+//
+//            UploadTask uploadTask = photoRef.putBytes(data);
+//            uploadTask
+//                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                        @Override
+//                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                            // Upload succeeded
+//                            dismissdialog();
+//                            Toast.makeText(context, "Picture Update successful!!", Toast.LENGTH_SHORT).show();
+//
+//                            // [END_EXCLUDE]
+//                        }
+//                    })
+//                    .addOnFailureListener(new OnFailureListener() {
+//                        @Override
+//                        public void onFailure( Exception exception) {
+//                            // Upload failed
+//                            Log.w(TAG, "uploadFromUri:onFailure", exception);
+//
+//                            // [END_EXCLUDE]
+//                        }
+//                    });
+//        }
+//
+//
+//    }
+//
+//
+//    @Override
+//    public void onPickResult(PickResult r) {
+//        if (r.getError() == null) {
+//            //progressBar.setVisibility(View.VISIBLE);
+//
+//            propic.setImageBitmap(null);
+//
+//            mFileUri = r.getUri().toString();
+//            bitmap = r.getBitmap();
+//            propic.setImageBitmap(r.getBitmap());
+//
+//        } else {
+//            Toast.makeText(context, r.getError().getMessage(), Toast.LENGTH_LONG).show();
+//
+//        }
+//
+//    }
 }

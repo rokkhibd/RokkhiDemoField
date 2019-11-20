@@ -14,5 +14,8 @@
     <string name="house_status_pending">Status: Pending</string>
     <string name="referraldialog"> যার মাধ্যমে আপনার এখানে আসা , তার মোবাইল নাম্বার লিখুন</string>
     <string name="ok">Yes</string>
+    <string name="error_field_required">This field is required</string>
+
+    <string name="col_users">users</string>
 
 </resources>

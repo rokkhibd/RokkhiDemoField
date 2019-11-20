@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/fragment_edit_profile">
+    tools:showIn="@layout/activity_edit_profile">
 
 
     <RelativeLayout
@@ -213,79 +213,6 @@
             />
 
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Private information"
-            android:textSize="18sp"
-            android:layout_marginBottom="20dp"
-            android:textColor="@color/orange"
-            android:textStyle="bold"
-            android:id="@+id/info"
-            android:layout_below="@+id/done"
-            android:layout_marginTop="20dp"
-            />
-
-
-
-        <LinearLayout
-            android:id="@+id/relmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/info"
-            android:layout_marginStart="30dp"
-            android:orientation="horizontal">
-            <!--android:layout_below="@+id/reldept"-->
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:text="Phone :"
-                android:textColor="@color/orange"
-                android:textSize="15sp" />
-
-            <TextView
-                android:id="@+id/time"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:text="abc@gmail.com"
-                android:textColor="#493F32"
-                android:layout_marginStart="10dp"
-                />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/reladmin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/relmail"
-            android:layout_marginStart="30dp"
-            android:layout_marginBottom="100dp"
-            android:orientation="horizontal">
-            <!--android:layout_below="@+id/reldept"-->
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:text="Admin status :"
-                android:textColor="@color/orange"
-                android:textSize="15sp" />
-
-            <TextView
-                android:id="@+id/isadmin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:text="Congrats! you are an admin."
-                android:textColor="@color/green"
-                android:layout_marginStart="10dp"
-                />
-
-        </LinearLayout>
 
 
 
