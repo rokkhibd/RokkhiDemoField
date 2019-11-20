@@ -22,6 +22,7 @@ public class MyHomeActivity extends BaseActivity {
         ViewPagerAdapter viewPagerAdapter=new ViewPagerAdapter(getSupportFragmentManager());
         viewPagerAdapter.addFragment(new MyhomeFragment()," ");
 
+        viewPager.setAdapter(viewPagerAdapter);
 
     }
 
