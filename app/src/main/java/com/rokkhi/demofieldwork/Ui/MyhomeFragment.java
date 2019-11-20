@@ -1,6 +1,7 @@
 package com.rokkhi.demofieldwork.Ui;
 
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -66,6 +67,7 @@ import static android.app.Activity.RESULT_OK;
  */
 public class MyhomeFragment extends Fragment {
 
+    Context context;
     FloatingActionButton flotbtn;
     RecyclerView recyclerView;
     List<FBuildings> fBuildingsList;

@@ -74,7 +74,7 @@ public class AddBuildingActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter;
 
     ProgressDialog progressDialog;
-    ProgressBar progressBar, spinkitProgress;
+    ProgressBar progressBar, spinkitProgress,progressList;
     CustomListAdapter customListAdapter;
 
     RelativeLayout relativeLayout;
@@ -184,6 +184,7 @@ public class AddBuildingActivity extends AppCompatActivity {
         b_district.setAdapter(adapter);
 
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, allStringValues.designation);
+
 
 
         //TODO: get the current date
@@ -425,12 +426,13 @@ public class AddBuildingActivity extends AppCompatActivity {
 
     }
 
-    private void showAllAreas() {
+    public void showAllAreas() {
 
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 
         View rowList = getLayoutInflater().inflate(R.layout.adress_list, null);
         areaListView = rowList.findViewById(R.id.listview);
+        progressList=rowList.findViewById(R.id.progress_list);
         areaEdit = rowList.findViewById(R.id.search_edit);
 
         db.collection("area").addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -445,16 +447,17 @@ public class AddBuildingActivity extends AppCompatActivity {
                     Long area_code = documentSnapshot.getLong("code");
                     areaCodeList.add(area_code);
 
+
                     //String bcode=documentSnapshot.getString("code");
-
                     areaList.add(area_eng + "(" + area_ban + ")");
-
+                    progressList.setVisibility(View.GONE);
                 }
 
                 adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, areaList);
                 //customListAdapter=new CustomListAdapter(AddBuildingActivity.this,areaList);
                 adapter.notifyDataSetChanged();
                 areaListView.setAdapter(adapter);
+
 
             }
         });
