@@ -11,10 +11,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".Ui.ProfileActivity"/>
+        <activity android:name=".Ui.PaymentHistoryActivity"></activity>
+        <activity android:name=".Ui.ProfileActivity" />
         <activity android:name=".Ui.UpdateBldngInfoActivity" />
         <activity android:name=".Ui.FworkerProfileActivity" />
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".MainActivity" />
         <activity android:name=".Ui.AddBuildingActivity" />
         <activity android:name=".Ui.MyHomeActivity">
             <intent-filter>
@@ -36,7 +37,6 @@
                 android:resource="@xml/picker_provider_paths" />
         </provider>
 
-
         <service
             android:name=".MyFirebaseMessagingService"
             android:exported="false">
@@ -44,7 +44,6 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
     </application>
 
 </manifest>
