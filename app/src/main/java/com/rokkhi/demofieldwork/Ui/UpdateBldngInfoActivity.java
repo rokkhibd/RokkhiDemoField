@@ -5,6 +5,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -66,8 +68,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class UpdateBldngInfoActivity extends AppCompatActivity implements View.OnClickListener {
 
     ImageView houseImage;
-    EditText house_name,total_guards,followup_date,total_floor,flat_floor,house_address,flat_format,
-            owner_name,owner_number,careataker_name,caretaker_number;
+    EditText house_name, total_guards, followup_date, total_floor, flat_floor, house_address, flat_format,
+            owner_name, owner_number, careataker_name, caretaker_number;
     FBuildings fBuildings;
     AllStringValues allStringValues;
     FBPeople fbPeople;
@@ -80,7 +82,6 @@ public class UpdateBldngInfoActivity extends AppCompatActivity implements View.O
 
     FirebaseAuth mAuth;
     FirebaseFirestore db;
-    ProgressBar spinKitProgress;
     DocumentReference docRef;
     DocumentSnapshot documentSnapshot;
     List<FBPeople> fbPeopleList;
@@ -91,64 +92,63 @@ public class UpdateBldngInfoActivity extends AppCompatActivity implements View.O
     Uri pickedImageUri;
 
     StorageReference storageRef;
-    String userId,downloadImageUri;
+    String userId, downloadImageUri;
 
     ArrayAdapter<String> adapter;
     ListView statusListView;
     EditText statusEdit;
-
+    ProgressDialog progressDialog;
     List<String> statusList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_bldng_info);
+        progressDialog = new ProgressDialog(this);
 
-        fBuildings=new FBuildings();
-        fBuildings=(FBuildings) getIntent().getSerializableExtra("fbuildings");
-        mAuth=FirebaseAuth.getInstance();
-        db=FirebaseFirestore.getInstance();
+        fBuildings = new FBuildings();
+        fBuildings = (FBuildings) getIntent().getSerializableExtra("fbuildings");
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
-        currentUser=mAuth.getCurrentUser();
-        userId=currentUser.getUid();
+        currentUser = mAuth.getCurrentUser();
+        userId = currentUser.getUid();
 
-        storageRef= FirebaseStorage.getInstance().getReference()
+        storageRef = FirebaseStorage.getInstance().getReference()
                 .child("fBuildings/" + userId + "/pic");
 
-        fbPeople=new FBPeople();
-        fbPeopleList=new ArrayList<>();
+        fbPeople = new FBPeople();
+        fbPeopleList = new ArrayList<>();
 
-        house_name=findViewById(R.id.update_bldng_houseName);
-        houseImage=findViewById(R.id.update_bldng_image);
-        building_status=findViewById(R.id.update_bldng_bldngStatus);
-        total_floor=findViewById(R.id.update_bldng_totalfloor);
-        flat_floor=findViewById(R.id.update_bldng_flatpfloor);
-        house_address=findViewById(R.id.update_bldng_houseAddress);
-        flat_format=findViewById(R.id.update_bldng_flatformat);
-        caretaker_number=findViewById(R.id.bldng_edit_caretakernmbr);
-        followup_date=findViewById(R.id.update_bldng_followupdate);
-        update_bldngImage=findViewById(R.id.update_bldng_image);
+        house_name = findViewById(R.id.update_bldng_houseName);
+        houseImage = findViewById(R.id.update_bldng_image);
+        building_status = findViewById(R.id.update_bldng_bldngStatus);
+        total_floor = findViewById(R.id.update_bldng_totalfloor);
+        flat_floor = findViewById(R.id.update_bldng_flatpfloor);
+        house_address = findViewById(R.id.update_bldng_houseAddress);
+        flat_format = findViewById(R.id.update_bldng_flatformat);
+        caretaker_number = findViewById(R.id.bldng_edit_caretakernmbr);
+        followup_date = findViewById(R.id.update_bldng_followupdate);
+        update_bldngImage = findViewById(R.id.update_bldng_image);
 
         getThePeoplesInfo();
-        normalfunc=new Normalfunc();
-        date=Calendar.getInstance().getTime();
+        normalfunc = new Normalfunc();
+        date = Calendar.getInstance().getTime();
 
-        updateInfo_Button=findViewById(R.id.update_bldng_updatebtn);
+        updateInfo_Button = findViewById(R.id.update_bldng_updatebtn);
 
-        spinKitProgress=findViewById(R.id.spin_kit);
-        Wave wave=new Wave();
-        spinKitProgress.setIndeterminateDrawable(wave);
+        Wave wave = new Wave();
 
         house_name.setText(fBuildings.getHousename());
         building_status.setText(fBuildings.getStatus());
-       // followup_date.setText((CharSequence) fBuildings.getFollowupdate());
+        // followup_date.setText((CharSequence) fBuildings.getFollowupdate());
         total_floor.setText(String.valueOf(fBuildings.getTotalfloor()));
         flat_floor.setText(String.valueOf(fBuildings.getFlatperfloor()));
         house_address.setText(fBuildings.getB_address());
         flat_format.setText(fBuildings.getFlatformat());
         Glide.with(this).load(fBuildings.getB_imageUrl().get(0)).fitCenter().placeholder(R.drawable.building).into(houseImage);
 
-        allStringValues=new AllStringValues();
+        allStringValues = new AllStringValues();
         updateInfo_Button.setOnClickListener(this);
         house_address.setOnClickListener(this);
         house_name.setOnClickListener(this);
@@ -190,24 +190,28 @@ public class UpdateBldngInfoActivity extends AppCompatActivity implements View.O
     }
 
 
-
     @Override
     public void onClick(View v) {
 
-        if (v.getId()==R.id.update_bldng_updatebtn){
+        if (v.getId() == R.id.update_bldng_updatebtn) {
 
-            if (pickedImageUri==null){
+            progressDialog.setMessage("Executing Action...");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+
+            if (pickedImageUri == null) {
+
                 updateBuildingInfo();
-            }else {
+            } else {
                 saveImageToStorage();
             }
-        } else if (v.getId()==R.id.update_bldng_houseAddress){
+        } else if (v.getId() == R.id.update_bldng_houseAddress) {
             house_address.setFocusableInTouchMode(true);
-        }else if (v.getId()==R.id.update_bldng_followupdate){
-            AllStringValues.showCalendar(this,followup_date);
-        }else if (v.getId()==R.id.update_bldng_houseName){
+        } else if (v.getId() == R.id.update_bldng_followupdate) {
+            AllStringValues.showCalendar(this, followup_date);
+        } else if (v.getId() == R.id.update_bldng_houseName) {
             house_name.setFocusableInTouchMode(true);
-        }else if (v.getId()==R.id.update_bldng_bldngStatus){
+        } else if (v.getId() == R.id.update_bldng_bldngStatus) {
             showBuildingStatus();
         }
     }
@@ -225,7 +229,7 @@ public class UpdateBldngInfoActivity extends AppCompatActivity implements View.O
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 statusList.clear();
-                for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots){
+                for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                     String status = documentSnapshot.getString("status_type");
                     statusList.add(status);
                 }
@@ -250,7 +254,7 @@ public class UpdateBldngInfoActivity extends AppCompatActivity implements View.O
         statusListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String b_status=String.valueOf(parent.getItemAtPosition(position));
+                String b_status = String.valueOf(parent.getItemAtPosition(position));
                 building_status.setText(b_status);
                 dialog.dismiss();
             }
@@ -259,36 +263,41 @@ public class UpdateBldngInfoActivity extends AppCompatActivity implements View.O
 
     private void updateBuildingInfo() {
 
-        WriteBatch batch=db.batch();
+        WriteBatch batch = db.batch();
 
-        String update_address=house_address.getText().toString();
-        String update_houseName=house_name.getText().toString();
+        String update_address = house_address.getText().toString();
+        String update_houseName = house_name.getText().toString();
         //String update_followdate=followup_date.getText().toString();
 
-        ArrayList<String> b_array=new ArrayList<>(normalfunc.splitchar(update_houseName));
+        ArrayList<String> b_array = new ArrayList<>(normalfunc.splitchar(update_houseName));
 
-        DocumentReference docRef=db.collection(getString(R.string.col_fBuildings)).document(fBuildings.getBuild_id());
+        DocumentReference docRef = db.collection(getString(R.string.col_fBuildings)).document(fBuildings.getBuild_id());
 
-        Map<String,Object> map=new HashMap<>();
-        map.put("b_address",update_address);
-        map.put("housename",update_houseName);
-        map.put("b_array",b_array);
-        map.put("updated_at",date);
+        Map<String, Object> map = new HashMap<>();
+        map.put("b_address", update_address);
+        map.put("housename", update_houseName);
+        map.put("b_array", b_array);
+        map.put("updated_at", date);
 
         docRef.set(map, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
 
-                if (task.isSuccessful()){
+                if (task.isSuccessful()) {
+                    progressDialog.dismiss();
+                    startActivity(new Intent(UpdateBldngInfoActivity.this, MyHomeActivity.class)
+                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
                     Toast.makeText(UpdateBldngInfoActivity.this, "Data Updated Successfully", Toast.LENGTH_SHORT).show();
-                    spinKitProgress.setVisibility(View.VISIBLE);
+                } else {
+                    Toast.makeText(UpdateBldngInfoActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(UpdateBldngInfoActivity.this, "Error"+e.getMessage(), Toast.LENGTH_SHORT).show();
-                spinKitProgress.setVisibility(View.VISIBLE);
+                progressDialog.dismiss();
+                Toast.makeText(UpdateBldngInfoActivity.this, "Error" + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -296,17 +305,15 @@ public class UpdateBldngInfoActivity extends AppCompatActivity implements View.O
 
     private void getThePeoplesInfo() {
 
-        db.collection(getString(R.string.col_fBbuildingContacts)).whereEqualTo("b_code",fBuildings.getB_code()).get()
+        db.collection(getString(R.string.col_fBbuildingContacts)).whereEqualTo("b_code", fBuildings.getB_code()).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        for (DocumentSnapshot documentSnapshot:task.getResult()){
-                            FBPeople fbPeople=documentSnapshot.toObject(FBPeople.class);
-                            Log.e("xxxx",fbPeople.getDesignation());
-                            Log.e("xxxx",fbPeople.getName());
-                            Log.e("xxxx",fbPeople.getNumber());
-
-
+                        for (DocumentSnapshot documentSnapshot : task.getResult()) {
+                            FBPeople fbPeople = documentSnapshot.toObject(FBPeople.class);
+                            Log.e("xxxx", fbPeople.getDesignation());
+                            Log.e("xxxx", fbPeople.getName());
+                            Log.e("xxxx", fbPeople.getNumber());
 
 
                         }
@@ -316,8 +323,7 @@ public class UpdateBldngInfoActivity extends AppCompatActivity implements View.O
     }
 
 
-    public void saveImageToStorage(){
-
+    public void saveImageToStorage() {
 
 
         final StorageReference filePath = storageRef.child(pickedImageUri.getLastPathSegment() + ".jpg");
@@ -326,7 +332,7 @@ public class UpdateBldngInfoActivity extends AppCompatActivity implements View.O
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-
+                progressDialog.dismiss();
                 Toast.makeText(UpdateBldngInfoActivity.this, "Error Image Upload:" + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -339,6 +345,8 @@ public class UpdateBldngInfoActivity extends AppCompatActivity implements View.O
                     public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
 
                         if (!task.isSuccessful()) {
+
+
                             throw task.getException();
                         }
                         downloadImageUri = filePath.getDownloadUrl().toString();
@@ -353,7 +361,8 @@ public class UpdateBldngInfoActivity extends AppCompatActivity implements View.O
                             downloadImageUri = task.getResult().toString();
 
 
-                            updateBuildingInfowithImage();                        }
+                            updateBuildingInfowithImage();
+                        }
                     }
                 });
             }
@@ -364,43 +373,47 @@ public class UpdateBldngInfoActivity extends AppCompatActivity implements View.O
 
     private void updateBuildingInfowithImage() {
 
-        WriteBatch batch=db.batch();
+        WriteBatch batch = db.batch();
 
-        String update_address=house_address.getText().toString();
-        String update_houseName=house_name.getText().toString();
-        String update_bstatus=building_status.getText().toString();
+        String update_address = house_address.getText().toString();
+        String update_houseName = house_name.getText().toString();
+        String update_bstatus = building_status.getText().toString();
         //String update_followdate=followup_date.getText().toString();
 
-        ArrayList<String> b_array=new ArrayList<>(normalfunc.splitchar(update_houseName));
+        ArrayList<String> b_array = new ArrayList<>(normalfunc.splitchar(update_houseName));
 
-        DocumentReference docRef=db.collection(getString(R.string.col_fBuildings)).document(fBuildings.getBuild_id());
+        DocumentReference docRef = db.collection(getString(R.string.col_fBuildings)).document(fBuildings.getBuild_id());
 
-        Map<String,Object> map=new HashMap<>();
-        map.put("b_address",update_address);
-        map.put("housename",update_houseName);
-        map.put("b_array",b_array);
-        map.put("status",update_bstatus);
-        map.put("updated_at",date);
+        Map<String, Object> map = new HashMap<>();
+        map.put("b_address", update_address);
+        map.put("housename", update_houseName);
+        map.put("b_array", b_array);
+        map.put("status", update_bstatus);
+        map.put("updated_at", date);
 
-        ArrayList<String> imageurl= new ArrayList<String>();
+        ArrayList<String> imageurl = new ArrayList<String>();
         imageurl.add(downloadImageUri);
 
-        map.put("b_imageUrl",imageurl);
+        map.put("b_imageUrl", imageurl);
 
         docRef.set(map, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
 
-                if (task.isSuccessful()){
+                if (task.isSuccessful()) {
+
+                    progressDialog.dismiss();
+                    startActivity(new Intent(UpdateBldngInfoActivity.this,MyHomeActivity.class)
+                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP));
+
                     Toast.makeText(UpdateBldngInfoActivity.this, "Data Updated Successfully", Toast.LENGTH_SHORT).show();
-                    spinKitProgress.setVisibility(View.VISIBLE);
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(UpdateBldngInfoActivity.this, "Error"+e.getMessage(), Toast.LENGTH_SHORT).show();
-                spinKitProgress.setVisibility(View.VISIBLE);
+                progressDialog.dismiss();
+                Toast.makeText(UpdateBldngInfoActivity.this, "Error" + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
