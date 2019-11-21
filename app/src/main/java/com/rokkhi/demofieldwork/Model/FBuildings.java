@@ -24,7 +24,7 @@ public class FBuildings implements Serializable {
     private Date created_at=new Date();
     private Date updated_at=new Date();
     private String status="none";
-    private boolean active;
+    private String active;
     private ArrayList<String> b_imageUrl;
     private ArrayList<String> b_array;
     private int latitude=0;
@@ -36,7 +36,7 @@ public class FBuildings implements Serializable {
     }
 
 
-    public FBuildings(String build_id, String b_address, String b_code, String b_houseno, String b_roadno, String b_district, String b_area, String flatformat, int flatperfloor, Date followupdate, String housename, int totalfloor, Date created_at, Date updated_at, String status, boolean active, ArrayList<String> b_imageUrl, ArrayList<String> b_array, int latitude, int longitude) {
+    public FBuildings(String build_id, String b_address, String b_code, String b_houseno, String b_roadno, String b_district, String b_area, String flatformat, int flatperfloor, Date followupdate, String housename, int totalfloor, Date created_at, Date updated_at, String status, String active, ArrayList<String> b_imageUrl, ArrayList<String> b_array, int latitude, int longitude) {
         this.build_id = build_id;
         this.b_address = b_address;
         this.b_code = b_code;
@@ -58,6 +58,7 @@ public class FBuildings implements Serializable {
         this.latitude = latitude;
         this.longitude = longitude;
     }
+
 
     public String getBuild_id() {
         return build_id;
@@ -179,11 +180,11 @@ public class FBuildings implements Serializable {
         this.status = status;
     }
 
-    public boolean isActive() {
+    public String getActive() {
         return active;
     }
 
-    public void setActive(boolean active) {
+    public void setActive(String active) {
         this.active = active;
     }
 

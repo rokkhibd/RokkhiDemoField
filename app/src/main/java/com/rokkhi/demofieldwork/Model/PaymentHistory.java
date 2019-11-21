@@ -11,6 +11,7 @@ public class PaymentHistory {
     private String payment_type="none";
     private String build_id="none";
     private int amount=0;
+    private String payment_status = "none";
     private Date month=new Date();
     private Date created_at=new Date();
     private Date updated_at=new Date();
@@ -19,12 +20,13 @@ public class PaymentHistory {
     }
 
 
-    public PaymentHistory(String id, String f_uid, String payment_type, String build_id, int amount, Date month, Date created_at, Date updated_at) {
+    public PaymentHistory(String id, String f_uid, String payment_type, String build_id, int amount, String payment_status, Date month, Date created_at, Date updated_at) {
         this.id = id;
         this.f_uid = f_uid;
         this.payment_type = payment_type;
         this.build_id = build_id;
         this.amount = amount;
+        this.payment_status = payment_status;
         this.month = month;
         this.created_at = created_at;
         this.updated_at = updated_at;
@@ -68,6 +70,14 @@ public class PaymentHistory {
 
     public void setAmount(int amount) {
         this.amount = amount;
+    }
+
+    public String getPayment_status() {
+        return payment_status;
+    }
+
+    public void setPayment_status(String payment_status) {
+        this.payment_status = payment_status;
     }
 
     public Date getMonth() {

@@ -6,8 +6,8 @@ public class FPayments {
 
     private int total_earning=0;
     private int due_earning=0;
-    private int total_buildings=0;
-    private int active_buildings=0;
+    private int total_buildings=0;//onetime
+    private int active_buildings=0;//monthly
     private int due_buildings=0;
     private int total_meeting=0;
     private int due_meeting=0;
