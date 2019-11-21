@@ -1,7 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
 
-</LinearLayout>
+    android:layout_marginTop="10dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="5dp"
+    android:layout_width="match_parent"
+    android:layout_height="150dp">
+
+    <RelativeLayout
+        android:background="@drawable/round_edittext2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/one"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textColor="@color/lightorange"
+                android:textSize="20sp"
+                android:text="Payment type:"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content">
+
+            </TextView>
+
+            <TextView
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:text="One time Payment"
+                android:id="@+id/payment_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="5dp"
+
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:id="@+id/two"
+            android:layout_below="@id/one"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textColor="@color/lightorange"
+                android:textSize="20sp"
+                android:text="Amount:"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content">
+
+            </TextView>
+            <TextView
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:layout_gravity="center_vertical"
+                android:text="1000"
+                android:id="@+id/payment_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="5dp"
+
+            android:layout_marginLeft="10dp"
+            android:id="@+id/three"
+            android:layout_below="@id/two"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+
+                android:textColor="@color/lightorange"
+                android:textSize="20sp"
+                android:text="Date:"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content">
+
+            </TextView>
+            <TextView
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:layout_gravity="center_vertical"
+                android:text="22/12/2019"
+                android:id="@+id/payment_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_marginTop="5dp"
+
+            android:layout_marginLeft="10dp"
+            android:id="@+id/four"
+            android:layout_below="@id/three"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textColor="@color/lightorange"
+                android:textSize="20sp"
+                android:text="Payment Staus:"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content">
+
+            </TextView>
+            <TextView
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:layout_gravity="center_vertical"
+                android:text="22/12/2019"
+                android:id="@+id/payment_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>
