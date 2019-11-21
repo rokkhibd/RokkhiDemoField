@@ -20,6 +20,7 @@
     <string name="col_fBuildings">fBuildings</string>
     <string name="col_fWorkers">fWorkers</string>
     <string name="col_fPayment">fPayment</string>
+    <string name="col_fWorkerBuilding">fWorkerBuilding</string>
     <string name="col_fBbuildingContacts">fBbuildingContacts</string>
     <string name="col_logoutsession">logoutsession</string>
     <string name="col_loginsession">loginsession</string>

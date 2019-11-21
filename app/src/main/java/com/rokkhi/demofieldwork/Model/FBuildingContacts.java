@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 
-public class F_building_contacts {
+public class FBuildingContacts {
 
     private String name="none";
     private String designation="none";
@@ -16,10 +16,10 @@ public class F_building_contacts {
     private Date updated_at=new Date();
     private String b_code="none";
 
-    public F_building_contacts() {
+    public FBuildingContacts() {
     }
 
-    public F_building_contacts(String name, String designation, String phone_no, String doc_id, Date created_at, Date updated_at, String b_code) {
+    public FBuildingContacts(String name, String designation, String phone_no, String doc_id, Date created_at, Date updated_at, String b_code) {
         this.name = name;
         this.designation = designation;
         this.phone_no = phone_no;

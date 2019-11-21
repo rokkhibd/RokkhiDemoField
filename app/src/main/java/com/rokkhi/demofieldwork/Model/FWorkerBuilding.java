@@ -4,7 +4,7 @@ package com.rokkhi.demofieldwork.Model;
 import java.util.Date;
 
 
-public class F_worker_building {
+public class FWorkerBuilding {
 
     private String build_id="none"; //docid
     private String f_uid="none";
@@ -13,10 +13,10 @@ public class F_worker_building {
     private Date updated_at=new Date();
     private String b_code="none";
 
-    public F_worker_building() {
+    public FWorkerBuilding() {
     }
 
-    public F_worker_building(String build_id, String f_uid, String status, Date created_at, Date updated_at, String b_code) {
+    public FWorkerBuilding(String build_id, String f_uid, String status, Date created_at, Date updated_at, String b_code) {
         this.build_id = build_id;
         this.f_uid = f_uid;
         this.status = status;
