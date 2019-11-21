@@ -317,6 +317,8 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
         f_dob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Date dateBirthday = Calendar.getInstance().getTime();
+
                 AllStringValues.showCalendar(FworkerProfileActivity.this, f_dob);
             }
         });
@@ -729,6 +731,7 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
         String fw_dob = f_dob.getText().toString();
         String fw_gender = f_gender.getText().toString();
         String fw_mail = f_mail.getText().toString();
+
 
         // String phone=add88withNumb(fphone);
         List<String> fw_name = normalfunc.splitstring(fname);

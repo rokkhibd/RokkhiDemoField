@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.rokkhi.demofieldwork.Ui.MyHomeActivity;
+import com.rokkhi.demofieldwork.Ui.PaymentHistoryActivity;
 import com.rokkhi.demofieldwork.Ui.ProfileActivity;
 
 import javax.annotation.Nullable;
@@ -41,6 +42,8 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
                 startActivity(new Intent(this, MyHomeActivity.class));
             } else if (itemId == R.id.profile) {
                 startActivity(new Intent(this, ProfileActivity.class));
+            }else if(itemId==R.id.payment){
+                startActivity(new Intent(this, PaymentHistoryActivity.class));
             }
             finish();
         }, 300);
