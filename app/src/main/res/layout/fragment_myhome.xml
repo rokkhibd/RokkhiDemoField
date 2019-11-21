@@ -44,6 +44,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.cardview.widget.CardView
+        android:visibility="gone"
         android:id="@+id/myHomeFrag_cardview"
         app:cardElevation="5dp"
         app:cardCornerRadius="10dp"

@@ -65,7 +65,7 @@
 
             <TextView
                 android:textColor="@color/lightorange"
-                android:paddingLeft="5dp"
+                android:paddingLeft="1dp"
                 android:text="House Name:"
                 android:layout_weight="1"
                 android:layout_width="0dp"
@@ -94,7 +94,7 @@
 
             <TextView
                 android:textColor="@color/lightorange"
-                android:paddingLeft="5dp"
+                android:paddingLeft="1dp"
                 android:text="House Address:"
                 android:layout_weight="1"
                 android:layout_width="0dp"
@@ -123,7 +123,7 @@
 
             <TextView
                 android:textColor="@color/lightorange"
-                android:paddingLeft="5dp"
+                android:paddingLeft="1dp"
                 android:text="Flat Format:"
                 android:layout_weight="1"
                 android:layout_width="0dp"
@@ -150,7 +150,7 @@
 
             <TextView
                 android:textColor="@color/lightorange"
-                android:paddingLeft="5dp"
+                android:paddingLeft="1dp"
                 android:text="Flat Per Floor:"
                 android:layout_weight="1"
                 android:layout_width="0dp"
@@ -179,7 +179,7 @@
 
             <TextView
                 android:textColor="@color/lightorange"
-                android:paddingLeft="5dp"
+                android:paddingLeft="1dp"
                 android:text="Total Floor:"
                 android:layout_weight="1"
                 android:layout_width="0dp"
@@ -198,10 +198,6 @@
 
         </LinearLayout>
 
-
-
-
-
         <LinearLayout
             android:orientation="horizontal"
             android:layout_marginLeft="10dp"
@@ -212,35 +208,7 @@
 
             <TextView
                 android:textColor="@color/lightorange"
-                android:paddingLeft="5dp"
-                android:text="Total Guards:"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"/>
-            <EditText
-                android:background="@drawable/round_edittext2"
-                android:focusableInTouchMode="false"
-                android:paddingLeft="10dp"
-                android:id="@+id/update_bldng_totalGuards"
-                android:layout_weight="2"
-                android:layout_width="0dp"
-                android:layout_marginRight="10dp"
-                android:layout_height="35dp"/>
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="37dp">
-
-            <TextView
-                android:textColor="@color/lightorange"
-                android:paddingLeft="5dp"
+                android:paddingLeft="1dp"
                 android:text="Building Status:"
                 android:layout_weight="1"
                 android:layout_width="0dp"
@@ -269,7 +237,7 @@
 
             <TextView
                 android:textColor="@color/lightorange"
-                android:paddingLeft="5dp"
+                android:paddingLeft="1dp"
                 android:text="Owner Name:"
                 android:layout_weight="1"
                 android:layout_width="0dp"
@@ -297,7 +265,7 @@
 
             <TextView
                 android:textColor="@color/lightorange"
-                android:paddingLeft="5dp"
+                android:paddingLeft="1dp"
                 android:text="Owner Number:"
                 android:layout_weight="1"
                 android:layout_width="0dp"
@@ -325,15 +293,15 @@
 
             <TextView
                 android:textColor="@color/lightorange"
-                android:paddingLeft="5dp"
-                android:text="Manager Name:"
+                android:paddingLeft="1dp"
+                android:text="Caretaker Name:"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"/>
             <EditText
                 android:focusableInTouchMode="false"
                 android:paddingLeft="10dp"
-                android:id="@+id/update_bldng_managername"
+                android:id="@+id/update_bldng_caretakername"
                 android:background="@drawable/round_edittext2"
                 android:layout_weight="2"
                 android:layout_width="0dp"
@@ -354,15 +322,15 @@
 
             <TextView
                 android:textColor="@color/lightorange"
-                android:paddingLeft="5dp"
-                android:text="Manager Number:"
+                android:paddingLeft="1dp"
+                android:text="Caretaker Number:"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"/>
             <EditText
                 android:focusableInTouchMode="false"
                 android:paddingLeft="10dp"
-                android:id="@+id/update_bldng_managernumber"
+                android:id="@+id/update_bldng_caretakernumber"
                 android:background="@drawable/round_edittext2"
                 android:layout_weight="2"
                 android:layout_width="0dp"
@@ -383,7 +351,7 @@
 
             <TextView
                 android:textColor="@color/lightorange"
-                android:paddingLeft="5dp"
+                android:paddingLeft="1dp"
                 android:text="Followup Date:"
                 android:layout_weight="1"
                 android:layout_width="0dp"

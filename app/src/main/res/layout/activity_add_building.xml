@@ -89,7 +89,7 @@
               android:layout_below="@id/addresstxt"
               android:background="@drawable/round_edittext2"
               android:layout_width="185dp"
-              android:layout_height="38dp"/>
+              android:layout_height="45dp"/>
 
           <EditText
               android:focusableInTouchMode="false"
@@ -103,7 +103,7 @@
               android:layout_toRightOf="@id/bldng_edit_area"
               android:background="@drawable/round_edittext2"
               android:layout_width="70dp"
-              android:layout_height="38dp"/>
+              android:layout_height="45dp"/>
 
           <EditText
               android:focusableInTouchMode="false"
@@ -115,7 +115,7 @@
               android:layout_toRightOf="@id/bldng_edit_road"
               android:layout_below="@id/addresstxt"
               android:layout_width="70dp"
-              android:layout_height="38dp"/>
+              android:layout_height="45dp"/>
 
 
           <ImageView
@@ -175,7 +175,7 @@
               android:background="@drawable/round_edittext2"
               android:layout_below="@id/housetxt"
               android:layout_width="100dp"
-              android:layout_height="38dp"/>
+              android:layout_height="45dp"/>
 
           <ImageView
               android:visibility="gone"
@@ -199,9 +199,9 @@
               android:background="@drawable/round_edittext2"
               android:layout_below="@id/housetxt"
               android:layout_width="100dp"
-              android:layout_height="38dp"/>
+              android:layout_height="45dp"/>
 
-          <AutoCompleteTextView
+          <EditText
               android:focusableInTouchMode="false"
               android:id="@+id/bldng_edit_disctrict"
               android:layout_toRightOf="@+id/bldng_edit_houseformat"
@@ -213,9 +213,10 @@
               android:layout_marginRight="20dp"
               android:layout_below="@+id/housetxt"
               android:layout_width="150dp"
-              android:layout_height="38dp"/>
+              android:layout_height="45dp"/>
 
           <ImageView
+              android:visibility="gone"
               android:id="@+id/districtMenu"
               android:src="@drawable/menudown"
               android:layout_alignTop="@id/bldng_edit_disctrict"
@@ -266,7 +267,7 @@
                   android:layout_marginRight="20dp"
                   android:id="@+id/bldng_edit_husename"
                   android:layout_width="match_parent"
-                  android:layout_height="38dp"/>
+                  android:layout_height="45dp"/>
 
 
               <EditText
@@ -310,7 +311,7 @@
                   android:layout_marginRight="20dp"
                   android:background="@drawable/round_edittext2"
                   android:layout_width="match_parent"
-                  android:layout_height="38dp"/>
+                  android:layout_height="45dp"/>
 
               <EditText
                   android:background="@drawable/round_edittext2"
@@ -323,7 +324,7 @@
                   android:hint="total floor"
                   android:inputType="number"
                   android:layout_width="match_parent"
-                  android:layout_height="38dp"/>
+                  android:layout_height="45dp"/>
 
 
               <AutoCompleteTextView
@@ -336,7 +337,7 @@
                   android:layout_marginRight="20dp"
                   android:id="@+id/bldng_edit_flatformat"
                   android:layout_width="match_parent"
-                  android:layout_height="38dp"/>
+                  android:layout_height="45dp"/>
 
               <ImageView
 
@@ -361,7 +362,7 @@
                   android:layout_marginRight="20dp"
                   android:background="@drawable/round_edittext2"
                   android:layout_width="match_parent"
-                  android:layout_height="38dp"/>
+                  android:layout_height="45dp"/>
 
               <EditText
 
@@ -375,7 +376,7 @@
                   android:layout_marginRight="20dp"
                   android:background="@drawable/round_edittext2"
                   android:layout_width="match_parent"
-                  android:layout_height="38dp"/>
+                  android:layout_height="45dp"/>
 
               <EditText
 
@@ -388,7 +389,7 @@
                   android:background="@drawable/round_edittext2"
                   android:paddingLeft="5dp"
                   android:layout_width="match_parent"
-                  android:layout_height="38dp"/>
+                  android:layout_height="45dp"/>
 
               <EditText
 
@@ -402,7 +403,7 @@
                   android:background="@drawable/round_edittext2"
                   android:paddingLeft="5dp"
                   android:layout_width="match_parent"
-                  android:layout_height="38dp"/>
+                  android:layout_height="45dp"/>
 
 
               <Button
@@ -416,7 +417,7 @@
                   android:text="Save"
                   android:background="@drawable/round_edittext"
                   android:layout_width="100dp"
-                  android:layout_height="38dp"
+                  android:layout_height="45dp"
               />
 
 
@@ -445,7 +446,7 @@
                   android:layout_marginRight="20dp"
                   android:background="@drawable/round_edittext2"
                   android:layout_width="match_parent"
-                  android:layout_height="38dp"/>
+                  android:layout_height="45dp"/>
 
               <ImageView
                     android:visibility="gone"
@@ -469,7 +470,7 @@
                   android:layout_marginRight="20dp"
                   android:background="@drawable/round_edittext2"
                   android:layout_width="match_parent"
-                  android:layout_height="38dp"/>
+                  android:layout_height="45dp"/>
 
               <ImageView
 
@@ -493,7 +494,7 @@
                   android:layout_below="@id/bldng_edit_followingdate"
                   android:background="@drawable/round_edittext2"
                   android:layout_width="match_parent"
-                  android:layout_height="38dp"/>
+                  android:layout_height="45dp"/>
 
               <ImageView
                   android:id="@+id/statusMenu"

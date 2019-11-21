@@ -9,6 +9,7 @@ import java.util.List;
 
 public class FBuildings implements Serializable {
 
+
     private String build_id="none";
     private String b_address="none";
     private String b_code="none";
@@ -24,7 +25,7 @@ public class FBuildings implements Serializable {
     private Date created_at=new Date();
     private Date updated_at=new Date();
     private String status="none";
-    private boolean b_status;
+    private boolean b_status=false;
     private ArrayList<String> b_imageUrl;
     private ArrayList<String> b_array;
     private int latitude=0;
@@ -56,6 +57,15 @@ public class FBuildings implements Serializable {
         this.b_array = b_array;
         this.latitude = latitude;
         this.longitude = longitude;
+
+
+        //address
+        //housename
+        //updtaed at
+        //status
+        //imageurl
+        //b_array
+        //b_array te area split,road no,house mo. b_code purata jabe
     }
 
     public String getBuild_id() {

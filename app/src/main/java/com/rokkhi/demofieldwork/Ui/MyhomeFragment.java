@@ -149,7 +149,7 @@ public class MyhomeFragment extends Fragment {
         recyclerView.setAdapter(buildingsListAdapter);
 
         spinKitProgress.setVisibility(View.VISIBLE);
-        //gettingAllHouseData();
+        gettingAllHouseData();
 //      shoWorkerDetails();
 
         flotbtn = view.findViewById(R.id.floating_btn);
@@ -199,7 +199,7 @@ public class MyhomeFragment extends Fragment {
                     userID=firebaseUser.getUid();
                     final String user_id=firebaseAuth.getCurrentUser().getUid();
 
-                    db.collection("fWorkers").document(user_id).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    db.collection(getString(R.string.col_fWorkers)).document(user_id).addSnapshotListener(new EventListener<DocumentSnapshot>() {
                         @Override
                         public void onEvent(@javax.annotation.Nullable DocumentSnapshot documentSnapshot, @javax.annotation.Nullable FirebaseFirestoreException e) {
                             profile_progressBar.setVisibility(View.GONE);
@@ -211,7 +211,8 @@ public class MyhomeFragment extends Fragment {
                                 Glide.with(getContext()).load(imageurl).into(profileImage);
 
 
-                                final List< String > usertoken = fworkers.getAtoken();
+
+                                /*final List< String > usertoken = fworkers.getAtoken();
 
                                 FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(getActivity(), new OnSuccessListener<InstanceIdResult>() {
                                     @Override
@@ -236,7 +237,7 @@ public class MyhomeFragment extends Fragment {
                                                     });
                                         }
                                     }
-                                });
+                                });*/
 
 
                             }else {
@@ -282,7 +283,7 @@ public class MyhomeFragment extends Fragment {
     }
 
     public void gettingAllHouseData(){
-        db.collection("f_buildings").get()
+        db.collection("fBuildings").get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {

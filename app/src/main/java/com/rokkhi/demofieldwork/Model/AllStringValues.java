@@ -78,6 +78,7 @@ public class AllStringValues {
               new DatePickerDialog.OnDateSetListener() {
                  @Override
                  public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+
                     editText.setText(day + "/" + (month + 1) + "/" + year);
                  }
               }, year, month, dayOfMonth);
