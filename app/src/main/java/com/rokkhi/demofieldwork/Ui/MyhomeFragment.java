@@ -358,28 +358,28 @@ public class MyhomeFragment extends Fragment {
     }
 
 
-    public void shoWorkerDetails(){
-        firebaseUser=mAuth.getCurrentUser();
-        userID=firebaseUser.getUid();
-        db.collection("f_workers").document(userID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-
-                profile_progressBar.setVisibility(View.GONE);
-
-                if (task.isSuccessful()){
-                    DocumentSnapshot documentSnapshot=task.getResult();
-
-                    if (documentSnapshot!=null && documentSnapshot.exists()){
-                        String name=documentSnapshot.getString("fw_name");
-                        String imageurl=documentSnapshot.getString("fw_imageUrl");
-                        f_name.setText(name);
-                        Glide.with(getContext()).load(imageurl).into(profileImage);
-                    }
-                }
-            }
-        });
-    }
+//    public void shoWorkerDetails(){
+//        firebaseUser=mAuth.getCurrentUser();
+//        userID=firebaseUser.getUid();
+//        db.collection("f_workers").document(userID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//
+//                profile_progressBar.setVisibility(View.GONE);
+//
+//                if (task.isSuccessful()){
+//                    DocumentSnapshot documentSnapshot=task.getResult();
+//
+//                    if (documentSnapshot!=null && documentSnapshot.exists()){
+//                        String name=documentSnapshot.getString("fw_name");
+//                        String imageurl=documentSnapshot.getString("fw_imageUrl");
+//                        f_name.setText(name);
+//                        Glide.with(getContext()).load(imageurl).into(profileImage);
+//                    }
+//                }
+//            }
+//        });
+//    }
 
 
 }

@@ -378,7 +378,8 @@ public class EditProfileActivity extends AppCompatActivity  implements IPickResu
 
 
 
-        users2= new Users();
+        users2= new Users(name.getText().toString(),"","",userid,mdate,users.getJoindate(),gender.getText().toString()
+        ,usermail.getText().toString(),users.getPhone(),ll);
 
         WriteBatch batch = firebaseFirestore.batch();
 

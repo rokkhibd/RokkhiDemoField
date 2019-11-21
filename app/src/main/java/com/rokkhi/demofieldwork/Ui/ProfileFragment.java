@@ -229,35 +229,32 @@ public class ProfileFragment extends Fragment {
                 });
 
         firebaseFirestore.collection(getString(R.string.col_fPayment)).document(userId)
-                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                    @Override
-                    public void onEvent(@javax.annotation.Nullable DocumentSnapshot documentSnapshot, @javax.annotation.Nullable FirebaseFirestoreException e) {
-                        if (e != null) {
-                            Log.w(TAG, "Listen failed.", e);
-                            return;
-                        }
+                .addSnapshotListener((documentSnapshot, e) -> {
+                    if (e != null) {
+                        Log.w(TAG, "Listen failed.", e);
+                        return;
+                    }
 
-                        if(documentSnapshot!=null && documentSnapshot.exists()){
-                            pro.setVisibility(View.GONE);
+                    if(documentSnapshot!=null && documentSnapshot.exists()){
+                        pro.setVisibility(View.GONE);
 
 //                            TextView tearning,dearning,tref,dref,tmeeting,dmeeting,tbuilding,dbuilding,abuilding;
-                            FPayments fPayments= documentSnapshot.toObject(FPayments.class);
-                            bkashnumber=fPayments.getBkash_no();
-                            bkashno.setText(normalfunc.makephone11(bkashnumber));
+                        FPayments fPayments= documentSnapshot.toObject(FPayments.class);
+                        bkashnumber=fPayments.getBkash_no();
+                        bkashno.setText(normalfunc.makephone11(bkashnumber));
 
-                            tearning.setText(fPayments.getTotal_earning());
-                            dearning.setText(fPayments.getDue_earning());
-                            tref.setText(fPayments.getTotal_referral());
-                            dref.setText(fPayments.getDue_referral());
-                            tmeeting.setText(fPayments.getTotal_meeting());
-                            dmeeting.setText(fPayments.getDue_meeting());
-                            tbuilding.setText(fPayments.getTotal_buildings());
-                            dbuilding.setText(fPayments.getDue_buildings());
-                            abuilding.setText(fPayments.getActive_buildings());
-                        }
-
-
+                        tearning.setText(String.valueOf(fPayments.getTotal_earning()));
+                        dearning.setText(String.valueOf(fPayments.getDue_earning()));
+                        tref.setText(String.valueOf(fPayments.getTotal_referral()));
+                        dref.setText(String.valueOf(fPayments.getDue_referral()));
+                        tmeeting.setText(String.valueOf(fPayments.getTotal_meeting()));
+                        dmeeting.setText(String.valueOf(fPayments.getDue_meeting()));
+                        tbuilding.setText(String.valueOf(fPayments.getTotal_buildings()));
+                        dbuilding.setText(String.valueOf(fPayments.getDue_buildings()));
+                        abuilding.setText(String.valueOf(fPayments.getActive_buildings()));
                     }
+
+
                 });
 
 
