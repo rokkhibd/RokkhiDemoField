@@ -305,7 +305,7 @@
 
 
         <EditText
-
+            android:focusableInTouchMode="false"
             android:id="@+id/fworker_dob_edit"
             android:paddingLeft="5dp"
             android:inputType="number"
@@ -378,7 +378,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
-        <AutoCompleteTextView
+        <EditText
+            android:focusableInTouchMode="false"
             android:paddingLeft="5dp"
             android:id="@+id/fworker_gender_edit"
             android:hint="gender"
@@ -391,6 +392,7 @@
             android:layout_height="38dp"/>
 
         <ImageView
+            android:visibility="gone"
             android:id="@+id/gender_menu"
             android:paddingLeft="5dp"
             android:layout_alignTop="@id/fworker_gender_edit"

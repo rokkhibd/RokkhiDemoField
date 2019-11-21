@@ -252,7 +252,7 @@
 
           <RelativeLayout
               android:id="@+id/housecheck_layout"
-              android:visibility="gone"
+              android:visibility="visible"
               android:layout_below="@id/bldng_button_housecheck"
               android:layout_width="match_parent"
               android:layout_height="wrap_content">

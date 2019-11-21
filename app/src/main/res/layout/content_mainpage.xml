@@ -191,12 +191,11 @@
                     android:layout_gravity="center"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
-                    android:id="@+id/due_earning"
                     android:background="@drawable/round_background_white"
                     android:gravity="center">
 
                     <TextView
-                        android:id="@+id/visitor"
+                        android:id="@+id/due_earning"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"

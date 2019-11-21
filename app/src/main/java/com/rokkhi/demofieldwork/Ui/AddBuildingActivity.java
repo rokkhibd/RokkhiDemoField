@@ -47,6 +47,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.rokkhi.demofieldwork.Model.AllStringValues;
 import com.rokkhi.demofieldwork.Model.CustomListAdapter;
+import com.rokkhi.demofieldwork.Model.FBPeople;
 import com.rokkhi.demofieldwork.Model.FBuildings;
 import com.rokkhi.demofieldwork.R;
 import com.rokkhi.demofieldwork.Utils.Normalfunc;
@@ -56,9 +57,12 @@ import com.vansuita.pickimage.bundle.PickSetup;
 import com.vansuita.pickimage.dialog.PickImageDialog;
 import com.vansuita.pickimage.listeners.IPickResult;
 
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -114,7 +118,11 @@ public class AddBuildingActivity extends AppCompatActivity {
     int areaCodePos;
     List<Long> areaCodeList;
 
+    FBPeople fbPeople;
+    FBuildings fBuildings;
+
     String doc_id="";
+    Date date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,6 +140,10 @@ public class AddBuildingActivity extends AppCompatActivity {
         addbldngRef = FirebaseStorage.getInstance().getReference()
                 .child("fBuildings/" + currentUser + "/pic");
 
+        fbPeople=new FBPeople();
+        fBuildings=new FBuildings();
+
+        date= Calendar.getInstance().getTime();
 
         progressDialog = new ProgressDialog(this);
 
@@ -432,7 +444,7 @@ public class AddBuildingActivity extends AppCompatActivity {
 
         View rowList = getLayoutInflater().inflate(R.layout.adress_list, null);
         areaListView = rowList.findViewById(R.id.listview);
-        progressList=rowList.findViewById(R.id.progress_list);
+//        progressList=rowList.findViewById(R.id.progress_list);
         areaEdit = rowList.findViewById(R.id.search_edit);
 
         db.collection("area").addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -450,7 +462,7 @@ public class AddBuildingActivity extends AppCompatActivity {
 
                     //String bcode=documentSnapshot.getString("code");
                     areaList.add(area_eng + "(" + area_ban + ")");
-                    progressList.setVisibility(View.GONE);
+                    //progressList.setVisibility(View.GONE);
                 }
 
                 adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, areaList);
@@ -588,8 +600,17 @@ public class AddBuildingActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String roadno = String.valueOf(parent.getItemAtPosition(position));
-                roadListCode = roadno;
-                b_roadnumber.setText(roadno);
+
+                if (roadno.equals("None")){
+                    b_roadnumber.setText("0");
+
+                }else {
+                    roadListCode = roadno;
+                    b_roadnumber.setText(roadno);
+                }
+
+                Toast.makeText(AddBuildingActivity.this, roadListCode, Toast.LENGTH_SHORT).show();
+
                 dialog.dismiss();
             }
         });
@@ -636,10 +657,21 @@ public class AddBuildingActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String blockno = String.valueOf(parent.getItemAtPosition(position));
-                b_block.setText(blockno);
-                blockListCode = String.valueOf(position + 1);
 
-              //  Toast.makeText(AddBuildingActivity.this, blockListCode, Toast.LENGTH_SHORT).show();
+                if (blockno.equals("None")){
+                    b_block.setText("0");
+                    blockListCode="0";
+                    Toast.makeText(AddBuildingActivity.this, blockListCode, Toast.LENGTH_SHORT).show();
+                }else {
+
+                    b_block.setText(blockno);
+                    blockListCode = String.valueOf(position);
+                    Toast.makeText(AddBuildingActivity.this, blockListCode, Toast.LENGTH_SHORT).show();
+                }
+
+
+
+
                 dialog.dismiss();
             }
         });
@@ -688,8 +720,19 @@ public class AddBuildingActivity extends AppCompatActivity {
                 String houseno = String.valueOf(parent.getItemAtPosition(position));
                 //Toast.makeText(AddBuildingActivity.this, houseno, Toast.LENGTH_SHORT).show();
 
-                houseListCode = houseno;
-                b_housenmbr.setText(houseno);
+                if (houseno.equals("None")){
+                    b_housenmbr.setText("0");
+                    houseListCode="0";
+                    Toast.makeText(AddBuildingActivity.this, houseListCode, Toast.LENGTH_SHORT).show();
+                }else {
+
+                    houseListCode = houseno;
+                    b_housenmbr.setText(houseno);
+                    Toast.makeText(AddBuildingActivity.this, houseListCode, Toast.LENGTH_SHORT).show();
+                }
+
+
+
 
 
                 dialog.dismiss();
@@ -822,32 +865,41 @@ public class AddBuildingActivity extends AppCompatActivity {
             int flatperFloor=Integer.parseInt(flatperfloor);
             int totlflr=Integer.parseInt(totalfloor);
 
+
+
             Normalfunc normalfunc = new Normalfunc();
+            ArrayList<String> code_array=new ArrayList<>(normalfunc.splitchar(totalHouseCode));
 
-            List<String> b_code_array = normalfunc.splitchar(totalHouseCode);
+           // Map<String, Object> areaMap = new HashMap<>();
 
-            Map<String, Object> areaMap = new HashMap<>();
+            ArrayList<String> imageurl= new ArrayList<String>(Collections.singleton(downloadImageUri));
 
-            areaMap.put("b_address", wholeAddress);
+
+
+
+            /*areaMap.put("b_address", wholeAddress);
             areaMap.put("b_flatfrmt", flatformat);
             areaMap.put("b_flatperfloor", flatperFloor);
             areaMap.put("b_followupdate", followupdate);
-
             areaMap.put("b_guards", guards);
             areaMap.put("b_housename", housename);
             areaMap.put("b_status", status);
             areaMap.put("b_code", totalCode);
             areaMap.put("b_imageUrl", downloadImageUri);
-            areaMap.put("b_code_array", b_code_array);
+            areaMap.put("b_code_array", code_array);
             areaMap.put("b_totalfloor", totlflr);
             areaMap.put("b_visiteddate", currentDate);
             areaMap.put("build_id",docref.getId());
             areaMap.put("b_uid", currentUser);
+*/
+            String build_id=docref.getId();
 
 
-            //String build_id=docref.getId();
 
-            db.collection("fBuildings").document(docref.getId()).set(areaMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+            fBuildings=new FBuildings(docref.getId(),wholeAddress,totalCode,houseNmbr,road,districtValue,area,flatformat,
+                    flatperFloor,date,housename,totlflr,date,date,status,imageurl,code_array,0,0);
+
+            db.collection("fBuildings").document(docref.getId()).set(fBuildings).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
 
@@ -892,7 +944,9 @@ public class AddBuildingActivity extends AppCompatActivity {
         SimpleDateFormat mdformat = new SimpleDateFormat("HH:mm:ss");
         String strDate = mdformat.format(calendar.getTime());
 
-        Map<String, Object> map = new HashMap<>();
+        String doc_id=design_number + totalHouseCode;
+
+        /*Map<String, Object> map = new HashMap<>();
         map.put("designation", design_type);
         map.put("name", design_name);
         map.put("number", numbers);
@@ -900,13 +954,18 @@ public class AddBuildingActivity extends AppCompatActivity {
         map.put("doc_id", design_number + totalHouseCode);
         map.put("created_time", strDate);
         map.put("update_time", strDate);
+*/
+
+
+
+        fbPeople=new FBPeople(totalCode,design_type,doc_id,design_name,numbers);
+
 
         db.collection("fBbuildingContacts").document(design_number + totalHouseCode)
-                .set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                .set(fbPeople).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
 
-//                spinkitProgress.setVisibility(View.GONE);
                 if (task.isSuccessful()) {
                     Toast.makeText(AddBuildingActivity.this, "number saved successfully", Toast.LENGTH_SHORT).show();
                 }

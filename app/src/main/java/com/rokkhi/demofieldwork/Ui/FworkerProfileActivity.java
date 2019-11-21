@@ -49,6 +49,8 @@ import com.rokkhi.demofieldwork.MainActivity;
 import com.rokkhi.demofieldwork.Model.AllStringValues;
 import com.rokkhi.demofieldwork.Model.CustomListAdapter;
 import com.rokkhi.demofieldwork.Model.FPayments;
+import com.rokkhi.demofieldwork.Model.FWorkers;
+import com.rokkhi.demofieldwork.Model.Users;
 import com.rokkhi.demofieldwork.R;
 import com.rokkhi.demofieldwork.Utils.Normalfunc;
 
@@ -72,7 +74,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FworkerProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
-    AutoCompleteTextView f_gender;
+    EditText f_gender;
     EditText f_area;
 
     AllStringValues allStringValues;
@@ -97,8 +99,8 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
 
     List<String> areaList=new ArrayList<>();
 
-    ListView roadNumberList,blockList,houseNoList,areaListView;
-    EditText roadNumberEdit,blockEdit,houseNoEdit,areaEdit;
+    ListView roadNumberList,blockList,houseNoList,areaListView,genderList;
+    EditText roadNumberEdit,blockEdit,houseNoEdit,areaEdit,genderEdit;
 
     FirebaseFirestore db;
     FirebaseAuth mAuth;
@@ -115,6 +117,9 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
 
     ProgressBar progressBar,spinKitProgressBar;
 
+    Users users;
+    FWorkers fWorkers;
+    FPayments fPayments;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,6 +135,11 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
 
         SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
         currentDate=sdf.format(new Date());
+
+
+        users=new Users();
+        fWorkers=new FWorkers();
+        fPayments=new FPayments();
 
         date= Calendar.getInstance().getTime();
 
@@ -175,7 +185,7 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
         circleImageView=findViewById(R.id.fworker_photo);
 
         adapter=new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,allStringValues.gender);
-        f_gender.setAdapter(adapter);
+        //f_gender.setAdapter(adapter);
 
         //checkProfileActvty();
        // getTheCurrentUserPhoneNumber();
@@ -266,6 +276,13 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
             }
         });
 
+        f_dob.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AllStringValues.showCalendar(FworkerProfileActivity.this,f_dob);
+            }
+        });
+
         f_block.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -279,11 +296,10 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
             }
         });
 
-        genderMenu.setOnClickListener(new View.OnClickListener() {
+        f_gender.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                f_gender.showDropDown();
-                String gender=f_gender.getText().toString();
+                showGender();
             }
         });
 
@@ -422,7 +438,15 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String houseno=String.valueOf(parent.getItemAtPosition(position));
-                f_houseno.setText(houseno);
+
+                if (houseno.equals("None")){
+                    f_houseno.setText("0");
+                }else {
+
+                    f_houseno.setText(houseno);
+                }
+
+
                 dialog.dismiss();
             }
         });
@@ -471,8 +495,16 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String blockno=String.valueOf(parent.getItemAtPosition(position));
-                f_block.setText(blockno);
+
+                if (blockno.equals("None")){
+                    f_block.setText("0");
+                }else {
+
+                    f_block.setText(blockno);
+
+                }
                 dialog.dismiss();
+
             }
         });
 
@@ -519,7 +551,13 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String roadno=String.valueOf(parent.getItemAtPosition(position));
-                f_roadletter.setText(roadno);
+
+                if (roadno.equals("None")){
+                    f_roadletter.setText("0");
+                }else {
+
+                    f_roadletter.setText(roadno);
+                }
 
                 dialog.dismiss();
             }
@@ -568,7 +606,15 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String roadno=String.valueOf(parent.getItemAtPosition(position));
-                f_road.setText(roadno);
+
+                if (roadno.equals("None")){
+                    f_road.setText("0");
+                }else {
+
+                    f_road.setText(roadno);
+                }
+
+
 
                 dialog.dismiss();
             }
@@ -576,8 +622,6 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
 
 
     }
-
-
 
     public void saveAllDataToFirestore(){
 
@@ -605,8 +649,10 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
             String fw_bkash=f_bkash.getText().toString();
             String fw_nogod=f_nogod.getText().toString();
 
-           // String phone=add88withNumb(fphone);
+            //String phone=add88withNumb(fphone);
             //normalfunc.checklengthEmptyOrNot(f_nid,f_phone,f_mail,f_refId);
+
+            List<String> u_array=normalfunc.splitchar(fphone);
 
             String fw_nid=f_nid.getText().toString();
             String fw_dob=f_dob.getText().toString();
@@ -618,24 +664,11 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
 
 
             List<String> fw_phone=normalfunc.splitstring(fphone);
+            List<String> atoken=fWorkers.getAtoken();
+            List<String> itoken=fWorkers.getItoken();
 
-            Map<String,Object> fw_map=new HashMap<>();
-            fw_map.put("fw_name",fw_name);
-            fw_map.put("fw_address",fw_address);
-            fw_map.put("fw_phone",fw_phone);
-            fw_map.put("fw_nid",fw_nid);
-            //fw_map.put("fw_dob",fw_dob);
-            fw_map.put("fw_uni",fw_uni);
-            //fw_map.put("fw_joindate",currentDate);
-            //fw_map.put("fw_mail",fw_mail);
-            fw_map.put("fw_imageUrl",downloadImageUri);
-            fw_map.put("fw_gender",fw_gender);
-            fw_map.put("fw_uid",userId);
-            //fw_map.put("fw_bkash",fw_bkash);
-            //fw_map.put("fw_nogod",fw_nogod);
-
-
-            db.collection("fWorkers").document(userId).set(fw_map).addOnCompleteListener(new OnCompleteListener<Void>() {
+            fWorkers=new FWorkers(userId,fw_nid,fphone,fw_uni,fw_address,date,date,u_array,atoken,itoken);
+            db.collection("fWorkers").document(userId).set(fWorkers).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
 
@@ -668,23 +701,13 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
         List<String> fw_name=normalfunc.splitstring(fname);
 
         String totalString=fw_mail+","+fphone+","+fw_name;
-
         String[] tagArray=totalString.split("\\s*,\\s*");
-
 
         List<String> u_array= Arrays.asList(tagArray);
 
+        users=new Users(fname,downloadImageUri,downloadImageUri,userId,date,fw_gender,fw_mail,fphone,date,u_array);
 
-        Map<String,Object> fw_map=new HashMap<>();
-        fw_map.put("name",fname);
-        fw_map.put("bday",fw_dob);
-        fw_map.put("gender",fw_gender);
-        fw_map.put("joindate",currentDate);
-        fw_map.put("u_array",u_array);
-        fw_map.put("pic",downloadImageUri);
-        fw_map.put("thumb",downloadImageUri);
-
-        db.collection("users").document(userId).set(fw_map).addOnCompleteListener(new OnCompleteListener<Void>() {
+        db.collection("users").document(userId).set(users).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
 
@@ -711,28 +734,9 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
         String fw_bkash=f_bkash.getText().toString();
         String fw_nogod=f_nogod.getText().toString();
 
+        fPayments=new FPayments(userId,"",fw_phone,"","","","","",fw_bkash,fw_nogod,date,date,date,"","","","");
 
-        Map<String,Object> paymentMap=new HashMap<>();
-        paymentMap.put("user_id",userId);
-        paymentMap.put("ref_id",f_refId.getText().toString());
-        paymentMap.put("fw_phone",f_phone.getText().toString());
-        paymentMap.put("total_earning","");
-        paymentMap.put("due_earning"," ");
-        paymentMap.put("total_buildings"," ");
-        paymentMap.put("active_buildings"," ");
-        paymentMap.put("due_buildings"," ");
-        paymentMap.put("bkash_no",f_bkash.getText().toString());
-        paymentMap.put("nogod_no",f_nogod.getText().toString());
-        paymentMap.put("total_meeting"," ");
-        paymentMap.put("due_meeting"," ");
-        paymentMap.put("total_referral"," ");
-        paymentMap.put("due_referral"," ");
-        paymentMap.put("created_at",date);
-        paymentMap.put("updated_at",date);
-        paymentMap.put("working_from",date);
-
-
-        db.collection("fPayment").document().set(paymentMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+        db.collection("fPayment").document().set(fPayments).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()){
@@ -829,4 +833,35 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
             getTheCurrentUserPhoneNumber(f_nogod);
         }
     }
+
+    public void showGender(){
+        final AlertDialog.Builder alertDialog=new AlertDialog.Builder(this);
+
+        View rowList = getLayoutInflater().inflate(R.layout.adress_list, null);
+        genderList = rowList.findViewById(R.id.listview);
+        genderEdit=rowList.findViewById(R.id.search_edit);
+        adapter=new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,allStringValues.gender);
+        genderList.setAdapter(adapter);
+        ColorDrawable color = new ColorDrawable(this.getResources().getColor(R.color.lightorange));
+        genderList.setDivider(color);
+        genderList.setDividerHeight(2);
+        genderList.setSelector(R.color.lightorange);
+
+        adapter.notifyDataSetChanged();
+        alertDialog.setView(rowList);
+        final AlertDialog dialog = alertDialog.create();
+        dialog.show();
+
+        genderList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String gender=String.valueOf(parent.getItemAtPosition(position));
+                f_gender.setText(gender);
+
+                dialog.dismiss();
+            }
+        });
+
+    }
+
 }
