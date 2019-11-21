@@ -913,7 +913,7 @@ public class AddBuildingActivity extends AppCompatActivity {
 
 
             fBuildings=new FBuildings(docref.getId(),wholeAddress,totalCode,houseNmbr,road,districtValue,area,flatformat,
-                    flatperFloor,date,housename,totlflr,date,date,status,false,imageurl,code_array,0,0);
+                    flatperFloor,date,housename,totlflr,date,date,status,"Pending",imageurl,code_array,0,0);
 
             db.collection(getString(R.string.col_fBuildings)).document(docref.getId()).set(fBuildings).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
