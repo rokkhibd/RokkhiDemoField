@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Notification;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -98,7 +99,7 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
 
     ArrayAdapter<String> adapter;
 
-    Normalfunc normalfunc = new Normalfunc();
+    Normalfunc normalfunc;
 
     List<String> areaList = new ArrayList<>();
 
@@ -123,6 +124,7 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
     Users users;
     FWorkers fWorkers;
     FPayments fPayments;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,6 +133,8 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
 
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
+        context= FworkerProfileActivity.this;
+        normalfunc= new Normalfunc(context);
        // storageRef = FirebaseStorage.getInstance().getReference().child("fworkers_photo");
 
 
@@ -664,7 +668,7 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
             f_nid.requestFocus();
             spinKitProgressBar.setVisibility(View.GONE);
             return;
-        } else if (!f_mail.getText().toString().isEmpty() && !Normalfunc.isValidEmail(f_mail.getText().toString())) {
+        } else if (!f_mail.getText().toString().isEmpty() && !normalfunc.isValidEmail(f_mail.getText().toString())) {
 
             f_mail.setError("Insert Valid E-mail");
             f_mail.requestFocus();

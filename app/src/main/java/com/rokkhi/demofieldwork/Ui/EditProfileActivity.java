@@ -326,6 +326,8 @@ public class EditProfileActivity extends AppCompatActivity  implements IPickResu
                 name.setError(null);
                 // Store values at the time of the login attempt.
                 final String iname = name.getText().toString();
+                final String gentertext = gender.getText().toString();
+                final String mailtext = usermail.getText().toString();
 
 
                 boolean cancel = false;
@@ -337,6 +339,23 @@ public class EditProfileActivity extends AppCompatActivity  implements IPickResu
                     focusView = name;
                     cancel = true;
 
+                }
+                if (TextUtils.isEmpty(gentertext)) {
+                    gender.setError(getString(R.string.error_field_required));
+                    focusView = gender;
+                    cancel = true;
+
+                }
+                if (TextUtils.isEmpty(mailtext)) {
+                    usermail.setError(getString(R.string.error_field_required));
+                    focusView = usermail;
+                    cancel = true;
+
+                }
+                if (normalfunc.isValidEmail(mailtext)) {
+                    usermail.setError(getString(R.string.fui_invalid_email_address));
+                    focusView = usermail;
+                    cancel = true;
                 }
 
 
@@ -419,6 +438,7 @@ public class EditProfileActivity extends AppCompatActivity  implements IPickResu
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             // Upload succeeded
+
                             dismissdialog();
                             Intent intent= new Intent(context,ProfileActivity.class);
                             startActivity(intent);

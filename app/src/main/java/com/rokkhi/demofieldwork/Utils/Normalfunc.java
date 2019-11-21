@@ -68,6 +68,7 @@ public class Normalfunc {
         else return "error";
     }
 
+
     public void removeTokenId() {
 
 //        if(signoutintent.getExtras().getBoolean("signout",false)) FirebaseAuth.getInstance().signOut();
@@ -152,7 +153,7 @@ public class Normalfunc {
     }
 
 
-    public static boolean isValidEmail(String target) {
+    public  boolean isValidEmail(String target) {
         if (target == null)
             return false;
 
