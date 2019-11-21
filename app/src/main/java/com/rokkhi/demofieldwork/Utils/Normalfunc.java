@@ -228,7 +228,7 @@ public class Normalfunc {
     }
 
 
-    public String convertDate(Date date) {
+    public static String convertDate(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
 

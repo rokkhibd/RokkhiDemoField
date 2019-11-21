@@ -820,7 +820,7 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
             f_nid.requestFocus();
             spinKitProgressBar.setVisibility(View.GONE);
             return;
-        } else if (!f_mail.getText().toString().isEmpty() && !Normalfunc.isValidEmail(f_mail.getText().toString())) {
+        } else if (!f_mail.getText().toString().isEmpty() && !normalfunc.isValidEmail(f_mail.getText().toString())) {
 
             f_mail.setError("Insert Valid E-mail");
             f_mail.requestFocus();
@@ -829,8 +829,7 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
 return;
         }
 
-        final StorageReference filePath = storageRef.child(pickedImageUri.getLastPathSegment() + ".jpg");
-        final UploadTask uploadTask = filePath.putFile(pickedImageUri);
+        final UploadTask uploadTask = storageRef.putFile(pickedImageUri);
 
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
@@ -852,8 +851,8 @@ return;
                         if (!task.isSuccessful()) {
                             throw task.getException();
                         }
-                        downloadImageUri = filePath.getDownloadUrl().toString();
-                        return filePath.getDownloadUrl();
+                        downloadImageUri = storageRef.getDownloadUrl().toString();
+                        return storageRef.getDownloadUrl();
 
                     }
                 }).addOnCompleteListener(new OnCompleteListener<Uri>() {

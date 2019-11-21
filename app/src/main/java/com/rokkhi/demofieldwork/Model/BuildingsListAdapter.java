@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.rokkhi.demofieldwork.R;
 import com.rokkhi.demofieldwork.Ui.UpdateBldngInfoActivity;
+import com.rokkhi.demofieldwork.Utils.Normalfunc;
 
 import java.io.Serializable;
 import java.util.List;
@@ -48,53 +49,6 @@ public class BuildingsListAdapter extends RecyclerView.Adapter<BuildingsListAdap
         final Dialog dialog=new Dialog(parent.getContext());
         dialog.setContentView(R.layout.show_buildinginfo_layout);
 
-        //TODO:Show buildings info in a Dialogue
-/*        bv.relativeLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                FBuildings fBuildings=fBuildingsList.get(bv.getAdapterPosition());
-
-                TextView textView=(TextView) dialog.findViewById(R.id.house_name);
-                textView.setText("House Name: "+fBuildingsList.get(bv.getAdapterPosition()).getB_housename());
-
-                TextView address=(TextView) dialog.findViewById(R.id.house_address);
-                address.setText(fBuildingsList.get(bv.getAdapterPosition()).getB_address());
-
-                TextView caretakerName=(TextView) dialog.findViewById(R.id.caretaker_name);
-                caretakerName.setText(fBuildings.getB_caretakernam());
-
-                TextView caretakerNumber=dialog.findViewById(R.id.caretaker_number);
-                caretakerNumber.setText(fBuildings.getB_caretakernmbr());
-
-                TextView ownerName=dialog.findViewById(R.id.owner_name);
-                ownerName.setText(fBuildings.getB_ownername());
-
-                TextView ownerNumber=dialog.findViewById(R.id.owner_number);
-                ownerNumber.setText(fBuildings.getB_ownernmbr());
-
-                TextView guardName=dialog.findViewById(R.id.guard_name);
-                guardName.setText(fBuildings.getB_guardname());
-
-                TextView guardNumber=dialog.findViewById(R.id.guard_number);
-                guardNumber.setText(fBuildings.getB_guardnmbr());
-
-                TextView visitdate=dialog.findViewById(R.id.visited_date);
-                visitdate.setText(fBuildings.getB_visiteddate());
-
-                TextView followupDate=dialog.findViewById(R.id.followup_date);
-                followupDate.setText(fBuildings.getB_followupdate());
-
-
-                ImageView houseImage=dialog.findViewById(R.id.house_image);
-                String image_url=fBuildings.getB_imageUrl();
-                Glide.with(context).load(image_url).into(houseImage);
-
-               // Toast.makeText(parent.getContext(), String.valueOf(bv.getAdapterPosition()), Toast.LENGTH_SHORT).show();
-                dialog.show();
-            }
-        });*/
-
         return bv;
     }
 
@@ -106,7 +60,7 @@ public class BuildingsListAdapter extends RecyclerView.Adapter<BuildingsListAdap
         holder.build_address.setText("Building Address: "+fBuildings.getB_address());
         holder.build_name.setText("Building Name: "+fBuildings.getHousename());
         holder.build_status.setText("Current Status: "+fBuildings.getStatus());
-        holder.build_lastVisit.setText("Visit Date: "+fBuildings.getFollowupdate());
+        holder.build_lastVisit.setText("Visit Date: "+ Normalfunc.convertDate(fBuildings.getFollowupdate()));
 
 
     }
@@ -119,11 +73,9 @@ public class BuildingsListAdapter extends RecyclerView.Adapter<BuildingsListAdap
     public class BuildingViewholder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView build_name,build_address,build_status,build_lastVisit;
-        RelativeLayout relativeLayout;
         public BuildingViewholder(@NonNull final View itemView) {
             super(itemView);
 
-            relativeLayout=(RelativeLayout) itemView.findViewById(R.id.item_list_id);
             build_name=itemView.findViewById(R.id.myhome_frag_bldngName);
             build_address=itemView.findViewById(R.id.myhome_frag_bldngAddress);
             build_status=itemView.findViewById(R.id.myhome_frag_bldngstatus);

@@ -262,7 +262,7 @@ public class MyhomeFragment extends Fragment {
     }
 
     public void gettingAllHouseData(){
-        db.collection("fBuildings").get()
+        db.collection(getString(R.string.col_fBuildings)).get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
