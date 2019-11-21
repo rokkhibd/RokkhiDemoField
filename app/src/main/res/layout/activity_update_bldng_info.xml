@@ -78,7 +78,7 @@
                 android:layout_weight="2"
                 android:layout_width="0dp"
                 android:layout_marginRight="10dp"
-                android:layout_height="35dp"/>
+                android:layout_height="45dp"/>
 
 
         </LinearLayout>
@@ -108,7 +108,7 @@
                 android:layout_weight="2"
                 android:layout_width="0dp"
                 android:layout_marginRight="10dp"
-                android:layout_height="35dp"/>
+                android:layout_height="45dp"/>
 
 
         </LinearLayout>
@@ -221,7 +221,7 @@
                 android:layout_weight="2"
                 android:layout_width="0dp"
                 android:layout_marginRight="10dp"
-                android:layout_height="35dp"/>
+                android:layout_height="45dp"/>
 
 
         </LinearLayout>

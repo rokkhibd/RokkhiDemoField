@@ -484,7 +484,8 @@
                   android:layout_height="wrap_content"/>
 
 
-              <AutoCompleteTextView
+              <EditText
+                  android:focusableInTouchMode="false"
                   android:id="@+id/bldng_edit_status"
                   android:paddingLeft="5dp"
                   android:hint="status/outcome"
@@ -497,6 +498,7 @@
                   android:layout_height="45dp"/>
 
               <ImageView
+                  android:visibility="gone"
                   android:id="@+id/statusMenu"
                   android:layout_alignTop="@id/bldng_edit_status"
                   android:layout_alignRight="@id/bldng_edit_status"

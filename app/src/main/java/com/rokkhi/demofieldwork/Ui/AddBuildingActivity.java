@@ -104,7 +104,7 @@ public class AddBuildingActivity extends AppCompatActivity {
     Normalfunc normalfunc = new Normalfunc();
 
     CircleImageView circleImageView;
-    EditText b_name, b_totalfloor, b_floorperflat, b_totalguard, b_lat, b_long, b_area, b_roadnumber, b_block, b_housenmbr, b_housefrmt,
+    EditText b_status,b_name, b_totalfloor, b_floorperflat, b_totalguard, b_lat, b_long, b_area, b_roadnumber, b_block, b_housenmbr, b_housefrmt,
             b_visit, b_follwing, b_code, b_peoplesName, b_peopleNumber, people_we_talk,b_district;
 
     Button saveBtn, tapCode, addInfoButton, checkHouseBtn, saveNumberBtn;
@@ -117,7 +117,7 @@ public class AddBuildingActivity extends AppCompatActivity {
 
     DatePickerDialog datePickerDialog;
 
-    AutoCompleteTextView b_status, b_flatfrmt;
+    AutoCompleteTextView  b_flatfrmt;
 
     int areaCodePos;
     int districtCodePos;
@@ -194,7 +194,7 @@ public class AddBuildingActivity extends AppCompatActivity {
         allStringValues = new AllStringValues();
 
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, allStringValues.status);
-        b_status.setAdapter(adapter);
+        //b_status.setAdapter(adapter);
 
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, allStringValues.flatformat);
         b_flatfrmt.setAdapter(adapter);
@@ -267,11 +267,10 @@ public class AddBuildingActivity extends AppCompatActivity {
             }
         });
 
-        statusMenu.setOnClickListener(new View.OnClickListener() {
+        b_status.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                b_status.showDropDown();
-                status = b_status.getText().toString();
+                showBuildingStatus();
             }
         });
 
@@ -1148,6 +1147,52 @@ public class AddBuildingActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void showBuildingStatus(){
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+
+        View rowList = getLayoutInflater().inflate(R.layout.adress_list, null);
+        ListView statusListView = rowList.findViewById(R.id.listview);
+//        progressList=rowList.findViewById(R.id.progress_list);
+        EditText statusEdit = rowList.findViewById(R.id.search_edit);
+
+        ArrayList<String> statusList=new ArrayList<>();
+
+        db.collection(getString(R.string.col_buildingstatus)).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@androidx.annotation.Nullable QuerySnapshot queryDocumentSnapshots, @androidx.annotation.Nullable FirebaseFirestoreException e) {
+                statusList.clear();
+                for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots){
+                    String status = documentSnapshot.getString("status_type");
+                    statusList.add(status);
+                }
+
+                adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, statusList);
+                //customListAdapter=new CustomListAdapter(AddBuildingActivity.this,areaList);
+                adapter.notifyDataSetChanged();
+                statusListView.setAdapter(adapter);
+
+            }
+        });
+
+        ColorDrawable color = new ColorDrawable(this.getResources().getColor(R.color.lightorange));
+        statusListView.setDivider(color);
+        statusListView.setDividerHeight(1);
+
+
+        alertDialog.setView(rowList);
+        final AlertDialog dialog = alertDialog.create();
+        dialog.show();
+
+        statusListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String bstatus=String.valueOf(parent.getItemAtPosition(position));
+                b_status.setText(bstatus);
+                dialog.dismiss();
+            }
+        });
     }
 
 }
