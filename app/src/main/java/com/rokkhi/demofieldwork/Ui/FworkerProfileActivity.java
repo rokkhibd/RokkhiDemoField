@@ -192,6 +192,27 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
 
 
 
+        db.collection("area").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                areaList.clear();
+
+                for (DocumentSnapshot documentSnapshot:queryDocumentSnapshots){
+
+                    String area_eng=documentSnapshot.getString("english");
+                    String area_ban=documentSnapshot.getString("bangla");
+
+                    areaList.add(area_eng+"("+area_ban+")");
+
+                    // areaList.add(documentSnapshot.getString("english"));
+                    //areaList.add(documentSnapshot.getString("bangla"));
+                }
+
+
+
+            }
+        });
+
         //TODO:Click listener of All Image views
         saveData.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -332,28 +353,10 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
         areaListView=rowList.findViewById(R.id.listview);
         areaEdit=rowList.findViewById(R.id.search_edit);
 
-        db.collection("area").addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                areaList.clear();
 
-                for (DocumentSnapshot documentSnapshot:queryDocumentSnapshots){
-
-                    String area_eng=documentSnapshot.getString("english");
-                    String area_ban=documentSnapshot.getString("bangla");
-
-                    areaList.add(area_eng+"("+area_ban+")");
-
-                   // areaList.add(documentSnapshot.getString("english"));
-                    //areaList.add(documentSnapshot.getString("bangla"));
-                }
-
-                adapter=new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1,areaList);
-                adapter.notifyDataSetChanged();
-                areaListView.setAdapter(adapter);
-
-            }
-        });
+        adapter=new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1,areaList);
+        adapter.notifyDataSetChanged();
+        areaListView.setAdapter(adapter);
 
         //areListView.setAdapter(adapter);
         ColorDrawable color = new ColorDrawable(this.getResources().getColor(R.color.lightorange));
@@ -705,7 +708,7 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
 
         List<String> u_array= Arrays.asList(tagArray);
 
-        users=new Users(fname,downloadImageUri,downloadImageUri,userId,date,fw_gender,fw_mail,fphone,date,u_array);
+        users=new Users(fname,downloadImageUri,downloadImageUri,userId,date,date,fw_gender,fw_mail,fphone,u_array);
 
         db.collection("users").document(userId).set(users).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override

@@ -22,7 +22,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -204,7 +203,7 @@ public class ProfileFragment extends Fragment {
                             return;
                         }
 
-                        if(documentSnapshot.exists()){
+                        if(documentSnapshot!=null && documentSnapshot.exists()){
                             Users users= documentSnapshot.toObject(Users.class);
                             name.setText(users.getName());
                             if(!users.getThumb().isEmpty() && !users.getThumb().equals("none"))

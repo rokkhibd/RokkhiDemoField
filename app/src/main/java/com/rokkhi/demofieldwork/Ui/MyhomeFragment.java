@@ -82,7 +82,6 @@ public class MyhomeFragment extends Fragment {
     CircleImageView profileImage;
     ImageView logout;
     Normalfunc normalfunc;
-
     SharedPreferences.Editor editor;
     SharedPreferences sharedPref;
 
@@ -120,8 +119,9 @@ public class MyhomeFragment extends Fragment {
         mAuth=FirebaseAuth.getInstance();
         firebaseUser=mAuth.getCurrentUser();
         fworkers=new FWorkers();
-        normalfunc=new Normalfunc();
-        sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
+        context= getActivity();
+        normalfunc=new Normalfunc(context);
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         editor = sharedPref.edit();
 
         f_name=view.findViewById(R.id.myHome_frag_fwname);
@@ -230,7 +230,8 @@ public class MyhomeFragment extends Fragment {
                                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                         @Override
                                                         public void onComplete(@NonNull Task<Void> task) {
-                                                            Toast.makeText(getContext(),"Welcome!",Toast.LENGTH_SHORT).show();
+                                                            Toast.makeText(context,"Welcome!",Toast.LENGTH_SHORT).show();
+
                                                         }
                                                     });
                                         }
