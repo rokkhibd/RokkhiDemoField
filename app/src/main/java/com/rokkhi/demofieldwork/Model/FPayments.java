@@ -7,27 +7,27 @@ public class FPayments {
     private String user_id="none";
     private String ref_id="none";
     private String fw_phone="none";
-    private String total_earning="none";
-    private String due_earning="none";
-    private String total_buildings="none";
-    private String active_buildings="none";
-    private String due_buildings="none";
+    private int total_earning=0;
+    private int due_earning=0;
+    private int total_buildings=0;
+    private int active_buildings=0;
+    private int due_buildings=0;
     private String bkash_no="none";
     private String nogod_no="none";
     private Date created_at=new Date();
     private Date updated_at=new Date();
     private Date working_from=new Date();
-    private String total_meeting="none";
-    private String due_meeting="none";
-    private String total_referral="none";
-    private String due_referral="none";
+    private int total_meeting=0;
+    private int due_meeting=0;
+    private int total_referral=0;
+    private int due_referral=0;
 
 
     public FPayments() {
 
     }
 
-    public FPayments(String user_id, String ref_id, String fw_phone, String total_earning, String due_earning, String total_buildings, String active_buildings, String due_buildings, String bkash_no, String nogod_no, Date created_at, Date updated_at, Date working_from, String total_meeting, String due_meeting, String total_referral, String due_referral) {
+    public FPayments(String user_id, String ref_id, String fw_phone, int total_earning, int due_earning, int total_buildings, int active_buildings, int due_buildings, String bkash_no, String nogod_no, Date created_at, Date updated_at, Date working_from, int total_meeting, int due_meeting, int total_referral, int due_referral) {
         this.user_id = user_id;
         this.ref_id = ref_id;
         this.fw_phone = fw_phone;
@@ -71,43 +71,43 @@ public class FPayments {
         this.fw_phone = fw_phone;
     }
 
-    public String getTotal_earning() {
+    public int getTotal_earning() {
         return total_earning;
     }
 
-    public void setTotal_earning(String total_earning) {
+    public void setTotal_earning(int total_earning) {
         this.total_earning = total_earning;
     }
 
-    public String getDue_earning() {
+    public int getDue_earning() {
         return due_earning;
     }
 
-    public void setDue_earning(String due_earning) {
+    public void setDue_earning(int due_earning) {
         this.due_earning = due_earning;
     }
 
-    public String getTotal_buildings() {
+    public int getTotal_buildings() {
         return total_buildings;
     }
 
-    public void setTotal_buildings(String total_buildings) {
+    public void setTotal_buildings(int total_buildings) {
         this.total_buildings = total_buildings;
     }
 
-    public String getActive_buildings() {
+    public int getActive_buildings() {
         return active_buildings;
     }
 
-    public void setActive_buildings(String active_buildings) {
+    public void setActive_buildings(int active_buildings) {
         this.active_buildings = active_buildings;
     }
 
-    public String getDue_buildings() {
+    public int getDue_buildings() {
         return due_buildings;
     }
 
-    public void setDue_buildings(String due_buildings) {
+    public void setDue_buildings(int due_buildings) {
         this.due_buildings = due_buildings;
     }
 
@@ -151,35 +151,35 @@ public class FPayments {
         this.working_from = working_from;
     }
 
-    public String getTotal_meeting() {
+    public int getTotal_meeting() {
         return total_meeting;
     }
 
-    public void setTotal_meeting(String total_meeting) {
+    public void setTotal_meeting(int total_meeting) {
         this.total_meeting = total_meeting;
     }
 
-    public String getDue_meeting() {
+    public int getDue_meeting() {
         return due_meeting;
     }
 
-    public void setDue_meeting(String due_meeting) {
+    public void setDue_meeting(int due_meeting) {
         this.due_meeting = due_meeting;
     }
 
-    public String getTotal_referral() {
+    public int getTotal_referral() {
         return total_referral;
     }
 
-    public void setTotal_referral(String total_referral) {
+    public void setTotal_referral(int total_referral) {
         this.total_referral = total_referral;
     }
 
-    public String getDue_referral() {
+    public int getDue_referral() {
         return due_referral;
     }
 
-    public void setDue_referral(String due_referral) {
+    public void setDue_referral(int due_referral) {
         this.due_referral = due_referral;
     }
 }

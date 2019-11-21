@@ -18,6 +18,7 @@ public class PaymentHistory {
     public PaymentHistory() {
     }
 
+
     public PaymentHistory(String id, String f_uid, String payment_type, String build_id, int amount, Date month, Date created_at, Date updated_at) {
         this.id = id;
         this.f_uid = f_uid;

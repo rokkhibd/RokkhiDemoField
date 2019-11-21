@@ -9,7 +9,6 @@ import java.util.List;
 
 public class FBuildings implements Serializable {
 
-
     private String build_id="none";
     private String b_address="none";
     private String b_code="none";
@@ -25,7 +24,7 @@ public class FBuildings implements Serializable {
     private Date created_at=new Date();
     private Date updated_at=new Date();
     private String status="none";
-    private boolean b_status=false;
+    private boolean active;
     private ArrayList<String> b_imageUrl;
     private ArrayList<String> b_array;
     private int latitude=0;
@@ -36,7 +35,7 @@ public class FBuildings implements Serializable {
     }
 
 
-    public FBuildings(String build_id, String b_address, String b_code, String b_houseno, String b_roadno, String b_district, String b_area, String flatformat, int flatperfloor, Date followupdate, String housename, int totalfloor, Date created_at, Date updated_at, String status, boolean b_status, ArrayList<String> b_imageUrl, ArrayList<String> b_array, int latitude, int longitude) {
+    public FBuildings(String build_id, String b_address, String b_code, String b_houseno, String b_roadno, String b_district, String b_area, String flatformat, int flatperfloor, Date followupdate, String housename, int totalfloor, Date created_at, Date updated_at, String status, boolean active, ArrayList<String> b_imageUrl, ArrayList<String> b_array, int latitude, int longitude) {
         this.build_id = build_id;
         this.b_address = b_address;
         this.b_code = b_code;
@@ -52,20 +51,11 @@ public class FBuildings implements Serializable {
         this.created_at = created_at;
         this.updated_at = updated_at;
         this.status = status;
-        this.b_status = b_status;
+        this.active = active;
         this.b_imageUrl = b_imageUrl;
         this.b_array = b_array;
         this.latitude = latitude;
         this.longitude = longitude;
-
-
-        //address
-        //housename
-        //updtaed at
-        //status
-        //imageurl
-        //b_array
-        //b_array te area split,road no,house mo. b_code purata jabe
     }
 
     public String getBuild_id() {
@@ -188,12 +178,12 @@ public class FBuildings implements Serializable {
         this.status = status;
     }
 
-    public boolean isB_status() {
-        return b_status;
+    public boolean isActive() {
+        return active;
     }
 
-    public void setB_status(boolean b_status) {
-        this.b_status = b_status;
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public ArrayList<String> getB_imageUrl() {
