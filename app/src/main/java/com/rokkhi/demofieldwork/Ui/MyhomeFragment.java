@@ -74,7 +74,7 @@ public class MyhomeFragment extends Fragment {
     FirebaseFirestore db;
     BuildingsListAdapter buildingsListAdapter;
     ProgressBar progressBar;
-    FWorkers fworkers;
+
     FirebaseAuth mAuth;
     FirebaseUser firebaseUser;
     String userID;
@@ -118,7 +118,6 @@ public class MyhomeFragment extends Fragment {
         db=FirebaseFirestore.getInstance();
         mAuth=FirebaseAuth.getInstance();
         firebaseUser=mAuth.getCurrentUser();
-        fworkers=new FWorkers();
         context= getActivity();
         normalfunc=new Normalfunc(context);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
@@ -205,11 +204,12 @@ public class MyhomeFragment extends Fragment {
                             profile_progressBar.setVisibility(View.GONE);
 
                             if (documentSnapshot!=null && documentSnapshot.exists()){
-                                String name=documentSnapshot.getString("fw_name");
-                                String imageurl=documentSnapshot.getString("fw_imageUrl");
-                                f_name.setText(name);
-                                Glide.with(getContext()).load(imageurl).into(profileImage);
+//                                String name=documentSnapshot.getString("fw_name");
+//                                String imageurl=documentSnapshot.getString("fw_imageUrl");
+//                                f_name.setText(name);
+//                                Glide.with(getContext()).load(imageurl).into(profileImage);
 
+                                FWorkers fworkers=documentSnapshot.toObject(FWorkers.class);
 
 
                                 final List< String > usertoken = fworkers.getAtoken();
@@ -252,28 +252,7 @@ public class MyhomeFragment extends Fragment {
 
     }
 
-    private void checkUserLogInOrNot() {
-        final String user_id=mAuth.getCurrentUser().getUid();
 
-        db.collection("f_worker").document(user_id).addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@javax.annotation.Nullable DocumentSnapshot documentSnapshot, @javax.annotation.Nullable FirebaseFirestoreException e) {
-                profile_progressBar.setVisibility(View.GONE);
-
-                if (documentSnapshot!=null && documentSnapshot.exists()){
-                    String name=documentSnapshot.getString("fw_name");
-                    String imageurl=documentSnapshot.getString("fw_imageUrl");
-                    f_name.setText(name);
-                    Glide.with(getContext()).load(imageurl).into(profileImage);
-
-                }else {
-                    gotoFworkerActivty();
-                }
-            }
-        });
-
-
-    }
 
     private void gotoFworkerActivty() {
 
