@@ -61,7 +61,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
-            android:layout_height="37dp">
+            android:layout_height="50dp">
 
             <TextView
                 android:textColor="@color/lightorange"
@@ -90,7 +90,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
-            android:layout_height="37dp">
+            android:layout_height="50dp">
 
             <TextView
                 android:textColor="@color/lightorange"
@@ -119,7 +119,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
-            android:layout_height="37dp">
+            android:layout_height="50dp">
 
             <TextView
                 android:textColor="@color/lightorange"
@@ -146,7 +146,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
-            android:layout_height="37dp">
+            android:layout_height="50dp">
 
             <TextView
                 android:textColor="@color/lightorange"
@@ -175,7 +175,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
-            android:layout_height="37dp">
+            android:layout_height="50dp">
 
             <TextView
                 android:textColor="@color/lightorange"
@@ -204,7 +204,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
-            android:layout_height="37dp">
+            android:layout_height="50dp">
 
             <TextView
                 android:textColor="@color/lightorange"
@@ -261,7 +261,7 @@
             android:id="@+id/update_bldng_updatebtn"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:textColor="@color/white"
             android:textAllCaps="false"
             android:text="Update Information"

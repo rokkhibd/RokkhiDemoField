@@ -20,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -37,6 +38,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -47,6 +49,7 @@ import com.google.firebase.iid.InstanceIdResult;
 import com.rokkhi.demofieldwork.MainActivity;
 import com.rokkhi.demofieldwork.Model.BuildingsListAdapter;
 import com.rokkhi.demofieldwork.Model.FBuildings;
+import com.rokkhi.demofieldwork.Model.FWorkerBuilding;
 import com.rokkhi.demofieldwork.Model.FWorkers;
 import com.rokkhi.demofieldwork.Model.LogSession;
 import com.rokkhi.demofieldwork.R;
@@ -262,7 +265,29 @@ public class MyhomeFragment extends Fragment {
     }
 
     public void gettingAllHouseData(){
-        db.collection(getString(R.string.col_fBuildings)).get()
+
+        db.collection(getString(R.string.col_fWorkerBuilding)).whereEqualTo("f_uid",userID).get().
+                addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+
+                            for(DocumentSnapshot d:task.getResult()){
+
+                                FBuildings fb=d.toObject(FBuildings.class);
+
+                                fBuildingsList.add(fb);
+                            }
+                            buildingsListAdapter.notifyDataSetChanged();
+                        }
+                    }
+                });
+
+
+
+
+
+        /*db.collection(getString(R.string.col_fBuildings)).get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -280,7 +305,7 @@ public class MyhomeFragment extends Fragment {
                             buildingsListAdapter.notifyDataSetChanged();
                         }
                     }
-                });
+                });*/
     }
 
     public void gotoLogIN(){
