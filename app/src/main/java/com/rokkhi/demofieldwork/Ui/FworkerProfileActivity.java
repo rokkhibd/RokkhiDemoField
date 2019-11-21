@@ -2,6 +2,8 @@ package com.rokkhi.demofieldwork.Ui;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.Notification;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -11,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
@@ -81,33 +84,33 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
 
     Button saveData;
 
-    String userPhoneNumber,currentDate;
+    String userPhoneNumber, currentDate;
     Date date;
 
     CustomListAdapter customListAdapter;
 
-    ImageView areaMenu,genderMenu,dobCal,joinDateCal;
-    EditText f_name,f_road,f_block,f_houseno,f_roadletter,f_phone,f_nid,f_dob,f_uni,f_mail,f_joindate,f_bkash,f_nogod,f_refId;
-    TextView knowMore,mblNumberget,bkashNumberget,nogodNumberget;
+    ImageView areaMenu, genderMenu, dobCal, joinDateCal;
+    EditText f_name, f_road, f_block, f_houseno, f_roadletter, f_phone, f_nid, f_dob, f_uni, f_mail, f_joindate, f_bkash, f_refId;
+    TextView knowMore, mblNumberget, bkashNumberget;
 
     //TODO: Creates String variable
 
 
     ArrayAdapter<String> adapter;
 
-    Normalfunc normalfunc=new Normalfunc();
+    Normalfunc normalfunc = new Normalfunc();
 
-    List<String> areaList=new ArrayList<>();
+    List<String> areaList = new ArrayList<>();
 
-    ListView roadNumberList,blockList,houseNoList,areaListView,genderList;
-    EditText roadNumberEdit,blockEdit,houseNoEdit,areaEdit,genderEdit;
+    ListView roadNumberList, blockList, houseNoList, areaListView, genderList;
+    EditText roadNumberEdit, blockEdit, houseNoEdit, areaEdit, genderEdit;
 
     FirebaseFirestore db;
     FirebaseAuth mAuth;
     FirebaseStorage firebaseStorage;
     StorageReference storageRef;
     FirebaseUser currentUser;
-    String userId,downloadImageUri;
+    String userId, downloadImageUri;
 
     DatePickerDialog datePickerDialog;
     CircleImageView circleImageView;
@@ -115,7 +118,7 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
     Bitmap bitmap;
     Uri pickedImageUri;
 
-    ProgressBar progressBar,spinKitProgressBar;
+    ProgressBar progressBar, spinKitProgressBar;
 
     Users users;
     FWorkers fWorkers;
@@ -126,70 +129,71 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fworker_profile);
 
-        db= FirebaseFirestore.getInstance();
-        mAuth= FirebaseAuth.getInstance();
-        storageRef= FirebaseStorage.getInstance().getReference().child("fworkers_photo");
-
-        currentUser= FirebaseAuth.getInstance().getCurrentUser();
-        userId =currentUser.getUid();
-
-        SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
-        currentDate=sdf.format(new Date());
+        db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+       // storageRef = FirebaseStorage.getInstance().getReference().child("fworkers_photo");
 
 
-        users=new Users();
-        fWorkers=new FWorkers();
-        fPayments=new FPayments();
 
-        date= Calendar.getInstance().getTime();
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        userId = currentUser.getUid();
 
-        saveData=findViewById(R.id.fworker_data_btn);
-        f_area=findViewById(R.id.fworker_address_area);
-        f_gender=findViewById(R.id.fworker_gender_edit);
-        f_name=findViewById(R.id.fworker_name_edit);
-        f_road=findViewById(R.id.fworker_address_road);
-        f_block=findViewById(R.id.fworker_address_block);
-        f_houseno=findViewById(R.id.fworker_address_housenmbr);
-        f_roadletter=findViewById(R.id.fworker_address_roadletter);
-        f_phone=findViewById(R.id.fworker_phone_edit);
-        f_nid=findViewById(R.id.fworker_nid_edit);
-        f_dob=findViewById(R.id.fworker_dob_edit);
-        f_uni=findViewById(R.id.fworker_uni_edit);
-        f_mail=findViewById(R.id.fworker_mail_edit);
-        f_joindate=findViewById(R.id.fworker_joining_edit);
-        f_bkash=findViewById(R.id.fworker_bkash_edit);
-        f_nogod=findViewById(R.id.fworker_nogod_edit);
-        f_refId=findViewById(R.id.fworker_refcode_edit);
-        knowMore=findViewById(R.id.ref_knowMore_txt);
-        mblNumberget=findViewById(R.id.getnumber_txt);
-        bkashNumberget=findViewById(R.id.getbkashnumber_txt);
-        nogodNumberget=findViewById(R.id.getnogodhnumber_txt);
+        storageRef=FirebaseStorage.getInstance().getReference()
+                .child("users/" + userId + "/pic");
+
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        currentDate = sdf.format(new Date());
+
+
+        users = new Users();
+        fWorkers = new FWorkers();
+        fPayments = new FPayments();
+
+        date = Calendar.getInstance().getTime();
+
+        saveData = findViewById(R.id.fworker_data_btn);
+        f_area = findViewById(R.id.fworker_address_area);
+        f_gender = findViewById(R.id.fworker_gender_edit);
+        f_name = findViewById(R.id.fworker_name_edit);
+        f_road = findViewById(R.id.fworker_address_road);
+        f_block = findViewById(R.id.fworker_address_block);
+        f_houseno = findViewById(R.id.fworker_address_housenmbr);
+        f_roadletter = findViewById(R.id.fworker_address_roadletter);
+        f_phone = findViewById(R.id.fworker_phone_edit);
+        f_nid = findViewById(R.id.fworker_nid_edit);
+        f_dob = findViewById(R.id.fworker_dob_edit);
+        f_uni = findViewById(R.id.fworker_uni_edit);
+        f_mail = findViewById(R.id.fworker_mail_edit);
+        f_joindate = findViewById(R.id.fworker_joining_edit);
+        f_bkash = findViewById(R.id.fworker_bkash_edit);
+        f_refId = findViewById(R.id.fworker_refcode_edit);
+        knowMore = findViewById(R.id.ref_knowMore_txt);
+        mblNumberget = findViewById(R.id.getnumber_txt);
+        bkashNumberget = findViewById(R.id.getbkashnumber_txt);
 
         mblNumberget.setOnClickListener(this);
         bkashNumberget.setOnClickListener(this);
-        nogodNumberget.setOnClickListener(this);
 
-        progressBar=findViewById(R.id.progressBar);
+        progressBar = findViewById(R.id.progressBar);
 
-        spinKitProgressBar=findViewById(R.id.spin_kit);
-        Wave wave=new Wave();
+        spinKitProgressBar = findViewById(R.id.spin_kit);
+        Wave wave = new Wave();
         spinKitProgressBar.setIndeterminateDrawable(wave);
 
-        allStringValues=new AllStringValues();
+        allStringValues = new AllStringValues();
 
         //TODO: ImageViews ID
-        areaMenu=findViewById(R.id.area_menudown);
-        genderMenu=findViewById(R.id.gender_menu);
-        dobCal=findViewById(R.id.calendar);
-        joinDateCal=findViewById(R.id.calendar_joining);
-        circleImageView=findViewById(R.id.fworker_photo);
+        genderMenu = findViewById(R.id.gender_menu);
+        dobCal = findViewById(R.id.calendar);
+        joinDateCal = findViewById(R.id.calendar_joining);
+        circleImageView = findViewById(R.id.fworker_photo);
 
-        adapter=new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,allStringValues.gender);
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, allStringValues.gender);
         //f_gender.setAdapter(adapter);
 
         //checkProfileActvty();
-       // getTheCurrentUserPhoneNumber();
-
+        // getTheCurrentUserPhoneNumber();
 
 
         db.collection("area").addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -197,17 +201,16 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 areaList.clear();
 
-                for (DocumentSnapshot documentSnapshot:queryDocumentSnapshots){
+                for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
 
-                    String area_eng=documentSnapshot.getString("english");
-                    String area_ban=documentSnapshot.getString("bangla");
+                    String area_eng = documentSnapshot.getString("english");
+                    String area_ban = documentSnapshot.getString("bangla");
 
-                    areaList.add(area_eng+"("+area_ban+")");
+                    areaList.add(area_eng + "(" + area_ban + ")");
 
                     // areaList.add(documentSnapshot.getString("english"));
                     //areaList.add(documentSnapshot.getString("bangla"));
                 }
-
 
 
             }
@@ -219,10 +222,24 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
             public void onClick(View v) {
                 spinKitProgressBar.setVisibility(View.VISIBLE);
 
+
+                if (pickedImageUri==null){
+
+                    saveAllDataToFirestore();
+
+
+                }else {
+
+
+                    saveImageToStorage();
+
+                }/*
+
+                saveImageToStorage();
+
                 saveDataToUserCollection();
                 saveAllDataToFirestore();
-                savePaymentData();
-
+                savePaymentData();*/
 
             }
         });
@@ -231,14 +248,13 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
             @Override
             public void onClick(View v) {
 
-                AlertDialog.Builder alert= new AlertDialog.Builder(FworkerProfileActivity.this);
-                View view=getLayoutInflater().inflate(R.layout.referral_show_dialog,null);
+                AlertDialog.Builder alert = new AlertDialog.Builder(FworkerProfileActivity.this);
+                View view = getLayoutInflater().inflate(R.layout.referral_show_dialog, null);
                 alert.setView(view);
 
-                final AlertDialog alertDialog1=alert.create();
+                final AlertDialog alertDialog1 = alert.create();
                 alertDialog1.setCanceledOnTouchOutside(true);
                 alertDialog1.show();
-
 
 
             }
@@ -271,7 +287,8 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
                             pickedImageUri = r.getUri();
                             bitmap = r.getBitmap();
                             circleImageView.setImageBitmap(r.getBitmap());
-                            saveImageToStorage();
+//                            upload Image
+//                            saveImageToStorage();
 
                         } else {
                             Toast.makeText(FworkerProfileActivity.this, r.getError().getMessage(), Toast.LENGTH_LONG).show();
@@ -300,7 +317,7 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
         f_dob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AllStringValues.showCalendar(FworkerProfileActivity.this,f_dob);
+                AllStringValues.showCalendar(FworkerProfileActivity.this, f_dob);
             }
         });
 
@@ -328,7 +345,7 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
             @Override
             public void onClick(View v) {
 
-                AllStringValues.showCalendar(FworkerProfileActivity.this,f_dob);
+                AllStringValues.showCalendar(FworkerProfileActivity.this, f_dob);
             }
         });
 
@@ -336,25 +353,23 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
             @Override
             public void onClick(View v) {
 
-               AllStringValues.showCalendar(FworkerProfileActivity.this,f_joindate);
+                AllStringValues.showCalendar(FworkerProfileActivity.this, f_joindate);
 
             }
         });
 
     }
 
-
-
     private void showallAreas() {
 
-        final AlertDialog.Builder alertDialog=new AlertDialog.Builder(this);
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 
         View rowList = getLayoutInflater().inflate(R.layout.adress_list, null);
-        areaListView=rowList.findViewById(R.id.listview);
-        areaEdit=rowList.findViewById(R.id.search_edit);
+        areaListView = rowList.findViewById(R.id.listview);
+        areaEdit = rowList.findViewById(R.id.search_edit);
 
 
-        adapter=new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1,areaList);
+        adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, areaList);
         adapter.notifyDataSetChanged();
         areaListView.setAdapter(adapter);
 
@@ -389,24 +404,23 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
         areaListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String areatxt=String.valueOf(parent.getItemAtPosition(position));
+                String areatxt = String.valueOf(parent.getItemAtPosition(position));
                 f_area.setText(areatxt);
                 dialog.dismiss();
             }
         });
 
 
-
     }
 
     private void showAvailableHouseno() {
 
-        final AlertDialog.Builder alertDialog=new AlertDialog.Builder(this);
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 
         View rowList = getLayoutInflater().inflate(R.layout.adress_list, null);
         houseNoList = rowList.findViewById(R.id.listview);
-        houseNoEdit=rowList.findViewById(R.id.search_edit);
-        adapter=new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,allStringValues.road_no);
+        houseNoEdit = rowList.findViewById(R.id.search_edit);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, allStringValues.road_no);
         //customListAdapter=new CustomListAdapter(this,allStringValues.road_no);
         houseNoList.setAdapter(adapter);
         ColorDrawable color = new ColorDrawable(this.getResources().getColor(R.color.lightorange));
@@ -440,11 +454,11 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
         houseNoList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String houseno=String.valueOf(parent.getItemAtPosition(position));
+                String houseno = String.valueOf(parent.getItemAtPosition(position));
 
-                if (houseno.equals("None")){
+                if (houseno.equals("None")) {
                     f_houseno.setText("0");
-                }else {
+                } else {
 
                     f_houseno.setText(houseno);
                 }
@@ -459,12 +473,12 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
 
     private void showAvailableBlock() {
 
-        final AlertDialog.Builder alertDialog=new AlertDialog.Builder(this);
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 
         View rowList = getLayoutInflater().inflate(R.layout.adress_list, null);
         blockList = rowList.findViewById(R.id.listview);
-        blockEdit=rowList.findViewById(R.id.search_edit);
-        adapter=new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,allStringValues.block_numbers);
+        blockEdit = rowList.findViewById(R.id.search_edit);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, allStringValues.block_numbers);
         blockList.setAdapter(adapter);
         ColorDrawable color = new ColorDrawable(this.getResources().getColor(R.color.lightorange));
         blockList.setDivider(color);
@@ -497,11 +511,11 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
         blockList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String blockno=String.valueOf(parent.getItemAtPosition(position));
+                String blockno = String.valueOf(parent.getItemAtPosition(position));
 
-                if (blockno.equals("None")){
+                if (blockno.equals("None")) {
                     f_block.setText("0");
-                }else {
+                } else {
 
                     f_block.setText(blockno);
 
@@ -514,13 +528,13 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
 
     }
 
-    private void showAvailableRoadLetter(){
-        final AlertDialog.Builder alertDialog=new AlertDialog.Builder(this);
+    private void showAvailableRoadLetter() {
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 
         View rowList = getLayoutInflater().inflate(R.layout.adress_list, null);
         roadNumberList = rowList.findViewById(R.id.listview);
-        roadNumberEdit=rowList.findViewById(R.id.search_edit);
-        adapter=new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,allStringValues.block_numbers);
+        roadNumberEdit = rowList.findViewById(R.id.search_edit);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, allStringValues.block_numbers);
         roadNumberList.setAdapter(adapter);
         ColorDrawable color = new ColorDrawable(this.getResources().getColor(R.color.lightorange));
         roadNumberList.setDivider(color);
@@ -553,11 +567,11 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
         roadNumberList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String roadno=String.valueOf(parent.getItemAtPosition(position));
+                String roadno = String.valueOf(parent.getItemAtPosition(position));
 
-                if (roadno.equals("None")){
+                if (roadno.equals("None")) {
                     f_roadletter.setText("0");
-                }else {
+                } else {
 
                     f_roadletter.setText(roadno);
                 }
@@ -570,12 +584,12 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
 
     private void showAvailableRoads() {
 
-        final AlertDialog.Builder alertDialog=new AlertDialog.Builder(this);
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 
         View rowList = getLayoutInflater().inflate(R.layout.adress_list, null);
         roadNumberList = rowList.findViewById(R.id.listview);
-        roadNumberEdit=rowList.findViewById(R.id.search_edit);
-        adapter=new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,allStringValues.road_no);
+        roadNumberEdit = rowList.findViewById(R.id.search_edit);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, allStringValues.road_no);
         roadNumberList.setAdapter(adapter);
         ColorDrawable color = new ColorDrawable(this.getResources().getColor(R.color.lightorange));
         roadNumberList.setDivider(color);
@@ -608,15 +622,14 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
         roadNumberList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String roadno=String.valueOf(parent.getItemAtPosition(position));
+                String roadno = String.valueOf(parent.getItemAtPosition(position));
 
-                if (roadno.equals("None")){
+                if (roadno.equals("None")) {
                     f_road.setText("0");
-                }else {
+                } else {
 
                     f_road.setText(roadno);
                 }
-
 
 
                 dialog.dismiss();
@@ -626,66 +639,83 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
 
     }
 
-    public void saveAllDataToFirestore(){
+    public void saveAllDataToFirestore() {
 
-        if (f_name.length()==0){
+
+        if (f_name.length() == 0) {
             f_name.setError("Insert your name");
+            f_name.requestFocus();
             spinKitProgressBar.setVisibility(View.GONE);
-        }else if (f_area.length()==0){
+            return;
+        } else if (f_area.length() == 0) {
             f_area.setError("Insert your area name");
+            f_area.requestFocus();
             spinKitProgressBar.setVisibility(View.GONE);
-        }else if (f_phone.length()==0){
+            return;
+        } else if (f_phone.length() == 0) {
             f_phone.setError("Insert your mobile number");
+            f_phone.requestFocus();
             spinKitProgressBar.setVisibility(View.GONE);
-        }else if (f_nid.length()!=10){
-            f_nid.setError("Your NID number is not correct");
+            return;
+        } else if (TextUtils.isEmpty(f_nid.getText().toString())) {
+            f_nid.setError("Insert You'r NID Number");
+            f_nid.requestFocus();
             spinKitProgressBar.setVisibility(View.GONE);
-        }
-        else {
-            String fw_name=f_name.getText().toString();
-            String fw_area=f_area.getText().toString();
-            String fw_road=f_road.getText().toString();
-            String fw_block=f_block.getText().toString();
-            String fw_housenmbr=f_houseno.getText().toString();
-            String fw_houseletter=f_roadletter.getText().toString();
-            String fphone=f_phone.getText().toString();
-            String fw_bkash=f_bkash.getText().toString();
-            String fw_nogod=f_nogod.getText().toString();
+            return;
+        } else if (!f_mail.getText().toString().isEmpty() && !Normalfunc.isValidEmail(f_mail.getText().toString())) {
+
+            f_mail.setError("Insert Valid E-mail");
+            f_mail.requestFocus();
+            spinKitProgressBar.setVisibility(View.GONE);
+
+            return;
+        } else {
+            String fw_name = f_name.getText().toString();
+            String fw_area = f_area.getText().toString();
+            String fw_road = f_road.getText().toString();
+            String fw_block = f_block.getText().toString();
+            String fw_housenmbr = f_houseno.getText().toString();
+            String fw_houseletter = f_roadletter.getText().toString();
+            String fphone = Normalfunc.makephone14(f_phone.getText().toString());
+            String fw_bkash = Normalfunc.makephone14(f_bkash.getText().toString());
+            String fw_nogod = "";
 
             //String phone=add88withNumb(fphone);
             //normalfunc.checklengthEmptyOrNot(f_nid,f_phone,f_mail,f_refId);
 
-            List<String> u_array=normalfunc.splitchar(fphone);
+            List<String> u_array = normalfunc.splitchar(fphone);
 
-            String fw_nid=f_nid.getText().toString();
-            String fw_dob=f_dob.getText().toString();
-            String fw_uni=f_uni.getText().toString();
-            String fw_joindate=f_joindate.getText().toString();
-            String fw_mail=f_mail.getText().toString();
-            String fw_gender=f_gender.getText().toString();
-            String fw_address=fw_area+" "+fw_road+fw_block+" "+fw_housenmbr+fw_houseletter;
+            String fw_nid = f_nid.getText().toString();
+            String fw_dob = f_dob.getText().toString();
+            String fw_uni = f_uni.getText().toString();
+            String fw_joindate = f_joindate.getText().toString();
+            String fw_mail = f_mail.getText().toString();
+            String fw_gender = f_gender.getText().toString();
+            String fw_address = fw_area + " " + fw_road + fw_block + " " + fw_housenmbr + fw_houseletter;
 
 
-            List<String> fw_phone=normalfunc.splitstring(fphone);
-            List<String> atoken=fWorkers.getAtoken();
-            List<String> itoken=fWorkers.getItoken();
+            List<String> fw_phone = normalfunc.splitstring(fphone);
+            List<String> atoken = fWorkers.getAtoken();
+            List<String> itoken = fWorkers.getItoken();
 
-            fWorkers=new FWorkers(userId,fw_nid,fphone,fw_uni,fw_address,date,date,u_array,atoken,itoken);
-            db.collection("fWorkers").document(userId).set(fWorkers).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
+            fWorkers = new FWorkers(userId, fw_nid, fphone, fw_uni, fw_address, date, date, u_array, atoken, itoken);
+            db.collection("fWorkers").document(userId)
+                    .set(fWorkers)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
 
-                    if (task.isSuccessful()){
-                        spinKitProgressBar.setVisibility(View.GONE);
-                        Toast.makeText(FworkerProfileActivity.this,"Data saved!!",Toast.LENGTH_SHORT).show();
-                        stayAtMainActvity();
-                    }
-                }
-            }).addOnFailureListener(new OnFailureListener() {
+                            if (task.isSuccessful()) {
+                                spinKitProgressBar.setVisibility(View.GONE);
+                                Toast.makeText(FworkerProfileActivity.this, "Data saved!!", Toast.LENGTH_SHORT).show();
+                                saveDataToUserCollection();
+                            }
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     progressBar.setVisibility(View.GONE);
-                    Toast.makeText(FworkerProfileActivity.this,"Error!!"+e,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FworkerProfileActivity.this, "Error!!" + e, Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -693,79 +723,114 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
 
     }
 
-    public void saveDataToUserCollection(){
-        String fname=f_name.getText().toString();
-        String fphone=f_phone.getText().toString();
-        String fw_dob=f_dob.getText().toString();
-        String fw_gender=f_gender.getText().toString();
-        String fw_mail=f_mail.getText().toString();
+    public void saveDataToUserCollection() {
+        String fname = f_name.getText().toString();
+        String fphone = f_phone.getText().toString();
+        String fw_dob = f_dob.getText().toString();
+        String fw_gender = f_gender.getText().toString();
+        String fw_mail = f_mail.getText().toString();
 
-       // String phone=add88withNumb(fphone);
-        List<String> fw_name=normalfunc.splitstring(fname);
+        // String phone=add88withNumb(fphone);
+        List<String> fw_name = normalfunc.splitstring(fname);
 
-        String totalString=fw_mail+","+fphone+","+fw_name;
-        String[] tagArray=totalString.split("\\s*,\\s*");
+        String totalString = fw_mail + "," + fphone + "," + fw_name;
+        String[] tagArray = totalString.split("\\s*,\\s*");
 
-        List<String> u_array= Arrays.asList(tagArray);
+        List<String> u_array = Arrays.asList(tagArray);
 
-        users=new Users(fname,downloadImageUri,downloadImageUri,userId,date,date,fw_gender,fw_mail,fphone,u_array);
+        users = new Users(fname, downloadImageUri, downloadImageUri, userId, date, date, fw_gender, fw_mail, fphone, u_array);
 
         db.collection("users").document(userId).set(users).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
 
-                if (task.isSuccessful()){
+                if (task.isSuccessful()) {
                     spinKitProgressBar.setVisibility(View.GONE);
-                    Toast.makeText(FworkerProfileActivity.this,"Saving Data...Wait",Toast.LENGTH_SHORT).show();
-                    //stayAtMainActvity();
+                    Toast.makeText(FworkerProfileActivity.this, "Saving Data...Wait", Toast.LENGTH_SHORT).show();
+
+                    savePaymentData();
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 spinKitProgressBar.setVisibility(View.GONE);
-                Toast.makeText(FworkerProfileActivity.this,"Error!!"+e,Toast.LENGTH_SHORT).show();
+                Toast.makeText(FworkerProfileActivity.this, "Error!!" + e, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
 
-    public void savePaymentData(){
+    public void savePaymentData() {
 
-        String ref_id=f_refId.getText().toString();
-        String fw_phone=f_phone.getText().toString();
-        String fw_bkash=f_bkash.getText().toString();
-        String fw_nogod=f_nogod.getText().toString();
+        String ref_id = f_refId.getText().toString();
+        String fw_phone = f_phone.getText().toString();
+        String fw_bkash = f_bkash.getText().toString();
+        String fw_nogod = "";
 
-        fPayments=new FPayments(userId,"",fw_phone,"","","","","",fw_bkash,fw_nogod,date,date,date,"","","","");
+        fPayments = new FPayments(userId, "", fw_phone, "", "", "", "", "", fw_bkash, fw_nogod, date, date, date, "", "", "", "");
 
-        db.collection("fPayment").document().set(fPayments).addOnCompleteListener(new OnCompleteListener<Void>() {
+        db.collection("fPayment").document(userId).set(fPayments).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()){
+                if (task.isSuccessful()) {
+
+                    stayAtMainActvity();
+
                     Toast.makeText(FworkerProfileActivity.this, "payment data saved", Toast.LENGTH_SHORT).show();
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(FworkerProfileActivity.this, "Error:"+e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                Toast.makeText(FworkerProfileActivity.this, "Error:" + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
 
-    public void saveImageToStorage(){
-        final StorageReference filePath=storageRef.child(pickedImageUri.getLastPathSegment()+".jpg");
-        final UploadTask uploadTask=filePath.putFile(pickedImageUri);
+    public void saveImageToStorage() {
+
+        if (f_name.length() == 0) {
+            f_name.setError("Insert your name");
+            f_name.requestFocus();
+            spinKitProgressBar.setVisibility(View.GONE);
+            return;
+        } else if (f_area.length() == 0) {
+            f_area.setError("Insert your area name");
+            f_area.requestFocus();
+            spinKitProgressBar.setVisibility(View.GONE);
+            return;
+        } else if (f_phone.length() == 0) {
+            f_phone.setError("Insert your mobile number");
+            f_phone.requestFocus();
+            spinKitProgressBar.setVisibility(View.GONE);
+            return;
+        } else if (TextUtils.isEmpty(f_nid.getText().toString())) {
+            f_nid.setError("Insert You'r NID Number");
+            f_nid.requestFocus();
+            spinKitProgressBar.setVisibility(View.GONE);
+            return;
+        } else if (!f_mail.getText().toString().isEmpty() && !Normalfunc.isValidEmail(f_mail.getText().toString())) {
+
+            f_mail.setError("Insert Valid E-mail");
+            f_mail.requestFocus();
+            spinKitProgressBar.setVisibility(View.GONE);
+
+return;
+        }
+
+        final StorageReference filePath = storageRef.child(pickedImageUri.getLastPathSegment() + ".jpg");
+        final UploadTask uploadTask = filePath.putFile(pickedImageUri);
 
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
 
                 progressBar.setVisibility(View.GONE);
-                Toast.makeText(FworkerProfileActivity.this, "Error:"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(FworkerProfileActivity.this, "Error Image Upload:" + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -773,22 +838,25 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
                 progressBar.setVisibility(View.GONE);
                 Toast.makeText(FworkerProfileActivity.this, "Image Uploaded Successfully", Toast.LENGTH_SHORT).show();
 
-                Task<Uri> urlTask=uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                     @Override
                     public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
 
-                        if (!task.isSuccessful()){
+                        if (!task.isSuccessful()) {
                             throw task.getException();
                         }
-                        downloadImageUri=filePath.getDownloadUrl().toString();
+                        downloadImageUri = filePath.getDownloadUrl().toString();
                         return filePath.getDownloadUrl();
 
                     }
                 }).addOnCompleteListener(new OnCompleteListener<Uri>() {
                     @Override
                     public void onComplete(@NonNull Task<Uri> task) {
-                        if (task.isSuccessful()){
-                            downloadImageUri=task.getResult().toString();
+                        if (task.isSuccessful()) {
+                            //get the image download Link
+                            downloadImageUri = task.getResult().toString();
+
+                            saveAllDataToFirestore();
                         }
                     }
                 });
@@ -798,52 +866,43 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
     }
 
 
-
     private void stayAtMainActvity() {
 //        Intent intent= new Intent(FworkerProfileActivity.this,MainActivity.class);
 //    ;
-        startActivity(new Intent(FworkerProfileActivity.this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK| Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        startActivity(new Intent(FworkerProfileActivity.this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
 
         finish();
 
 
     }
 
-    public String add88withNumb(String s){
-        String number="+88"+s;
-        return number;
-    }
 
+    public void getTheCurrentUserPhoneNumber(EditText s) {
 
+        currentUser = mAuth.getCurrentUser();
+        userPhoneNumber = currentUser.getPhoneNumber();
 
-    public void getTheCurrentUserPhoneNumber(EditText s){
-
-        currentUser=mAuth.getCurrentUser();
-        userPhoneNumber=currentUser.getPhoneNumber();
-
-        s.setText(userPhoneNumber);
+        s.setText(Normalfunc.getNumberWithoutCountryCode(userPhoneNumber));
 
     }
 
     @Override
     public void onClick(View v) {
 
-        if (v.getId()==R.id.getnumber_txt){
+        if (v.getId() == R.id.getnumber_txt) {
             getTheCurrentUserPhoneNumber(f_phone);
-        }else if (v.getId()==R.id.getbkashnumber_txt){
+        } else if (v.getId() == R.id.getbkashnumber_txt) {
             getTheCurrentUserPhoneNumber(f_bkash);
-        }else if (v.getId()==R.id.getnogodhnumber_txt){
-            getTheCurrentUserPhoneNumber(f_nogod);
         }
     }
 
-    public void showGender(){
-        final AlertDialog.Builder alertDialog=new AlertDialog.Builder(this);
+    public void showGender() {
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 
         View rowList = getLayoutInflater().inflate(R.layout.adress_list, null);
         genderList = rowList.findViewById(R.id.listview);
-        genderEdit=rowList.findViewById(R.id.search_edit);
-        adapter=new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,allStringValues.gender);
+        genderEdit = rowList.findViewById(R.id.search_edit);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, allStringValues.gender);
         genderList.setAdapter(adapter);
         ColorDrawable color = new ColorDrawable(this.getResources().getColor(R.color.lightorange));
         genderList.setDivider(color);
@@ -858,7 +917,7 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
         genderList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String gender=String.valueOf(parent.getItemAtPosition(position));
+                String gender = String.valueOf(parent.getItemAtPosition(position));
                 f_gender.setText(gender);
 
                 dialog.dismiss();

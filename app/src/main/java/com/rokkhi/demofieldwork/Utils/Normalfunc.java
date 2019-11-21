@@ -143,7 +143,7 @@ public class Normalfunc {
     }
 
 
-    public boolean isValidEmail(String target) {
+    public static boolean isValidEmail(String target) {
         if (target == null)
             return false;
 
@@ -227,7 +227,7 @@ public class Normalfunc {
         return sdf.format(cal.getTime());
     }
 
-    public boolean isvalidphone14(String phoneno) {
+    public static boolean isvalidphone14(String phoneno) {
         if (phoneno.isEmpty()) return false;
 
         if (phoneno.charAt(0) != '+') {
@@ -255,13 +255,13 @@ public class Normalfunc {
         return true;
     }
 
-    public String makephone14(String phoneno) {
+    public static String makephone14(String phoneno) {
         if (isvalidphone14(phoneno)) return phoneno;
         if (isvalidphone11(phoneno)) return "+88" + phoneno;
         else return "error";
     }
 
-    public boolean isvalidphone11(String phoneno) {
+    public static boolean isvalidphone11(String phoneno) {
         if (phoneno.isEmpty()) return false;
         if (phoneno.charAt(0) != '0') return false;
 
@@ -411,5 +411,22 @@ public class Normalfunc {
         }
         return retData;
     }
+
+    //get Number Without Country Code
+    public static String getNumberWithoutCountryCode(String st) {
+        String number = "";
+        if (st.charAt(0) == '+' && st.charAt(1) == '8' && st.charAt(2) == '8') {
+
+            for (int i = 3; i < st.length(); i++) {
+                number += st.charAt(i);
+            }
+        } else {
+            number = st;
+        }
+
+
+        return number;
+    }
+
 
 }
