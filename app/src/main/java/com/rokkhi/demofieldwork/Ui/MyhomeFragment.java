@@ -212,7 +212,7 @@ public class MyhomeFragment extends Fragment {
 
 
 
-                                /*final List< String > usertoken = fworkers.getAtoken();
+                                final List< String > usertoken = fworkers.getAtoken();
 
                                 FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(getActivity(), new OnSuccessListener<InstanceIdResult>() {
                                     @Override
@@ -237,7 +237,7 @@ public class MyhomeFragment extends Fragment {
                                                     });
                                         }
                                     }
-                                });*/
+                                });
 
 
                             }else {
