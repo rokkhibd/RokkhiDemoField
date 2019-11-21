@@ -7,10 +7,12 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -118,6 +120,7 @@ public class AddBuildingActivity extends AppCompatActivity {
     AutoCompleteTextView b_status, b_flatfrmt;
 
     int areaCodePos;
+    int districtCodePos;
     List<Long> areaCodeList;
 
     List<Long> districtCodeList;
@@ -133,7 +136,7 @@ public class AddBuildingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_building);
         areaCodeList = new ArrayList<>();
-
+        districtCodeList=new ArrayList<>();
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -212,6 +215,9 @@ public class AddBuildingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 progressBar.setVisibility(View.VISIBLE);
+
+
+                saveImageToStorage();
                 saveBuildingDataInDB();
 
             }
@@ -305,7 +311,7 @@ public class AddBuildingActivity extends AppCompatActivity {
                             pickedImageUri = r.getUri();
                             bitmap = r.getBitmap();
                             circleImageView.setImageBitmap(r.getBitmap());
-                            saveImageToStorage();
+                            //saveImageToStorage();
                         } else {
                             Toast.makeText(AddBuildingActivity.this, r.getError().getMessage(), Toast.LENGTH_LONG).show();
 
@@ -385,9 +391,9 @@ public class AddBuildingActivity extends AppCompatActivity {
 
                     //Toast.makeText(AddBuildingActivity.this, districtValue, Toast.LENGTH_SHORT).show();
 
-                    totalCode = areaCodeList.get(areaCodePos) + "*" + roadListCode + "*" + blockListCode + "*" + houseListCode + "*" + housefrmntListCode + "*" + districtValue;
+                    totalCode = areaCodeList.get(areaCodePos) + "*" + roadListCode + "*" + blockListCode + "*" + houseListCode + "*" + housefrmntListCode + "*" + districtCodeList.get(districtCodePos);
 
-                   // Toast.makeText(AddBuildingActivity.this, ""+totalCode, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddBuildingActivity.this, ""+totalCode, Toast.LENGTH_SHORT).show();
 
 
                     totalHouseCode = areaListCode + "" + roadListCode + "" + blockListCode + "" + houseListCode + "" + housefrmntListCode + "" + districtValue;
@@ -894,7 +900,10 @@ public class AddBuildingActivity extends AppCompatActivity {
 
 
             Normalfunc normalfunc = new Normalfunc();
-            ArrayList<String> code_array=new ArrayList<>(normalfunc.splitchar(totalHouseCode));
+            ArrayList<String> code_array=new ArrayList<>(normalfunc.splitchar(area));
+            code_array.add(road);
+            code_array.add(houseNmbr);
+            code_array.add(totalHouseCode);
 
 
             ArrayList<String> imageurl= new ArrayList<String>();
@@ -1042,7 +1051,7 @@ public class AddBuildingActivity extends AppCompatActivity {
         peopleWeTalkList = rowList.findViewById(R.id.listview);
         areaEdit = rowList.findViewById(R.id.search_edit);
 
-        db.collection("f_bldng_typepeople").addSnapshotListener(new EventListener<QuerySnapshot>() {
+        db.collection("fPeopleType").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 areaList.clear();
@@ -1093,22 +1102,24 @@ public class AddBuildingActivity extends AppCompatActivity {
         db.collection("district").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                areaList.clear();
+                districtList.clear();
 
                 for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
 
-                    String area_district = documentSnapshot.getString("district");
+                    String area_district = documentSnapshot.getString("english");
                     //String area_ban = documentSnapshot.getString("bangla");
                     Long district_code = documentSnapshot.getLong("code");
                     districtCodeList.add(district_code);
 
-
+                    Log.e("xxxx",area_district);
+                    Log.e("xxxx",district_code.toString());
                     //String bcode=documentSnapshot.getString("code");
                     districtList.add(area_district);
+
                     //progressList.setVisibility(View.GONE);
                 }
 
-                adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, areaList);
+                adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, districtList);
                 //customListAdapter=new CustomListAdapter(AddBuildingActivity.this,areaList);
                 adapter.notifyDataSetChanged();
                 districtListView.setAdapter(adapter);
@@ -1125,6 +1136,17 @@ public class AddBuildingActivity extends AppCompatActivity {
         alertDialog.setView(rowList);
         final AlertDialog dialog = alertDialog.create();
         dialog.show();
+
+        districtListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String distrct_code=String.valueOf(parent.getItemAtPosition(position));
+
+                districtCodePos = position;
+                b_district.setText(distrct_code);
+                dialog.dismiss();
+            }
+        });
 
     }
 

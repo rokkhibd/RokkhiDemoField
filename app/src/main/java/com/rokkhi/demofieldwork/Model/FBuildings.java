@@ -31,6 +31,7 @@ public class FBuildings implements Serializable {
     private int longitude=0;
 
 
+
     public FBuildings() {
     }
 
