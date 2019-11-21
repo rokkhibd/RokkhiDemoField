@@ -141,7 +141,6 @@ public class UpdateBldngInfoActivity extends AppCompatActivity implements View.O
 
         house_name.setText(fBuildings.getHousename());
         building_status.setText(fBuildings.getStatus());
-        // followup_date.setText((CharSequence) fBuildings.getFollowupdate());
         total_floor.setText(String.valueOf(fBuildings.getTotalfloor()));
         flat_floor.setText(String.valueOf(fBuildings.getFlatperfloor()));
         house_address.setText(fBuildings.getB_address());
@@ -200,7 +199,6 @@ public class UpdateBldngInfoActivity extends AppCompatActivity implements View.O
             progressDialog.show();
 
             if (pickedImageUri == null) {
-
                 updateBuildingInfo();
             } else {
                 saveImageToStorage();
@@ -382,6 +380,9 @@ public class UpdateBldngInfoActivity extends AppCompatActivity implements View.O
 
         ArrayList<String> b_array = new ArrayList<>(normalfunc.splitchar(update_houseName));
 
+        ArrayList<String> imageurl = new ArrayList<String>();
+        imageurl.add(downloadImageUri);
+
         DocumentReference docRef = db.collection(getString(R.string.col_fBuildings)).document(fBuildings.getBuild_id());
 
         Map<String, Object> map = new HashMap<>();
@@ -391,8 +392,6 @@ public class UpdateBldngInfoActivity extends AppCompatActivity implements View.O
         map.put("status", update_bstatus);
         map.put("updated_at", date);
 
-        ArrayList<String> imageurl = new ArrayList<String>();
-        imageurl.add(downloadImageUri);
 
         map.put("b_imageUrl", imageurl);
 

@@ -44,7 +44,7 @@ public class MyHomeActivity extends BaseActivity {
         new AlertDialog.Builder(this)
                 .setTitle("Exit from the app?")
                 .setIcon(R.drawable.exitblack)
-                .setMessage("Are you sure you want to exit?")
+                .setMessage("Are you sure, you want to exit?")
                 .setNegativeButton(android.R.string.no, null)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     @Override

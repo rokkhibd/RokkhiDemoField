@@ -1009,7 +1009,7 @@ public class AddBuildingActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
 
                 if (task.isSuccessful()) {
-//                    Toast.makeText(AddBuildingActivity.this, "number saved successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddBuildingActivity.this, "number saved successfully", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -1185,11 +1185,16 @@ public class AddBuildingActivity extends AppCompatActivity {
                 statusList.clear();
                 for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                     String status = documentSnapshot.getString("status_type");
-                    statusList.add(status);
+
+                    //Ignore Done status
+                    if (!status.equalsIgnoreCase("Done")){
+                        statusList.add(status);
+                    }
+
                 }
 
                 adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, statusList);
-                //customListAdapter=new CustomListAdapter(AddBuildingActivity.this,areaList);
+
                 adapter.notifyDataSetChanged();
                 statusListView.setAdapter(adapter);
 

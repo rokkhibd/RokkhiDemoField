@@ -175,10 +175,7 @@ public class EditProfileActivity extends AppCompatActivity  implements IPickResu
 
                     }
                 });
-
-
     }
-
 
     public void addalltypes() {
         types = new ArrayList<>();
@@ -198,8 +195,6 @@ public class EditProfileActivity extends AppCompatActivity  implements IPickResu
         lv.setAdapter(valueAdapter);
         alertcompany.show();
 
-
-
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -212,10 +207,7 @@ public class EditProfileActivity extends AppCompatActivity  implements IPickResu
 
     }
 
-
-
     private void updateLabel() {
-
 
         String myFormat = "dd/MM/yyyy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.getDefault());
