@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
@@ -30,7 +29,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.github.ybq.android.spinkit.style.ThreeBounce;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -45,6 +43,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.WriteBatch;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -52,6 +51,7 @@ import com.rokkhi.demofieldwork.Model.AllStringValues;
 import com.rokkhi.demofieldwork.Model.CustomListAdapter;
 import com.rokkhi.demofieldwork.Model.FBPeople;
 import com.rokkhi.demofieldwork.Model.FBuildings;
+import com.rokkhi.demofieldwork.Model.FWorkerBuilding;
 import com.rokkhi.demofieldwork.R;
 import com.rokkhi.demofieldwork.Utils.Normalfunc;
 
@@ -60,16 +60,11 @@ import com.vansuita.pickimage.bundle.PickSetup;
 import com.vansuita.pickimage.dialog.PickImageDialog;
 import com.vansuita.pickimage.listeners.IPickResult;
 
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Nullable;
 
@@ -90,7 +85,7 @@ public class AddBuildingActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     FirebaseStorage firebaseStorage;
     StorageReference addbldngRef;
-    String currentUser;
+    String currentUserID;
 
     ListView roadNumberList, blockList, houseNoList, areaListView, peopleWeTalkList, districtListView;
     EditText roadNumberEdit, blockEdit, houseNoEdit, areaEdit, districtEdit;
@@ -99,7 +94,8 @@ public class AddBuildingActivity extends AppCompatActivity {
     Uri pickedImageUri;
     List<String> areaList = new ArrayList<>();
     List<String> districtList = new ArrayList<>();
-    DocumentReference docref;
+    DocumentReference docref_FBuildings;
+    DocumentReference docref_FWorkersBuildings;
 
     Normalfunc normalfunc = new Normalfunc();
 
@@ -139,13 +135,15 @@ public class AddBuildingActivity extends AppCompatActivity {
         districtCodeList = new ArrayList<>();
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
-        currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        docref = db.collection("fBuildings").document();
+        docref_FBuildings = db.collection(getString(R.string.col_fBuildings)).document();
+
+        docref_FWorkersBuildings = db.collection(getString(R.string.col_fWorkerBuilding)).document();
 
         //addbldngRef = FirebaseStorage.getInstance().getReference().child("fbldngs_photo");
         addbldngRef = FirebaseStorage.getInstance().getReference()
-                .child("fBuildings/" + currentUser + "/pic");
+                .child("fBuildings/" + currentUserID + "/pic");
 
         fbPeople = new FBPeople();
         fBuildings = new FBuildings();
@@ -913,20 +911,40 @@ public class AddBuildingActivity extends AppCompatActivity {
             ArrayList<String> imageurl = new ArrayList<String>();
             imageurl.add(downloadImageUri);
 
-            String build_id = docref.getId();
+            String build_id = docref_FBuildings.getId();
 
+            String fWorkersDocID = docref_FWorkersBuildings.getId();
 
-            fBuildings = new FBuildings(docref.getId(), wholeAddress, totalCode, houseNmbr, road, districtValue, area, flatformat,
+            FWorkerBuilding fWorkerBuilding=new FWorkerBuilding(build_id,fWorkersDocID, currentUserID,status,date,date,totalCode);
+
+            fBuildings = new FBuildings(build_id, wholeAddress, totalCode, houseNmbr, road, districtValue, area, flatformat,
                     flatperFloor, date, housename, totlflr, date, date, status, "Pending", imageurl, code_array, 0, 0);
 
-            db.collection(getString(R.string.col_fBuildings)).document(docref.getId()).set(fBuildings).addOnCompleteListener(new OnCompleteListener<Void>() {
+            WriteBatch batch=db.batch();
+
+
+            DocumentReference fbuildingsReferance= db.collection(getString(R.string.col_fBuildings)).document(build_id);
+            batch.set(fbuildingsReferance,fBuildings);
+
+            DocumentReference fWorkersBuildingsReferance=db.collection(getString(R.string.col_fWorkerBuilding)).document(fWorkersDocID);
+            batch.set(fWorkersBuildingsReferance,fWorkerBuilding);
+            batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    gotoMyHomeActvity();
+                    progressBar.setVisibility(View.GONE);
+
+                }
+            });
+
+
+           /* db.collection(getString(R.string.col_fBuildings)).document(build_id).set(fBuildings).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
 
                     progressBar.setVisibility(View.GONE);
                     if (task.isSuccessful()) {
 
-//                        Toast.makeText(AddBuildingActivity.this, "Data Saved", Toast.LENGTH_SHORT).show();
                         gotoMyHomeActvity();
                     }
                 }
@@ -936,7 +954,7 @@ public class AddBuildingActivity extends AppCompatActivity {
                     progressBar.setVisibility(View.GONE);
                     Toast.makeText(AddBuildingActivity.this, "Error" + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
-            });
+            });*/
         }
 
 
