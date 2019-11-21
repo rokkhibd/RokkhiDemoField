@@ -59,6 +59,15 @@ public class Normalfunc {
 
     }
 
+    public String makephone11(String phoneno){
+        if(isvalidphone14(phoneno)){
+            phoneno=phoneno.replace("+88","");
+            return  phoneno;
+        }
+        if(isvalidphone11(phoneno))return phoneno;
+        else return "error";
+    }
+
     public void removeTokenId() {
 
 //        if(signoutintent.getExtras().getBoolean("signout",false)) FirebaseAuth.getInstance().signOut();

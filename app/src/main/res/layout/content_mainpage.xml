@@ -353,18 +353,15 @@
                         android:layout_centerHorizontal="true"
                         />
 
-
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/active_building"
                         android:layout_centerHorizontal="true"
-                        android:text="Active buildings"
+                        android:text="Live buildings"
                         android:layout_marginBottom="10dp"
                         android:layout_centerInParent="true"
                         android:textStyle="bold"
-
                         />
 
                 </RelativeLayout>

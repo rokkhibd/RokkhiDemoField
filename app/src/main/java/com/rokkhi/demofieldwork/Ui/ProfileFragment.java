@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-
 import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Log;
@@ -31,6 +30,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.SetOptions;
 import com.rokkhi.demofieldwork.Model.FPayments;
 import com.rokkhi.demofieldwork.Model.Users;
 import com.rokkhi.demofieldwork.R;
@@ -38,6 +38,7 @@ import com.rokkhi.demofieldwork.Utils.Normalfunc;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -59,6 +60,7 @@ public class ProfileFragment extends Fragment {
     ProgressBar pro;
     Normalfunc normalfunc;
     String userid="none";
+    String bkashnumber="none";
 
     private long mLastClickTime = 0;
 
@@ -121,8 +123,18 @@ public class ProfileFragment extends Fragment {
                 View convertView = (View) inflater.inflate(R.layout.confirm_bkash, null);
                 EditText input= convertView.findViewById(R.id.input);
                 Button done = convertView.findViewById(R.id.done);
+                Button cancel = convertView.findViewById(R.id.cancel);
                 ProgressBar progressBar= convertView.findViewById(R.id.pro);
 
+                if(!bkashnumber.equals("none"))input.setText(normalfunc.makephone11(bkashnumber));
+
+                cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        alertDialog.dismiss();
+                    }
+                });
+                
                 done.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -134,8 +146,6 @@ public class ProfileFragment extends Fragment {
                         input.setError(null);
                         // Store values at the time of the login attempt.
                         final String bkashtext = input.getText().toString();
-
-
                         boolean cancel = false;
                         View focusView = null;
 
@@ -158,22 +168,24 @@ public class ProfileFragment extends Fragment {
 
 
                         if (cancel) {
+                            Log.d(TAG, "onClick: yyy1 ");
                             // There was an error; don't attempt login and focus the first
                             // form field with an error.
                             focusView.requestFocus();
                             //progressBar.setVisibility(View.GONE);
                         } else {
+                            Log.d(TAG, "onClick: yyy2");
                             String bkashtext2=normalfunc.makephone14(bkashtext);
-                            pro.setVisibility(View.VISIBLE);
+                            progressBar.setVisibility(View.VISIBLE);
+                            Map<String,Object>mm=new HashMap<>();
+                            mm.put("bkash_no",bkashtext2);
                             firebaseFirestore.collection(getString(R.string.col_fPayment))
-                                    .document(userid).update("bkash_no",bkashtext2)
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if(task.isSuccessful()){
-                                                pro.setVisibility(View.GONE);
-                                                alertDialog.dismiss();
-                                            }
+                                    .document(userid).set(mm, SetOptions.merge())
+                                    .addOnCompleteListener(task -> {
+                                        if(task.isSuccessful()){
+                                            Log.d(TAG, "onClick: yyy3 ");
+                                            progressBar.setVisibility(View.GONE);
+                                            alertDialog.dismiss();
                                         }
                                     });
                         }
@@ -225,12 +237,14 @@ public class ProfileFragment extends Fragment {
                             return;
                         }
 
-                        if(documentSnapshot.exists()){
+                        if(documentSnapshot!=null && documentSnapshot.exists()){
                             pro.setVisibility(View.GONE);
 
 //                            TextView tearning,dearning,tref,dref,tmeeting,dmeeting,tbuilding,dbuilding,abuilding;
                             FPayments fPayments= documentSnapshot.toObject(FPayments.class);
-                            bkashno.setText(fPayments.getBkash_no());
+                            bkashnumber=fPayments.getBkash_no();
+                            bkashno.setText(normalfunc.makephone11(bkashnumber));
+
                             tearning.setText(fPayments.getTotal_earning());
                             dearning.setText(fPayments.getDue_earning());
                             tref.setText(fPayments.getTotal_referral());

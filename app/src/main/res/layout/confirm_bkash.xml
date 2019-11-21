@@ -44,10 +44,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/input"
-        android:layout_marginTop="10dp"
+        android:layout_margin="10dp"
         android:background="@drawable/less_round_button"
         android:backgroundTint="@color/orange"
         android:text="Done"
+        android:textColor="@color/white" />
+    <Button
+        android:id="@+id/cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/done"
+        android:layout_margin="10dp"
+        android:background="@drawable/less_round_button"
+        android:backgroundTint="@color/darkRed"
+        android:text="Cancel"
         android:textColor="@color/white" />
 
     <ProgressBar

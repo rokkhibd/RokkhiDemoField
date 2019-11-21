@@ -235,8 +235,6 @@ public class MyhomeFragment extends Fragment {
                                                         }
                                                     });
                                         }
-
-
                                     }
                                 });
 
