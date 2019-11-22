@@ -14,8 +14,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -55,17 +57,17 @@ public class PaymentHistoryFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
-       recyclerView = view.findViewById(R.id.paymentHistoryRecyclerViewID);
+        recyclerView = view.findViewById(R.id.paymentHistoryRecyclerViewID);
         firebaseFirestore = FirebaseFirestore.getInstance();
         paymentHistoryList = new ArrayList<>();
         progressDialog = new ProgressDialog(view.getContext());
-        context=view.getContext();
+        context = view.getContext();
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
         //Load User Data
-       loadPaymentData();
+        loadPaymentData();
 
 
     }
@@ -74,9 +76,10 @@ public class PaymentHistoryFragment extends Fragment {
 
         progressDialog.setMessage("Executing Action...");
         progressDialog.setCancelable(false);
+        progressDialog.show();
 
 
-        firebaseFirestore.collection("paymentHistory").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        firebaseFirestore.collection(getString(R.string.col_fpaymentHistory)).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
@@ -87,13 +90,22 @@ public class PaymentHistoryFragment extends Fragment {
                         paymentHistoryList.add(paymentHistory);
                     }
 
-                    paymentListAdapter = new PaymentListAdapter(paymentHistoryList,context);
+                    paymentListAdapter = new PaymentListAdapter(paymentHistoryList, context);
                     recyclerView.setAdapter(paymentListAdapter);
 
                     progressDialog.dismiss();
 
+                } else {
+                    Toast.makeText(context, "Data Load Failed", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
                 }
 
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(context, "Data Load Failed", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
             }
         });
     }

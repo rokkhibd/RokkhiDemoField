@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.rokkhi.demofieldwork.Ui.MyhomeFragment;
 import com.rokkhi.demofieldwork.Ui.ProfileFragment;
+/*
 
 public class MainActivity extends AppCompatActivity {
 
@@ -70,3 +71,4 @@ public class MainActivity extends AppCompatActivity {
                 }).create().show();
     }
 }
+*/

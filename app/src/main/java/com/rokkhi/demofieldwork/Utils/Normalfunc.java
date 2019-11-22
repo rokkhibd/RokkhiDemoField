@@ -20,7 +20,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.rokkhi.demofieldwork.MainActivity;
 import com.rokkhi.demofieldwork.Model.LogSession;
 import com.rokkhi.demofieldwork.R;
 import com.rokkhi.demofieldwork.Ui.MyHomeActivity;

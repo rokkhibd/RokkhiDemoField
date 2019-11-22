@@ -100,8 +100,6 @@ public class UpdateBldngInfoActivity extends AppCompatActivity implements View.O
     ProgressDialog progressDialog;
     List<String> statusList = new ArrayList<>();
 
-    String buildid;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,10 +107,7 @@ public class UpdateBldngInfoActivity extends AppCompatActivity implements View.O
         progressDialog = new ProgressDialog(this);
 
         fBuildings = new FBuildings();
-        buildid= getIntent().getStringExtra("buildingID");
-
-        Log.e("xxx",buildid);
-
+        fBuildings = (FBuildings) getIntent().getSerializableExtra("fbuildings");
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
@@ -136,7 +131,7 @@ public class UpdateBldngInfoActivity extends AppCompatActivity implements View.O
         followup_date = findViewById(R.id.update_bldng_followupdate);
         update_bldngImage = findViewById(R.id.update_bldng_image);
 
-        //getThePeoplesInfo();
+        getThePeoplesInfo();
         normalfunc = new Normalfunc();
         date = Calendar.getInstance().getTime();
 
@@ -306,7 +301,7 @@ public class UpdateBldngInfoActivity extends AppCompatActivity implements View.O
 
     }
 
-    /*private void getThePeoplesInfo() {
+    private void getThePeoplesInfo() {
 
         db.collection(getString(R.string.col_fBbuildingContacts)).whereEqualTo("b_code", fBuildings.getB_code()).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -323,7 +318,7 @@ public class UpdateBldngInfoActivity extends AppCompatActivity implements View.O
                     }
                 });
 
-    }*/
+    }
 
 
     public void saveImageToStorage() {

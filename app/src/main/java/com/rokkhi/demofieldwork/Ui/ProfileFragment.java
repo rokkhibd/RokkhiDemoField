@@ -218,8 +218,13 @@ public class ProfileFragment extends Fragment {
                         if(documentSnapshot!=null && documentSnapshot.exists()){
                             Users users= documentSnapshot.toObject(Users.class);
                             name.setText(users.getName());
-                            if(!users.getThumb().isEmpty() && !users.getThumb().equals("none"))
-                                Glide.with(context).load(users.getThumb()).into(propic);
+                            if (users.getThumb()!=null){
+                                if(!users.getThumb().isEmpty() && !users.getThumb().equals("none")){
+
+                                    Glide.with(context).load(users.getThumb()).into(propic);
+                                }
+
+                            }
                             mailid.setText(users.getMail());
                             joiningDate.setText(normalfunc.getDateMMMdyyyy(users.getJoindate()));
                         }

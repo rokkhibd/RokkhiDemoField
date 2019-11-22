@@ -15,7 +15,7 @@
         <activity android:name=".Ui.ProfileActivity" />
         <activity android:name=".Ui.UpdateBldngInfoActivity" />
         <activity android:name=".Ui.FworkerProfileActivity" />
-        <activity android:name=".MainActivity" />
+        <!--<activity android:name=".MainActivity" />-->
         <activity android:name=".Ui.AddBuildingActivity" />
         <activity android:name=".Ui.MyHomeActivity">
             <intent-filter>

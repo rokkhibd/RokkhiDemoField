@@ -37,7 +37,7 @@ public class PaymentListAdapter extends RecyclerView.Adapter<PaymentListAdapter.
     @Override
     public void onBindViewHolder(@NonNull BuildingViewHolder holder, int position) {
 
-        holder.paymentType.setText(paymentHistoryList.get(position).getAmount());
+        holder.paymentType.setText(String.valueOf(paymentHistoryList.get(position).getAmount()));
         holder.payment_amount.setText(paymentHistoryList.get(position).getPayment_type());
         holder.payment_date.setText(paymentHistoryList.get(position).getMonth().toString());
         holder.payment_status.setText(paymentHistoryList.get(position).getPayment_status());
