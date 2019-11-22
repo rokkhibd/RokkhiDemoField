@@ -48,7 +48,6 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
-import com.rokkhi.demofieldwork.MainActivity;
 import com.rokkhi.demofieldwork.Model.BuildingsListAdapter;
 import com.rokkhi.demofieldwork.Model.FBuildings;
 import com.rokkhi.demofieldwork.Model.FWorkerBuilding;

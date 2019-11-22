@@ -99,6 +99,7 @@ public class UpdateBldngInfoActivity extends AppCompatActivity implements View.O
     EditText statusEdit;
     ProgressDialog progressDialog;
     List<String> statusList = new ArrayList<>();
+    String builid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +108,7 @@ public class UpdateBldngInfoActivity extends AppCompatActivity implements View.O
         progressDialog = new ProgressDialog(this);
 
         fBuildings = new FBuildings();
-        fBuildings = (FBuildings) getIntent().getSerializableExtra("fbuildings");
+        builid = getIntent().getStringExtra("buildingID");
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
@@ -131,7 +132,7 @@ public class UpdateBldngInfoActivity extends AppCompatActivity implements View.O
         followup_date = findViewById(R.id.update_bldng_followupdate);
         update_bldngImage = findViewById(R.id.update_bldng_image);
 
-        getThePeoplesInfo();
+        //getThePeoplesInfo();
         normalfunc = new Normalfunc();
         date = Calendar.getInstance().getTime();
 
@@ -139,14 +140,14 @@ public class UpdateBldngInfoActivity extends AppCompatActivity implements View.O
 
         Wave wave = new Wave();
 
-        house_name.setText(fBuildings.getHousename());
+        /*house_name.setText(fBuildings.getHousename());
         building_status.setText(fBuildings.getStatus());
         total_floor.setText(String.valueOf(fBuildings.getTotalfloor()));
         flat_floor.setText(String.valueOf(fBuildings.getFlatperfloor()));
         house_address.setText(fBuildings.getB_address());
         flat_format.setText(fBuildings.getFlatformat());
         Glide.with(this).load(fBuildings.getB_imageUrl().get(0)).fitCenter().placeholder(R.drawable.building).into(houseImage);
-
+*/
         allStringValues = new AllStringValues();
         updateInfo_Button.setOnClickListener(this);
         house_address.setOnClickListener(this);
@@ -301,7 +302,7 @@ public class UpdateBldngInfoActivity extends AppCompatActivity implements View.O
 
     }
 
-    private void getThePeoplesInfo() {
+    /*private void getThePeoplesInfo() {
 
         db.collection(getString(R.string.col_fBbuildingContacts)).whereEqualTo("b_code", fBuildings.getB_code()).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -318,7 +319,7 @@ public class UpdateBldngInfoActivity extends AppCompatActivity implements View.O
                     }
                 });
 
-    }
+    }*/
 
 
     public void saveImageToStorage() {
