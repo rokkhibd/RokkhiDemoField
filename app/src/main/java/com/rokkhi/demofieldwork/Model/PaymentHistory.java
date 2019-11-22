@@ -8,7 +8,7 @@ public class PaymentHistory {
 
     private String id="none";
     private String f_uid="none";
-    private String payment_type="none";
+    private String payment_type ="none";
     private String build_id="none";
     private int amount=0;
     private String payment_status = "none";

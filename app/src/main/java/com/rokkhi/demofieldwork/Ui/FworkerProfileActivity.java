@@ -704,7 +704,7 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
             List<String> atoken = fWorkers.getAtoken();
             List<String> itoken = fWorkers.getItoken();
 
-            fWorkers = new FWorkers(userId, fw_nid, fphone, fw_uni, fw_address, date, date, u_array, atoken, itoken);
+            fWorkers = new FWorkers(userId, fw_nid, fphone, fw_uni, fw_address, date, date,false, u_array, atoken, itoken);
             db.collection("fWorkers").document(userId)
                     .set(fWorkers)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
