@@ -74,7 +74,7 @@ public class EditProfileActivity extends AppCompatActivity  implements IPickResu
     TextView upload;
     EditText name,usermail,gender,bday;
     Button done;
-    String picurl;
+    String picurl="";
     String mFileUri = "";
     private Bitmap bitmap = null;
     ProgressBar progressBar;
@@ -290,14 +290,6 @@ public class EditProfileActivity extends AppCompatActivity  implements IPickResu
                         //.setOnClick(this)
                         .show(EditProfileActivity.this);
 
-
-
-
-
-
-
-
-
             }
         });
 
@@ -344,7 +336,7 @@ public class EditProfileActivity extends AppCompatActivity  implements IPickResu
                     cancel = true;
 
                 }
-                if (normalfunc.isValidEmail(mailtext)) {
+                if (!normalfunc.isValidEmail(mailtext)) {
                     usermail.setError(getString(R.string.fui_invalid_email_address));
                     focusView = usermail;
                     cancel = true;
@@ -383,13 +375,7 @@ public class EditProfileActivity extends AppCompatActivity  implements IPickResu
         ll.add(userphone);
         ll.add(usermail.getText().toString().toLowerCase());
 
-
-
-
-
-
-
-        users2= new Users(name.getText().toString(),"","",userid,mdate,users.getJoindate(),gender.getText().toString()
+        users2= new Users(name.getText().toString(),picurl,picurl,userid,mdate,users.getJoindate(),gender.getText().toString()
         ,usermail.getText().toString(),users.getPhone(),ll);
 
         WriteBatch batch = firebaseFirestore.batch();

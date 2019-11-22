@@ -225,7 +225,7 @@ public class MyhomeFragment extends Fragment {
                                         Log.d(TAG, "onSuccess: tttt7 "+signoutstate);
                                         //signoutstate=true;
 
-                                        if (activity!=null){
+                                        if (getActivity()!=null){
 
                                             if (usertoken != null && !usertoken.contains(utoken)  ) {
                                                 String logID= db.collection(getString(R.string.col_loginsession)).document().getId();

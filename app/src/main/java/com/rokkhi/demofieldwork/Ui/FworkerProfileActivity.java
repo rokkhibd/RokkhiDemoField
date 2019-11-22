@@ -111,7 +111,7 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
     FirebaseStorage firebaseStorage;
     StorageReference storageRef;
     FirebaseUser currentUser;
-    String userId, downloadImageUri;
+    String userId, downloadImageUri="";
 
     DatePickerDialog datePickerDialog;
     CircleImageView circleImageView;
