@@ -1013,10 +1013,7 @@ public class AddBuildingActivity extends AppCompatActivity {
                     }
                 }
             });
-
         }
-
-
 
     }
 

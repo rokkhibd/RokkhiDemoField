@@ -5,7 +5,7 @@
         android:id="@+id/navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:itemIconTint="@color/orange"
+        app:itemIconTint="@drawable/selector_bottombar_text"
         app:itemTextColor="@drawable/selector_bottombar_text"
 
         app:itemBackground="@color/grey_100"
