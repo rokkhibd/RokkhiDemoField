@@ -137,14 +137,6 @@ public class UpdateBldngInfoActivity extends AppCompatActivity implements View.O
         date = Calendar.getInstance().getTime();
         updateInfo_Button = findViewById(R.id.update_bldng_updatebtn);
 
-        /*house_name.setText(fBuildings.getHousename());
-        building_status.setText(fBuildings.getStatus());
-        total_floor.setText(String.valueOf(fBuildings.getTotalfloor()));
-        flat_floor.setText(String.valueOf(fBuildings.getFlatperfloor()));
-        house_address.setText(fBuildings.getB_address());
-        flat_format.setText(fBuildings.getFlatformat());
-        Glide.with(this).load(fBuildings.getB_imageUrl().get(0)).fitCenter().placeholder(R.drawable.building).into(houseImage);
-*/
         allStringValues = new AllStringValues();
         updateInfo_Button.setOnClickListener(this);
         house_address.setOnClickListener(this);
