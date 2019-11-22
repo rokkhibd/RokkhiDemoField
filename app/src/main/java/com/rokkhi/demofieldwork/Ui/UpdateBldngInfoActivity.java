@@ -12,7 +12,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,11 +22,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.github.ybq.android.spinkit.style.Wave;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -99,7 +96,8 @@ public class UpdateBldngInfoActivity extends AppCompatActivity implements View.O
     EditText statusEdit;
     ProgressDialog progressDialog;
     List<String> statusList = new ArrayList<>();
-    String builid;
+    String builidID;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,12 +106,14 @@ public class UpdateBldngInfoActivity extends AppCompatActivity implements View.O
         progressDialog = new ProgressDialog(this);
 
         fBuildings = new FBuildings();
-        builid = getIntent().getStringExtra("buildingID");
+        builidID = getIntent().getStringExtra("buildingID");
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
         currentUser = mAuth.getCurrentUser();
         userId = currentUser.getUid();
+
+        getBuildingsInformation();
 
         storageRef = FirebaseStorage.getInstance().getReference()
                 .child("fBuildings/" + userId + "/pic");
@@ -135,10 +135,7 @@ public class UpdateBldngInfoActivity extends AppCompatActivity implements View.O
         //getThePeoplesInfo();
         normalfunc = new Normalfunc();
         date = Calendar.getInstance().getTime();
-
         updateInfo_Button = findViewById(R.id.update_bldng_updatebtn);
-
-        Wave wave = new Wave();
 
         /*house_name.setText(fBuildings.getHousename());
         building_status.setText(fBuildings.getStatus());
@@ -186,6 +183,29 @@ public class UpdateBldngInfoActivity extends AppCompatActivity implements View.O
             }
         });
 
+
+    }
+//get the Buildings Information
+    private void getBuildingsInformation() {
+
+        db.collection(getString(R.string.col_fBuildings)).document(builidID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                if (task.isSuccessful()){
+                    fBuildings = task.getResult().toObject(FBuildings.class);
+                    house_name.setText(fBuildings.getHousename());
+                    building_status.setText(fBuildings.getStatus());
+                    total_floor.setText(String.valueOf(fBuildings.getTotalfloor()));
+                    flat_floor.setText(String.valueOf(fBuildings.getFlatperfloor()));
+                    house_address.setText(fBuildings.getB_address());
+                    flat_format.setText(fBuildings.getFlatformat());
+                    Glide.with(UpdateBldngInfoActivity.this).load(fBuildings.getB_imageUrl().get(0)).fitCenter().placeholder(R.drawable.building).into(houseImage);
+
+
+                }
+            }
+        });
 
     }
 
@@ -403,8 +423,8 @@ public class UpdateBldngInfoActivity extends AppCompatActivity implements View.O
                 if (task.isSuccessful()) {
 
                     progressDialog.dismiss();
-                    startActivity(new Intent(UpdateBldngInfoActivity.this,MyHomeActivity.class)
-                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                    startActivity(new Intent(UpdateBldngInfoActivity.this, MyHomeActivity.class)
+                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
 
                     Toast.makeText(UpdateBldngInfoActivity.this, "Data Updated Successfully", Toast.LENGTH_SHORT).show();
                 }
