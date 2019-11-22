@@ -11,13 +11,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rokkhi.demofieldwork.R;
+import com.rokkhi.demofieldwork.Utils.Normalfunc;
 
 import java.util.List;
 
-public class PaymentListAdapter extends RecyclerView.Adapter<PaymentListAdapter.BuildingViewHolder>{
+public class PaymentListAdapter extends RecyclerView.Adapter<PaymentListAdapter.BuildingViewHolder> {
 
     List<PaymentHistory> paymentHistoryList;
     Context context;
+    Normalfunc normalfunc;
 
     public PaymentListAdapter(List<PaymentHistory> paymentHistoryList, Context context) {
         this.paymentHistoryList = paymentHistoryList;
@@ -29,7 +31,7 @@ public class PaymentListAdapter extends RecyclerView.Adapter<PaymentListAdapter.
     public BuildingViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
 
-        View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.payment_history_layout,parent,false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.payment_history_layout, parent, false);
 
         return new BuildingViewHolder(v);
     }
@@ -39,7 +41,7 @@ public class PaymentListAdapter extends RecyclerView.Adapter<PaymentListAdapter.
 
         holder.paymentType.setText(String.valueOf(paymentHistoryList.get(position).getAmount()));
         holder.payment_amount.setText(paymentHistoryList.get(position).getPayment_type());
-        holder.payment_date.setText(paymentHistoryList.get(position).getMonth().toString());
+        holder.payment_date.setText(normalfunc.getDatehhmmdMMMMyyyy(paymentHistoryList.get(position).getMonth()));
         holder.payment_status.setText(paymentHistoryList.get(position).getPayment_status());
 
     }
@@ -51,15 +53,15 @@ public class PaymentListAdapter extends RecyclerView.Adapter<PaymentListAdapter.
 
     public class BuildingViewHolder extends RecyclerView.ViewHolder {
 
-       TextView paymentType,payment_amount,payment_date,payment_status;
+        TextView paymentType, payment_amount, payment_date, payment_status;
 
         public BuildingViewHolder(@NonNull final View itemView) {
             super(itemView);
-
-            paymentType=itemView.findViewById(R.id.payment_type);
-            payment_amount=itemView.findViewById(R.id.payment_amount);
-            payment_date=itemView.findViewById(R.id.payment_date);
-            payment_status=itemView.findViewById(R.id.payment_status);
+            normalfunc = new Normalfunc();
+            paymentType = itemView.findViewById(R.id.payment_type);
+            payment_amount = itemView.findViewById(R.id.payment_amount);
+            payment_date = itemView.findViewById(R.id.payment_date);
+            payment_status = itemView.findViewById(R.id.payment_status);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
