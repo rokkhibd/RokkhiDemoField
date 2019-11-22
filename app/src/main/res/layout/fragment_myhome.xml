@@ -43,143 +43,13 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/myHomeFrag_cardview"
-        android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:layout_below="@id/appbar"
-        android:layout_margin="10dp"
-        android:visibility="gone"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="5dp">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/round_edittext">
-
-            <ProgressBar
-                android:id="@+id/profile_progress"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:visibility="gone" />
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/fw_myhomefrag_image"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="20dp"
-                android:src="@drawable/maleone" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@id/fw_myhomefrag_image"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/txtname"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="10dp"
-                    android:text="Name: "
-                    android:textSize="15sp"
-                    android:textStyle="italic" />
-
-                <TextView
-                    android:id="@+id/myHome_frag_fwname"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="1dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_toRightOf="@id/txtname"
-                    android:gravity="center_horizontal"
-                    android:text="Md.Rejoan Rahman"
-                    android:textColor="@color/black"
-                    android:textSize="15sp" />
-
-                <LinearLayout
-                    android:id="@+id/layout_one"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/txtname"
-                    android:layout_marginTop="5dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/txt1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="5dp"
-                        android:text="Total Earn:"
-                        android:textSize="15sp"
-                        android:textStyle="italic" />
-
-
-                    <TextView
-                        android:id="@+id/myHome_frag_fwtotlearn"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:fontFamily="@font/robotocondensebold"
-                        android:paddingLeft="10dp"
-                        android:text="800 tk"
-                        android:textColor="@color/orange"
-                        android:textSize="20sp"
-                        android:textStyle="italic" />
-
-                </LinearLayout>
-
-                <LinearLayout
-
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/layout_one"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/txt2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="5dp"
-                        android:text="Due Payment:"
-                        android:textSize="15sp"
-                        android:textStyle="italic"
-                        android:visibility="visible" />
-
-                    <TextView
-                        android:id="@+id/myHome_frag_fwduepayment"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/txt2"
-                        android:fontFamily="@font/robotocondensebold"
-                        android:paddingLeft="10dp"
-                        android:text="400 tk"
-                        android:textColor="@color/orange"
-                        android:textSize="20sp"
-                        android:textStyle="italic"
-                        android:visibility="visible" />
-
-
-                </LinearLayout>
-
-            </RelativeLayout>
-
-        </RelativeLayout>
-    </androidx.cardview.widget.CardView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/myhome_frag_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/myHomeFrag_cardview"
+        android:layout_below="@id/appbar"
         android:layout_margin="10dp"
         tools:listitem="@layout/home_list_layout" />
 
@@ -193,7 +63,8 @@
         android:src="@drawable/plus" />
 
 
-    <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
+    <com.github.ybq.android.spinkit.SpinKitView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/spin_kit"
         style="@style/SpinKitView.Large.Wave"
         android:layout_width="50dp"

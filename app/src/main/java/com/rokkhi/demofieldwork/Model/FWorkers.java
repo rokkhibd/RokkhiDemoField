@@ -13,6 +13,7 @@ public class FWorkers {
     private String fw_address="none";
     private Date created_at=new Date();
     private Date updated_at=new Date();
+    private boolean trained=false;
     private List<String> u_array= new ArrayList<>();
     private List<String> atoken= new ArrayList<>();
     private List<String> itoken= new ArrayList<>();
@@ -21,7 +22,7 @@ public class FWorkers {
     public FWorkers() {
     }
 
-    public FWorkers(String user_id, String fw_nid, String fw_phone, String fw_university, String fw_address, Date created_at, Date updated_at, List<String> u_array, List<String> atoken, List<String> itoken) {
+    public FWorkers(String user_id, String fw_nid, String fw_phone, String fw_university, String fw_address, Date created_at, Date updated_at, boolean trained, List<String> u_array, List<String> atoken, List<String> itoken) {
         this.user_id = user_id;
         this.fw_nid = fw_nid;
         this.fw_phone = fw_phone;
@@ -29,6 +30,7 @@ public class FWorkers {
         this.fw_address = fw_address;
         this.created_at = created_at;
         this.updated_at = updated_at;
+        this.trained = trained;
         this.u_array = u_array;
         this.atoken = atoken;
         this.itoken = itoken;
@@ -88,6 +90,14 @@ public class FWorkers {
 
     public void setUpdated_at(Date updated_at) {
         this.updated_at = updated_at;
+    }
+
+    public boolean isTrained() {
+        return trained;
+    }
+
+    public void setTrained(boolean trained) {
+        this.trained = trained;
     }
 
     public List<String> getU_array() {

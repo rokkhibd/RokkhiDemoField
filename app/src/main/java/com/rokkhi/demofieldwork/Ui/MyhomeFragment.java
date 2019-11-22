@@ -10,6 +10,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,6 +44,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
@@ -73,8 +75,10 @@ public class MyhomeFragment extends Fragment {
     Context context;
     FloatingActionButton flotbtn;
     RecyclerView recyclerView;
-    List<FBuildings> fBuildingsList;
+    List<FWorkerBuilding> fBuildingsList;
+    private boolean isLastItemReached = false;
     FirebaseFirestore db;
+    private DocumentSnapshot lastVisible=null;
     BuildingsListAdapter buildingsListAdapter;
     ProgressBar progressBar;
 
@@ -89,6 +93,7 @@ public class MyhomeFragment extends Fragment {
     SharedPreferences sharedPref;
 
     boolean signoutstate=false;
+    boolean shouldscrol=true;
 
 
     TextView f_name;
@@ -126,32 +131,24 @@ public class MyhomeFragment extends Fragment {
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         editor = sharedPref.edit();
 
-        f_name=view.findViewById(R.id.myHome_frag_fwname);
-        profile_progressBar=view.findViewById(R.id.profile_progress);
         spinKitProgress=view.findViewById(R.id.spin_kit);
-        profileImage=view.findViewById(R.id.fw_myhomefrag_image);
         logout=view.findViewById(R.id.logout_image);
 
         Wave wave=new Wave();
         spinKitProgress.setIndeterminateDrawable(wave);
 
-        profile_progressBar.setVisibility(View.VISIBLE);
 
         checkUserExistence();
         progressBar=view.findViewById(R.id.progressbar);
         recyclerView=view.findViewById(R.id.myhome_frag_recyclerview);
-        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getContext());
-        recyclerView.setHasFixedSize(true);
-        linearLayoutManager.setReverseLayout(true);
-        linearLayoutManager.setStackFromEnd(true);
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
 
         fBuildingsList=new ArrayList<>();
-        buildingsListAdapter=new BuildingsListAdapter(fBuildingsList);
-        recyclerView.setAdapter(buildingsListAdapter);
+
 
         spinKitProgress.setVisibility(View.VISIBLE);
-        gettingAllHouseData();
+
 //      shoWorkerDetails();
 
         flotbtn = view.findViewById(R.id.floating_btn);
@@ -199,12 +196,13 @@ public class MyhomeFragment extends Fragment {
                 }
                 else{
                     userID=firebaseUser.getUid();
+                    getfirstdata();
                     final String user_id=firebaseAuth.getCurrentUser().getUid();
 
                     db.collection(getString(R.string.col_fWorkers)).document(user_id).addSnapshotListener(new EventListener<DocumentSnapshot>() {
                         @Override
                         public void onEvent(@javax.annotation.Nullable DocumentSnapshot documentSnapshot, @javax.annotation.Nullable FirebaseFirestoreException e) {
-                            profile_progressBar.setVisibility(View.GONE);
+
 
                             if (documentSnapshot!=null && documentSnapshot.exists()){
 //                                String name=documentSnapshot.getString("fw_name");
@@ -261,51 +259,120 @@ public class MyhomeFragment extends Fragment {
 
         Intent intent=new Intent(getContext(),FworkerProfileActivity.class);
         startActivity(intent);
+        if(getActivity()!=null)getActivity().finish();
+
+    }
+
+
+    public void getfirstdata(){
+
+        spinKitProgress.setVisibility(View.VISIBLE);
+        Log.d(TAG, "getfirstdata: ttt2 "+userID);
+
+        db.collection(getString(R.string.col_fWorkerBuilding)).whereEqualTo("f_uid",userID)
+                .orderBy("updated_at", Query.Direction.DESCENDING).limit(10)
+                .get().
+                addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            fBuildingsList.clear();
+
+                            for(DocumentSnapshot d:task.getResult()){
+
+                                FWorkerBuilding fb=d.toObject(FWorkerBuilding.class);
+
+                                fBuildingsList.add(fb);
+                            }
+                            Log.d(TAG, "onComplete: ttt "+ fBuildingsList.size());
+                            spinKitProgress.setVisibility(View.GONE);
+
+                            buildingsListAdapter=new BuildingsListAdapter(fBuildingsList,context);
+                            buildingsListAdapter.setHasStableIds(true);
+                            recyclerView.setAdapter(buildingsListAdapter);
+                            recyclerView.setAdapter(buildingsListAdapter);
+                            int xx=task.getResult().size();
+                            if(xx>0)lastVisible = task.getResult().getDocuments().get(xx - 1);
+                            loadmoredata();
+                        }
+                    }
+                });
+    }
+
+    public void loadmoredata(){
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged( RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled( RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+
+                LinearLayoutManager linearLayoutManager = ((LinearLayoutManager) recyclerView.getLayoutManager());
+                int firstVisibleItemPosition = linearLayoutManager.findFirstVisibleItemPosition();
+                int visibleItemCount = linearLayoutManager.getChildCount();
+                int totalItemCount = linearLayoutManager.getItemCount();
+
+                Log.d(TAG, "onScrollChange: item dekhi "+ firstVisibleItemPosition +" "+ visibleItemCount+" "+totalItemCount);
+
+
+                if ((firstVisibleItemPosition + visibleItemCount == totalItemCount) && !isLastItemReached && shouldscrol
+                        && lastVisible!=null) {
+                    progressBar.setVisibility(View.VISIBLE);
+                    shouldscrol=false;
+                    Log.d(TAG, "onScrolled: mmmmll dhukse");
+                    Query nextQuery;
+                    nextQuery= db.collection(getString(R.string.col_fWorkerBuilding)).whereEqualTo("f_uid",userID)
+                            .orderBy("updated_at", Query.Direction.DESCENDING).startAfter(lastVisible).limit(10);
+                    nextQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete( Task<QuerySnapshot> t) {
+                            if (t.isSuccessful()) {
+                                // list.clear();
+
+                                for (DocumentSnapshot d : t.getResult()) {
+                                    FWorkerBuilding fWorkerBuilding = d.toObject(FWorkerBuilding.class);
+                                    fBuildingsList.add(fWorkerBuilding);
+                                }
+                                shouldscrol=true;
+                                progressBar.setVisibility(View.GONE);
+                                buildingsListAdapter.notifyDataSetChanged();
+                                int xx=t.getResult().size();
+                                if(xx>0)lastVisible = t.getResult().getDocuments().get(xx - 1);
+
+                                if (t.getResult().size() < 10) {
+                                    isLastItemReached = true;
+                                    progressBar.setVisibility(View.GONE);
+                                }
+                            }
+                        }
+                    });
+                }
+                else{
+                    progressBar.setVisibility(View.GONE);
+                }
+            }
+        });
+
+
+
+
 
     }
 
     public void gettingAllHouseData(){
 
-        db.collection(getString(R.string.col_fWorkerBuilding)).whereEqualTo("f_uid",userID).get().
-                addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()){
-
-                            for(DocumentSnapshot d:task.getResult()){
-
-                                FBuildings fb=d.toObject(FBuildings.class);
-
-                                fBuildingsList.add(fb);
-                            }
-                            buildingsListAdapter.notifyDataSetChanged();
-                        }
-                    }
-                });
 
 
 
 
 
-        /*db.collection(getString(R.string.col_fBuildings)).get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 
-                        spinKitProgress.setVisibility(View.GONE);
-
-                        if (!queryDocumentSnapshots.isEmpty()){
-                            List<DocumentSnapshot> list=queryDocumentSnapshots.getDocuments();
-
-                            for (DocumentSnapshot d:list){
-                                FBuildings fb=d.toObject(FBuildings.class);
-                                //fb.setDocId(d.getId());
-                                fBuildingsList.add(fb);
-                            }
-                            buildingsListAdapter.notifyDataSetChanged();
-                        }
-                    }
-                });*/
+        /**/
     }
 
     public void gotoLogIN(){
