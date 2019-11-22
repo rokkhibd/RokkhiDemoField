@@ -324,12 +324,36 @@ public class AddBuildingActivity extends AppCompatActivity {
             }
         });
 
-        b_area.setOnClickListener(new View.OnClickListener() {
+        //get Area Data List
+        db.collection("area").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
-            public void onClick(View v) {
-                showAllAreas();
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                areaList.clear();
+
+                for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+
+                    String area_eng = documentSnapshot.getString("english");
+                    String area_ban = documentSnapshot.getString("bangla");
+                    Long area_code = documentSnapshot.getLong("code");
+                    areaCodeList.add(area_code);
+
+                    areaList.add(area_eng + "(" + area_ban + ")");
+
+                }
+                Toast.makeText(AddBuildingActivity.this, "Loaded Area", Toast.LENGTH_SHORT).show();
+                b_area.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showAllAreasAlert(areaList);
+
+
+                    }
+                });
+
             }
         });
+        //Get Area Data End
+
 
         b_roadnumber.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -409,6 +433,8 @@ public class AddBuildingActivity extends AppCompatActivity {
             }
         });
 
+
+
     }
 
 
@@ -459,42 +485,17 @@ public class AddBuildingActivity extends AppCompatActivity {
 
     }
 
-    public void showAllAreas() {
+    public void showAllAreasAlert(List<String> areaList) {
 
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 
         View rowList = getLayoutInflater().inflate(R.layout.adress_list, null);
         areaListView = rowList.findViewById(R.id.listview);
-//        progressList=rowList.findViewById(R.id.progress_list);
         areaEdit = rowList.findViewById(R.id.search_edit);
 
-        db.collection("area").addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                areaList.clear();
-
-                for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-
-                    String area_eng = documentSnapshot.getString("english");
-                    String area_ban = documentSnapshot.getString("bangla");
-                    Long area_code = documentSnapshot.getLong("code");
-                    areaCodeList.add(area_code);
-
-
-                    //String bcode=documentSnapshot.getString("code");
-                    areaList.add(area_eng + "(" + area_ban + ")");
-                    //progressList.setVisibility(View.GONE);
-                }
-
-                adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, areaList);
-                //customListAdapter=new CustomListAdapter(AddBuildingActivity.this,areaList);
-                adapter.notifyDataSetChanged();
-                areaListView.setAdapter(adapter);
-
-
-            }
-        });
-
+        adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, areaList);
+        adapter.notifyDataSetChanged();
+        areaListView.setAdapter(adapter);
         ColorDrawable color = new ColorDrawable(this.getResources().getColor(R.color.lightorange));
         areaListView.setDivider(color);
         areaListView.setDividerHeight(1);
@@ -526,8 +527,7 @@ public class AddBuildingActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String areatxt = String.valueOf(parent.getItemAtPosition(position));
                 areaCodePos = position;
-                //areaListCode= (String.valueOf(position+1));
-                //Toast.makeText(AddBuildingActivity.this, areaListCode, Toast.LENGTH_SHORT).show();
+
                 b_area.setText(areatxt);
                 dialog.dismiss();
 
@@ -1216,6 +1216,35 @@ public class AddBuildingActivity extends AppCompatActivity {
                 String bstatus = String.valueOf(parent.getItemAtPosition(position));
                 b_status.setText(bstatus);
                 dialog.dismiss();
+            }
+        });
+    }
+
+  public void testMethod(){
+        db.collection("area").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                areaList.clear();
+
+                for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+
+                    String area_eng = documentSnapshot.getString("english");
+                    String area_ban = documentSnapshot.getString("bangla");
+                    Long area_code = documentSnapshot.getLong("code");
+                    areaCodeList.add(area_code);
+
+
+                    //String bcode=documentSnapshot.getString("code");
+                    areaList.add(area_eng + "(" + area_ban + ")");
+                    //progressList.setVisibility(View.GONE);
+                }
+
+                /*adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, areaList);
+                //customListAdapter=new CustomListAdapter(AddBuildingActivity.this,areaList);
+                adapter.notifyDataSetChanged();
+                areaListView.setAdapter(adapter);*/
+
+
             }
         });
     }
