@@ -861,15 +861,16 @@ public class AddBuildingActivity extends AppCompatActivity {
         if (b_totalfloor.length() == 0) {
             b_totalfloor.setError("Insert total floor");
             b_totalfloor.requestFocus();
-        } else if (b_floorperflat.length() == 0) {
+        } if (b_floorperflat.length() == 0) {
             b_floorperflat.setError("Insert number of floor per flat");
             b_floorperflat.requestFocus();
-        } else if (b_totalguard.length() == 0) {
+        }  if (b_totalguard.length() == 0) {
             b_totalguard.setError("Insert the number of guards");
             b_totalguard.requestFocus();
-        } else if (b_flatfrmt.length() == 0) {
+        }  if (b_flatfrmt.length() == 0) {
             b_flatfrmt.setError("Insert the flat format");
-        } else if (b_name.length() == 0) {
+            b_flatfrmt.requestFocus();
+        }  if (b_name.length() == 0) {
             b_name.setError("Insert the house name");
             b_name.requestFocus();
         } else {
@@ -974,45 +975,47 @@ public class AddBuildingActivity extends AppCompatActivity {
 
     public void createBuildingsContactInfo() {
 
-        String design_type = people_we_talk.getText().toString();
-        String design_name = b_peoplesName.getText().toString();
-        String design_number = b_peopleNumber.getText().toString();
-        String numbers = add88withNumb(design_number);
+        if(people_we_talk.length()==0){
+            people_we_talk.setError("Insert the People your are talking");
+            people_we_talk.requestFocus();
+        }
+        if(b_peoplesName.length()==0){
+            b_peoplesName.setError("Insert the name");
+            b_peoplesName.requestFocus();
+        }
+        if (b_peopleNumber.length()==0){
+            b_peopleNumber.setError("Insert the mobile number");
+            b_peopleNumber.requestFocus();
+        }else {
+            String design_type = people_we_talk.getText().toString();
+            String design_name = b_peoplesName.getText().toString();
+            String design_number = b_peopleNumber.getText().toString();
+            String numbers = add88withNumb(design_number);
 
+            totalCode = areaCodeList.get(areaCodePos) + "*" + roadListCode + "*" + blockListCode + "*" + houseListCode + "*" + housefrmntListCode + "*" + districtValue;
+            totalHouseCode = areaCodeList.get(areaCodePos) + "" + roadListCode + "" + blockListCode + "" + houseListCode + "" + housefrmntListCode + "" + districtValue;
 
-        totalCode = areaCodeList.get(areaCodePos) + "*" + roadListCode + "*" + blockListCode + "*" + houseListCode + "*" + housefrmntListCode + "*" + districtValue;
-        totalHouseCode = areaCodeList.get(areaCodePos) + "" + roadListCode + "" + blockListCode + "" + houseListCode + "" + housefrmntListCode + "" + districtValue;
+            Calendar calendar = Calendar.getInstance();
+            SimpleDateFormat mdformat = new SimpleDateFormat("HH:mm:ss");
+            String strDate = mdformat.format(calendar.getTime());
 
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat mdformat = new SimpleDateFormat("HH:mm:ss");
-        String strDate = mdformat.format(calendar.getTime());
+            String doc_id = design_number + totalHouseCode;
 
-        String doc_id = design_number + totalHouseCode;
+            fbPeople = new FBPeople(totalCode, design_type, doc_id, design_name, numbers);
 
-        /*Map<String, Object> map = new HashMap<>();
-        map.put("designation", design_type);
-        map.put("name", design_name);
-        map.put("number", numbers);
-        map.put("b_code", totalCode);
-        map.put("doc_id", design_number + totalHouseCode);
-        map.put("created_time", strDate);
-        map.put("update_time", strDate);
-*/
+            db.collection(getString(R.string.col_fBbuildingContacts)).document(design_number + totalHouseCode)
+                    .set(fbPeople).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
 
-
-        fbPeople = new FBPeople(totalCode, design_type, doc_id, design_name, numbers);
-
-
-        db.collection(getString(R.string.col_fBbuildingContacts)).document(design_number + totalHouseCode)
-                .set(fbPeople).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-
-                if (task.isSuccessful()) {
-                    Toast.makeText(AddBuildingActivity.this, "number saved successfully", Toast.LENGTH_SHORT).show();
+                    if (task.isSuccessful()) {
+                        Toast.makeText(AddBuildingActivity.this, "number saved successfully", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
-        });
+            });
+
+        }
+
 
 
     }

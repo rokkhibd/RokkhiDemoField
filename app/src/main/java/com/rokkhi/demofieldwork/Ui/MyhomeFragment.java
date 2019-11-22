@@ -123,6 +123,8 @@ public class MyhomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
+
         db=FirebaseFirestore.getInstance();
         mAuth=FirebaseAuth.getInstance();
         firebaseUser=mAuth.getCurrentUser();

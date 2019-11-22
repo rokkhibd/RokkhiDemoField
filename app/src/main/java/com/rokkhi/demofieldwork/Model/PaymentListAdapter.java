@@ -42,7 +42,6 @@ public class PaymentListAdapter extends RecyclerView.Adapter<PaymentListAdapter.
         holder.payment_date.setText(paymentHistoryList.get(position).getMonth().toString());
         holder.payment_status.setText(paymentHistoryList.get(position).getPayment_status());
 
-
     }
 
     @Override

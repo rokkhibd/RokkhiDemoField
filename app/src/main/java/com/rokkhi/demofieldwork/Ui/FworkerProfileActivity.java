@@ -653,22 +653,22 @@ public class FworkerProfileActivity extends AppCompatActivity implements View.On
             f_name.requestFocus();
             spinKitProgressBar.setVisibility(View.GONE);
             return;
-        } else if (f_area.length() == 0) {
+        }  if (f_area.length() == 0) {
             f_area.setError("Insert your area name");
             f_area.requestFocus();
             spinKitProgressBar.setVisibility(View.GONE);
             return;
-        } else if (f_phone.length() == 0) {
+        } if (f_phone.length() == 0) {
             f_phone.setError("Insert your mobile number");
             f_phone.requestFocus();
             spinKitProgressBar.setVisibility(View.GONE);
             return;
-        } else if (TextUtils.isEmpty(f_nid.getText().toString())) {
+        }  if (TextUtils.isEmpty(f_nid.getText().toString())) {
             f_nid.setError("Insert You'r NID Number");
             f_nid.requestFocus();
             spinKitProgressBar.setVisibility(View.GONE);
             return;
-        } else if (!f_mail.getText().toString().isEmpty() && !normalfunc.isValidEmail(f_mail.getText().toString())) {
+        }  if (!f_mail.getText().toString().isEmpty() && !normalfunc.isValidEmail(f_mail.getText().toString())) {
 
             f_mail.setError("Insert Valid E-mail");
             f_mail.requestFocus();

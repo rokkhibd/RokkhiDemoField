@@ -23,6 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.rokkhi.demofieldwork.MainActivity;
 import com.rokkhi.demofieldwork.Model.LogSession;
 import com.rokkhi.demofieldwork.R;
+import com.rokkhi.demofieldwork.Ui.MyHomeActivity;
 
 
 import java.text.SimpleDateFormat;
@@ -84,7 +85,7 @@ public class Normalfunc {
                     public void onComplete(@NonNull Task<Void> task) {
                         Toast.makeText(context, "Have a good time!", Toast.LENGTH_SHORT).show();
                         FirebaseAuth.getInstance().signOut();
-                        Intent intent = new Intent(context, MainActivity.class);
+                        Intent intent = new Intent(context, MyHomeActivity.class);
                         intent.putExtra("TAG", TAG);
                         context.startActivity(intent);
                         ((Activity) context).finish();
