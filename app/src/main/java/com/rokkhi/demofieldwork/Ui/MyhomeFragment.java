@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -137,7 +138,7 @@ public class MyhomeFragment extends Fragment {
         spinKitProgress.setIndeterminateDrawable(wave);
 
 
-        checkUserExistence();
+        checkUserExistence(getActivity());
         progressBar=view.findViewById(R.id.progressbar);
         recyclerView=view.findViewById(R.id.myhome_frag_recyclerview);
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getActivity());
@@ -183,7 +184,7 @@ public class MyhomeFragment extends Fragment {
         });
     }
 
-    private void checkUserExistence() {
+    private void checkUserExistence(FragmentActivity activity) {
 
         mAuthListener=new FirebaseAuth.AuthStateListener() {
             @Override
@@ -214,7 +215,7 @@ public class MyhomeFragment extends Fragment {
 
                                 final List< String > usertoken = fworkers.getAtoken();
 
-                                FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(getActivity(), new OnSuccessListener<InstanceIdResult>() {
+                                FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(activity, new OnSuccessListener<InstanceIdResult>() {
                                     @Override
                                     public void onSuccess(InstanceIdResult instanceIdResult) {
                                         utoken = instanceIdResult.getToken();
@@ -224,18 +225,23 @@ public class MyhomeFragment extends Fragment {
                                         Log.d(TAG, "onSuccess: tttt7 "+signoutstate);
                                         //signoutstate=true;
 
-                                        if (usertoken != null && !usertoken.contains(utoken)  ) {
-                                            String logID= db.collection(getString(R.string.col_loginsession)).document().getId();
-                                            LogSession logSession= new LogSession(logID,userID,utoken,"FieldWork", Calendar.getInstance().getTime());
-                                            db.collection(getString(R.string.col_loginsession)).document(logID).set(logSession)
-                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                            Toast.makeText(context,"Welcome!",Toast.LENGTH_SHORT).show();
+                                        if (activity!=null){
 
-                                                        }
-                                                    });
+                                            if (usertoken != null && !usertoken.contains(utoken)  ) {
+                                                String logID= db.collection(getString(R.string.col_loginsession)).document().getId();
+                                                LogSession logSession= new LogSession(logID,userID,utoken,"FieldWork", Calendar.getInstance().getTime());
+                                                db.collection(getString(R.string.col_loginsession)).document(logID).set(logSession)
+                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                Toast.makeText(context,"Welcome!",Toast.LENGTH_SHORT).show();
+
+                                                            }
+                                                        });
+                                            }
                                         }
+
+
                                     }
                                 });
 
