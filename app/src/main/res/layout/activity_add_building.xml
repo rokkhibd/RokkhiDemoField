@@ -235,7 +235,9 @@
               android:id="@+id/bldng_button_housecheck"
               android:textColor="@color/white"
               android:text="Check The House"
-              android:background="@drawable/round_button"
+              android:background="@drawable/round_edittext"
+              android:backgroundTint="@color/orange"
+
               android:layout_marginTop="15dp"
               android:layout_marginLeft="20dp"
               android:layout_marginRight="20dp"
@@ -256,7 +258,7 @@
 
           <RelativeLayout
               android:id="@+id/housecheck_layout"
-              android:visibility="gone"
+              android:visibility="visible"
               android:layout_below="@id/bldng_button_housecheck"
               android:layout_width="match_parent"
               android:layout_height="wrap_content">
@@ -330,7 +332,8 @@
                   android:layout_height="45dp"/>
 
 
-              <AutoCompleteTextView
+              <EditText
+                  android:focusableInTouchMode="false"
                   android:paddingLeft="5dp"
                   android:layout_below="@id/bldng_edit_totalfloor"
                   android:hint="flat format"
@@ -343,7 +346,7 @@
                   android:layout_height="45dp"/>
 
               <ImageView
-
+                  android:visibility="gone"
                   android:id="@+id/flatformatMenu"
                   android:layout_alignRight="@id/bldng_edit_flatformat"
                   android:layout_alignBottom="@id/bldng_edit_flatformat"
@@ -519,7 +522,8 @@
                   android:layout_marginRight="20dp"
                   android:layout_marginLeft="20dp"
                   android:layout_marginBottom="10dp"
-                  android:background="@drawable/round_button"
+                  android:background="@drawable/round_edittext"
+                  android:backgroundTint="@color/orange"
                   android:text="Add Information"
                   android:textAllCaps="false"
                   android:layout_width="match_parent"

@@ -164,9 +164,6 @@ public class ProfileFragment extends Fragment {
 
                         }
 
-
-
-
                         if (cancel) {
                             Log.d(TAG, "onClick: yyy1 ");
                             // There was an error; don't attempt login and focus the first

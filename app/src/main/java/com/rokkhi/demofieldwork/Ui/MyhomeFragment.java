@@ -316,7 +316,6 @@ public class MyhomeFragment extends Fragment {
             public void onScrolled( RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
-
                 LinearLayoutManager linearLayoutManager = ((LinearLayoutManager) recyclerView.getLayoutManager());
                 int firstVisibleItemPosition = linearLayoutManager.findFirstVisibleItemPosition();
                 int visibleItemCount = linearLayoutManager.getChildCount();
@@ -370,14 +369,6 @@ public class MyhomeFragment extends Fragment {
     }
 
     public void gettingAllHouseData(){
-
-
-
-
-
-
-
-        /**/
     }
 
     public void gotoLogIN(){

@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.rokkhi.demofieldwork.Ui.MyHomeActivity;
+import com.rokkhi.demofieldwork.Ui.NoticeActivity;
 import com.rokkhi.demofieldwork.Ui.PaymentHistoryActivity;
 import com.rokkhi.demofieldwork.Ui.ProfileActivity;
 
@@ -17,6 +18,7 @@ import javax.annotation.Nullable;
 public abstract class BaseActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
 
     BottomNavigationView bottomNavigationView;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +46,8 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
                 startActivity(new Intent(this, ProfileActivity.class));
             }else if(itemId==R.id.payment){
                 startActivity(new Intent(this, PaymentHistoryActivity.class));
+            }else if (itemId==R.id.notice){
+                startActivity(new Intent(this, NoticeActivity.class));
             }
             finish();
         }, 300);

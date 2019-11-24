@@ -3,6 +3,7 @@ package com.rokkhi.demofieldwork.Ui;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -12,6 +13,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -55,6 +57,7 @@ import com.rokkhi.demofieldwork.Model.FWorkerBuilding;
 import com.rokkhi.demofieldwork.R;
 import com.rokkhi.demofieldwork.Utils.Normalfunc;
 
+import com.rokkhi.demofieldwork.Utils.StringAdapter;
 import com.vansuita.pickimage.bean.PickResult;
 import com.vansuita.pickimage.bundle.PickSetup;
 import com.vansuita.pickimage.dialog.PickImageDialog;
@@ -76,14 +79,14 @@ public class AddBuildingActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter;
 
     ProgressDialog progressDialog;
-    ProgressBar progressBar, spinkitProgress, progressList;
-    CustomListAdapter customListAdapter;
+    ProgressBar progressBar;
+
 
     RelativeLayout relativeLayout;
 
     FirebaseFirestore db;
     FirebaseAuth mAuth;
-    FirebaseStorage firebaseStorage;
+
     StorageReference addbldngRef;
     String currentUserID;
 
@@ -113,7 +116,7 @@ public class AddBuildingActivity extends AppCompatActivity {
 
     DatePickerDialog datePickerDialog;
 
-    AutoCompleteTextView b_flatfrmt;
+    EditText b_flatfrmt;
 
     int areaCodePos;
     int districtCodePos;
@@ -126,6 +129,8 @@ public class AddBuildingActivity extends AppCompatActivity {
 
     String doc_id = "";
     Date date;
+    ArrayList<String> types;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,7 +154,7 @@ public class AddBuildingActivity extends AppCompatActivity {
         fBuildings = new FBuildings();
 
         date = Calendar.getInstance().getTime();
-
+        context= AddBuildingActivity.this;
         progressDialog = new ProgressDialog(this);
 
         relativeLayout = findViewById(R.id.housecheck_layout);
@@ -195,7 +200,7 @@ public class AddBuildingActivity extends AppCompatActivity {
         //b_status.setAdapter(adapter);
 
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, allStringValues.flatformat);
-        b_flatfrmt.setAdapter(adapter);
+        //b_flatfrmt.setAdapter(adapter);
 
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, allStringValues.district);
         //b_district.setAdapter(adapter);
@@ -277,11 +282,12 @@ public class AddBuildingActivity extends AppCompatActivity {
             }
         });
 
-        flatfrmtMenu.setOnClickListener(new View.OnClickListener() {
+        b_flatfrmt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                b_flatfrmt.showDropDown();
+                //b_flatfrmt.showDropDown();
                 // flatformat = b_flatfrmt.getText().toString();
+                addAllTypes();
             }
         });
 
@@ -340,7 +346,7 @@ public class AddBuildingActivity extends AppCompatActivity {
                     areaList.add(area_eng + "(" + area_ban + ")");
 
                 }
-                Toast.makeText(AddBuildingActivity.this, "Loaded Area", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(AddBuildingActivity.this, "Loaded Area", Toast.LENGTH_SHORT).show();
                 b_area.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -446,7 +452,7 @@ public class AddBuildingActivity extends AppCompatActivity {
         progressDialog.show();
 
         CollectionReference buildRef;
-        buildRef = db.collection("fBuildings");
+        buildRef = db.collection(getString(R.string.col_fBuildings));
 
         Query buildingsQuery = buildRef.whereEqualTo("b_code", s);
         buildingsQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -459,11 +465,16 @@ public class AddBuildingActivity extends AppCompatActivity {
                             FBuildings fBuildings = documentSnapshot.toObject(FBuildings.class);
                             String status = fBuildings.getStatus();
 
-                            if (status.equalsIgnoreCase("done")) {
+                            if (status.equalsIgnoreCase("Done")) {
 
-                            } else if (status.equalsIgnoreCase("pending")) {
-
+                            } if (status.equalsIgnoreCase("Meeting Pending")) {
                                 shoeAlertforPendingHouse();
+                            } if (status.equalsIgnoreCase("Cancelled")){
+
+                            } if (status.equalsIgnoreCase("Followup")){
+
+                            }  if (status.equalsIgnoreCase("Meeting Done")){
+
                             }
                             progressDialog.dismiss();
                         }
@@ -1174,7 +1185,6 @@ public class AddBuildingActivity extends AppCompatActivity {
 
         View rowList = getLayoutInflater().inflate(R.layout.adress_list, null);
         ListView statusListView = rowList.findViewById(R.id.listview);
-//        progressList=rowList.findViewById(R.id.progress_list);
         EditText statusEdit = rowList.findViewById(R.id.search_edit);
 
         ArrayList<String> statusList = new ArrayList<>();
@@ -1220,33 +1230,35 @@ public class AddBuildingActivity extends AppCompatActivity {
         });
     }
 
-  public void testMethod(){
-        db.collection("area").addSnapshotListener(new EventListener<QuerySnapshot>() {
+    public void addAllTypes() {
+        types = new ArrayList<>();
+        types.add("male");
+        types.add("female");
+        types.add("other");
+
+
+        final StringAdapter stringAdapter=new StringAdapter(types,context);
+       // adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, types);
+        final AlertDialog alertDialog=new AlertDialog.Builder(context).create();
+        LayoutInflater inflater = getLayoutInflater();
+
+        View convertView = (View) inflater.inflate(R.layout.custom_list, null);
+        final ListView lv = (ListView) convertView.findViewById(R.id.listView1);
+
+        alertDialog.setView(convertView);
+        alertDialog.setCancelable(false);
+
+        lv.setAdapter(stringAdapter);
+        alertDialog.show();
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                areaList.clear();
-
-                for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-
-                    String area_eng = documentSnapshot.getString("english");
-                    String area_ban = documentSnapshot.getString("bangla");
-                    Long area_code = documentSnapshot.getLong("code");
-                    areaCodeList.add(area_code);
-
-
-                    //String bcode=documentSnapshot.getString("code");
-                    areaList.add(area_eng + "(" + area_ban + ")");
-                    //progressList.setVisibility(View.GONE);
-                }
-
-                /*adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, areaList);
-                //customListAdapter=new CustomListAdapter(AddBuildingActivity.this,areaList);
-                adapter.notifyDataSetChanged();
-                areaListView.setAdapter(adapter);*/
-
-
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String typeselected = (String) lv.getItemAtPosition(position);
+                //cname.setText(myoffice.getName());
+                b_flatfrmt.setText(typeselected);
+                alertDialog.dismiss();
             }
         });
     }
-
 }

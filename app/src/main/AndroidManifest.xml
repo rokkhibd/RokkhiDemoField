@@ -11,11 +11,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".Ui.PaymentHistoryActivity"></activity>
+        <activity android:name=".Ui.NoticeActivity"></activity>
+        <activity android:name=".Ui.PaymentHistoryActivity" />
         <activity android:name=".Ui.ProfileActivity" />
         <activity android:name=".Ui.UpdateBldngInfoActivity" />
-        <activity android:name=".Ui.FworkerProfileActivity" />
-        <!--<activity android:name=".MainActivity" />-->
+        <activity android:name=".Ui.FworkerProfileActivity" /> <!-- <activity android:name=".MainActivity" /> -->
         <activity android:name=".Ui.AddBuildingActivity" />
         <activity android:name=".Ui.MyHomeActivity">
             <intent-filter>

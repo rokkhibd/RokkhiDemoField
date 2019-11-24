@@ -16,5 +16,9 @@
         android:icon="@drawable/account_one"
         android:title="Profile"
         android:id="@+id/profile"/>
+    <item
+        android:icon="@drawable/notice"
+        android:title="Notice"
+        android:id="@+id/notice"/>
 
 </menu>
