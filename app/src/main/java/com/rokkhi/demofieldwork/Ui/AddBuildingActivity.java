@@ -473,7 +473,7 @@ public class AddBuildingActivity extends AppCompatActivity {
 
                             } if (status.equalsIgnoreCase("Followup")){
 
-                            }  if (status.equalsIgnoreCase("Meeting Done")){
+                            } if (status.equalsIgnoreCase("Meeting Done")){
 
                             }
                             progressDialog.dismiss();
@@ -748,17 +748,16 @@ public class AddBuildingActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String houseno = String.valueOf(parent.getItemAtPosition(position));
-                //Toast.makeText(AddBuildingActivity.this, houseno, Toast.LENGTH_SHORT).show();
+
 
                 if (houseno.equals("None")) {
                     b_housenmbr.setText("0");
                     houseListCode = "0";
-                    //  Toast.makeText(AddBuildingActivity.this, houseListCode, Toast.LENGTH_SHORT).show();
+
                 } else {
 
                     houseListCode = houseno;
                     b_housenmbr.setText(houseno);
-                    // Toast.makeText(AddBuildingActivity.this, houseListCode, Toast.LENGTH_SHORT).show();
                 }
 
                 dialog.dismiss();
@@ -812,12 +811,10 @@ public class AddBuildingActivity extends AppCompatActivity {
                 if (blockno.equals("None")) {
                     b_housefrmt.setText("0");
                     housefrmntListCode = "0";
-                    // Toast.makeText(AddBuildingActivity.this, blockListCode, Toast.LENGTH_SHORT).show();
                 } else {
 
                     b_housefrmt.setText(blockno);
                     housefrmntListCode = String.valueOf(position);
-                    // Toast.makeText(AddBuildingActivity.this, blockListCode, Toast.LENGTH_SHORT).show();
                 }
 
                 dialog.dismiss();
@@ -840,7 +837,6 @@ public class AddBuildingActivity extends AppCompatActivity {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 progressBar.setVisibility(View.GONE);
-//                Toast.makeText(AddBuildingActivity.this, "Image Uploaded Successfully", Toast.LENGTH_SHORT).show();
 
                 Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                     @Override
@@ -1081,7 +1077,7 @@ public class AddBuildingActivity extends AppCompatActivity {
         peopleWeTalkList = rowList.findViewById(R.id.listview);
         areaEdit = rowList.findViewById(R.id.search_edit);
 
-        db.collection("fPeopleType").addSnapshotListener(new EventListener<QuerySnapshot>() {
+        db.collection(getString(R.string.col_fPeopleType)).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 areaList.clear();
@@ -1126,7 +1122,6 @@ public class AddBuildingActivity extends AppCompatActivity {
 
         View rowList = getLayoutInflater().inflate(R.layout.adress_list, null);
         districtListView = rowList.findViewById(R.id.listview);
-//        progressList=rowList.findViewById(R.id.progress_list);
         districtEdit = rowList.findViewById(R.id.search_edit);
 
         db.collection("district").addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -1143,10 +1138,9 @@ public class AddBuildingActivity extends AppCompatActivity {
 
                     Log.e("xxxx", area_district);
                     Log.e("xxxx", district_code.toString());
-                    //String bcode=documentSnapshot.getString("code");
                     districtList.add(area_district);
 
-                    //progressList.setVisibility(View.GONE);
+
                 }
 
                 adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, districtList);
@@ -1232,9 +1226,9 @@ public class AddBuildingActivity extends AppCompatActivity {
 
     public void addAllTypes() {
         types = new ArrayList<>();
-        types.add("male");
-        types.add("female");
-        types.add("other");
+        types.add("A1");
+        types.add("1A");
+        types.add("101");
 
 
         final StringAdapter stringAdapter=new StringAdapter(types,context);
@@ -1259,6 +1253,7 @@ public class AddBuildingActivity extends AppCompatActivity {
                 b_flatfrmt.setText(typeselected);
                 alertDialog.dismiss();
             }
+
         });
     }
 }

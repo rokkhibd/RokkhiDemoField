@@ -2,12 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fragment_myHome"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     android:background="@color/white"
-    tools:context=".Ui.MyhomeFragment">
+
+    tools:context=".Ui.GuardTrackListActivity">
+
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
@@ -44,42 +44,29 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-
-
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/myhome_frag_recyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/appbar"
         android:layout_margin="10dp"
-        tools:listitem="@layout/home_list_layout" />
+        android:layout_below="@id/appbar"
+        android:id="@+id/guard_track_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_margin="10dp"
+        android:layout_below="@id/guard_track_recycler"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floating_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/guard_floatingbtn"
+        android:layout_margin="20dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_margin="20dp"
-        android:src="@drawable/plus" />
-
-
-    <com.github.ybq.android.spinkit.SpinKitView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/spin_kit"
-        style="@style/SpinKitView.Large.Wave"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_centerInParent="true"
-        android:visibility="gone"
-        app:SpinKit_Color="@color/colorAccent" />
-
-
-    <ProgressBar
-        android:id="@+id/progressbar"
+        android:src="@drawable/plus"
+        app:fabSize="mini"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="gone" />
+        android:layout_height="wrap_content"/>
 
 </RelativeLayout>

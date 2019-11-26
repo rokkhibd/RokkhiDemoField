@@ -35,12 +35,13 @@
             android:layout_marginTop="20dp"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
-            android:background="@drawable/round_button"
+            android:background="@drawable/round_edittext2"
+            android:backgroundTint="@color/orange"
             android:layout_centerHorizontal="true"
             android:layout_below="@id/txt"
             android:text="OK"
             android:layout_width="match_parent"
-            android:layout_height="25dp"/>
+            android:layout_height="35dp"/>
 
         <ImageView
             android:layout_marginTop="20dp"

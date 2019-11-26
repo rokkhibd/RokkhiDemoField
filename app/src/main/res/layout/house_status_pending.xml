@@ -42,8 +42,9 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@id/txt"
         android:text="OK"
+        android:textColor="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="30dp"/>
+        android:layout_height="35dp"/>
 
     </RelativeLayout>
 

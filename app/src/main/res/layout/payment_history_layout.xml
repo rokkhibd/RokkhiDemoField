@@ -40,7 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="One time Payment"
+                android:text="One n_time Payment"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 

@@ -38,7 +38,7 @@ public class PaymentHistoryActivity extends BaseActivity {
     }
 
 
-    @Override
+    /*@Override
     public void onBackPressed() {
         new AlertDialog.Builder(this)
                 .setTitle("Exit from the app?")
@@ -53,5 +53,5 @@ public class PaymentHistoryActivity extends BaseActivity {
                     }
 
                 }).create().show();
-    }
+    }*/
 }

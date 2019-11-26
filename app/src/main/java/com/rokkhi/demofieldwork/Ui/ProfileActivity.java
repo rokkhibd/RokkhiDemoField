@@ -42,7 +42,7 @@ public class ProfileActivity extends BaseActivity {
         return R.id.profile;
     }
 
-    @Override
+    /*@Override
     public void onBackPressed() {
         new AlertDialog.Builder(this)
                 .setTitle("Exit from the app?")
@@ -58,5 +58,5 @@ public class ProfileActivity extends BaseActivity {
                     }
 
                 }).create().show();
-    }
+    }*/
 }

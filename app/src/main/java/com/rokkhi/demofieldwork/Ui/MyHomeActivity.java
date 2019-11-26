@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -22,6 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.rokkhi.demofieldwork.BaseActivity;
+import com.rokkhi.demofieldwork.MainActivity;
 import com.rokkhi.demofieldwork.Model.FWorkers;
 import com.rokkhi.demofieldwork.Model.LogSession;
 import com.rokkhi.demofieldwork.Model.ViewPagerAdapter;
@@ -60,7 +62,7 @@ public class MyHomeActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        new AlertDialog.Builder(this)
+        /*new AlertDialog.Builder(this)
                 .setTitle("Exit from the app?")
                 .setIcon(R.drawable.exitblack)
                 .setMessage("Are you sure, you want to exit?")
@@ -72,7 +74,10 @@ public class MyHomeActivity extends BaseActivity {
 
                     }
 
-                }).create().show();
+                }).create().show();*/
+
+        Intent intent=new Intent(MyHomeActivity.this, MainActivity.class);
+        startActivity(intent);
     }
 
 
@@ -127,7 +132,7 @@ public class MyHomeActivity extends BaseActivity {
 
                                         if (usertoken != null && !usertoken.contains(utoken)  ) {
                                             String logID= db.collection(getString(R.string.col_loginsession)).document().getId();
-                                            LogSession logSession= new LogSession(logID,userID,utoken,"FieldWork", Calendar.getInstance().getTime());
+                                            LogSession logSession= new LogSession(logID,userID,utoken,"FieldWork", Calendar.getInstance().getN_time());
                                             db.collection(getString(R.string.col_loginsession)).document(logID).set(logSession)
                                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                         @Override

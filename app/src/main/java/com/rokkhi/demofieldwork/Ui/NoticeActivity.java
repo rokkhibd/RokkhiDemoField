@@ -40,7 +40,7 @@ public class NoticeActivity extends BaseActivity {
         return R.id.notice;
     }
 
-    @Override
+    /*@Override
     public void onBackPressed() {
         new AlertDialog.Builder(this)
                 .setTitle("Exit from the app?")
@@ -56,5 +56,5 @@ public class NoticeActivity extends BaseActivity {
                     }
 
                 }).create().show();
-    }
+    }*/
 }
