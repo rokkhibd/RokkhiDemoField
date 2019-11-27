@@ -205,10 +205,7 @@ public class MyhomeFragment extends Fragment {
 
 
                             if (documentSnapshot!=null && documentSnapshot.exists()){
-//                                String name=documentSnapshot.getString("fw_name");
-//                                String imageurl=documentSnapshot.getString("fw_imageUrl");
-//                                f_name.setText(name);
-//                                Glide.with(getContext()).load(imageurl).into(profileImage);
+//
 
                                 FWorkers fworkers=documentSnapshot.toObject(FWorkers.class);
 

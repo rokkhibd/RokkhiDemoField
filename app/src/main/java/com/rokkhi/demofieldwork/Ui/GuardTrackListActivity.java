@@ -168,7 +168,7 @@ public class GuardTrackListActivity extends AppCompatActivity implements View.On
                 if (result.getContents()==null){
                     Toast.makeText(this, "No data found", Toast.LENGTH_SHORT).show();
                 }else {
-                    //txt.setText(result.getContents().toString());
+
 
                     String string=result.getContents().toString();
 

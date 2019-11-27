@@ -4,21 +4,28 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,7 +33,10 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.rokkhi.demofieldwork.Model.FWorkers;
+import com.rokkhi.demofieldwork.Model.LogSession;
 import com.rokkhi.demofieldwork.Model.Users;
 import com.rokkhi.demofieldwork.Ui.EditProfileActivity;
 import com.rokkhi.demofieldwork.Ui.FworkerProfileActivity;
@@ -39,6 +49,7 @@ import com.rokkhi.demofieldwork.Utils.Normalfunc;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -47,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     RelativeLayout buldng_rel,payment_rel,notice_rel,profile_rel,guard_rel;
     ImageView logout,edit,userPic;
 
+    Context context;
     TextView userName,userPhone;
 
     FirebaseFirestore db;
@@ -55,6 +67,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     String userId;
 
     boolean signoutstate=false;
+    String utoken="";
+
+    SharedPreferences.Editor editor;
+    SharedPreferences sharedPref;
 
     Normalfunc normalfunc;
 
@@ -75,6 +91,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         firebaseUser=mAuth.getCurrentUser();
         //userId=firebaseUser.getUid();
         normalfunc=new Normalfunc(this);
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = sharedPref.edit();
 
         buldng_rel=findViewById(R.id.buildngs_relative);
         payment_rel=findViewById(R.id.payment_relative);
@@ -98,6 +116,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         checkuserExistence();
 
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("Logout")
+                        .setIcon(R.drawable.logout_black)
+                        .setMessage("Are you sure you want to logout?")
+                        .setNegativeButton(android.R.string.no, null)
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                normalfunc.removeTokenId();
+                                mAuth.signOut();
+                            }
+
+                        }).create().show();
+            }
+        });
+
     }
 
     public void checkuserExistence(){
@@ -109,9 +147,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (firebaseUser==null){
                     gotoLogIN();
                 }else {
-                    String userId= FirebaseAuth.getInstance().getUid();
 
-                    db.collection(getString(R.string.col_users)).document(userId).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    userId=firebaseUser.getUid();
+                    String user_Id= FirebaseAuth.getInstance().getUid();
+                    getFirstData();
+                    /*db.collection(getString(R.string.col_users)).document(userId).addSnapshotListener(new EventListener<DocumentSnapshot>() {
                         @Override
                         public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
 
@@ -142,10 +182,99 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 startActivity(intent);
                             }
                         }
+                    });*/
+
+                    db.collection(getString(R.string.col_fWorkers)).document(user_Id).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                        @Override
+                        public void onEvent(@javax.annotation.Nullable DocumentSnapshot documentSnapshot, @javax.annotation.Nullable FirebaseFirestoreException e) {
+
+
+                            if (documentSnapshot!=null && documentSnapshot.exists()){
+//
+
+                                FWorkers fworkers=documentSnapshot.toObject(FWorkers.class);
+
+
+                                final List< String > usertoken = fworkers.getAtoken();
+
+                                FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(MainActivity.this, new OnSuccessListener<InstanceIdResult>() {
+                                    @Override
+                                    public void onSuccess(InstanceIdResult instanceIdResult) {
+                                        utoken = instanceIdResult.getToken();
+                                        editor.putString("token", utoken);
+                                        editor.apply();
+                                        // Log.d(TAG, "onSuccess: tokenxx "+ useertoken +"xx"+ utoken);
+                                        Log.d(TAG, "onSuccess: tttt7 "+signoutstate);
+                                        //signoutstate=true;
+
+                                        if (MainActivity.this!=null){
+
+                                            if (usertoken != null && !usertoken.contains(utoken)  ) {
+                                                String logID= db.collection(getString(R.string.col_loginsession)).document().getId();
+                                                LogSession logSession= new LogSession(logID,userId,utoken,"FieldWork", Calendar.getInstance().getTime());
+                                                db.collection(getString(R.string.col_loginsession)).document(logID).set(logSession)
+                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                Toast.makeText(MainActivity.this,"Welcome!",Toast.LENGTH_SHORT).show();
+
+                                                            }
+                                                        });
+                                            }
+                                        }
+
+
+
+
+                                    }
+                                });
+
+
+                            }else {
+
+                                Intent intent=new Intent(MainActivity.this, FworkerProfileActivity.class);
+                                startActivity(intent);
+                            }
+                        }
                     });
+
                 }
             }
         };
+    }
+
+
+    public void getFirstData(){
+
+        String userId= FirebaseAuth.getInstance().getUid();
+        db.collection(getString(R.string.col_users)).document(userId).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+
+                if (e!=null){
+                    Log.w(TAG, "Listen failed.", e);
+                    return;
+                }
+                if (documentSnapshot!=null && documentSnapshot.exists()){
+
+                    Users users= documentSnapshot.toObject(Users.class);
+
+                    userName.setText(users.getName());
+                    userPhone.setText(users.getPhone());
+
+                    if (users.getThumb()!=null){
+                        if(!users.getThumb().isEmpty() && !users.getThumb().equals("none")){
+
+                            Glide.with(MainActivity.this).load(users.getThumb()).error(R.drawable.error_icon).into(userPic);
+                        }
+                    }
+
+                }else {
+                    Intent intent=new Intent(MainActivity.this, FworkerProfileActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
     }
 
     public void gotoLogIN(){
@@ -218,11 +347,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Intent intent=new Intent(MainActivity.this, GuardTrackListActivity.class);
             startActivity(intent);
 
-        }else if (v.getId()==R.id.logout_image){
+        }/*else if (v.getId()==R.id.logout_image){
             normalfunc.removeTokenId();
             mAuth.signOut();
 
-        }else if (v.getId()==R.id.edit_image){
+        }*/else if (v.getId()==R.id.edit_image){
 
             Intent intent=new Intent(MainActivity.this, EditProfileActivity.class);
             startActivity(intent);

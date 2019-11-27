@@ -874,11 +874,8 @@ return;
 
 
     private void stayAtMainActvity() {
-//        Intent intent= new Intent(FworkerProfileActivity.this,MainActivity.class);
-//    ;
-        startActivity(new Intent(FworkerProfileActivity.this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
-
-        finish();
+        Intent intent= new Intent(FworkerProfileActivity.this,MainActivity.class);
+        startActivity(intent);
 
 
     }
