@@ -98,7 +98,7 @@ public class MyhomeFragment extends Fragment {
 
     TextView f_name;
     ProgressBar profile_progressBar,spinKitProgress;
-    FirebaseAuth.AuthStateListener mAuthListener;
+   FirebaseAuth.AuthStateListener mAuthListener;
 
     private static final String TAG = "xxx";
     RelativeLayout mrootview;
@@ -138,14 +138,16 @@ public class MyhomeFragment extends Fragment {
         spinKitProgress.setIndeterminateDrawable(wave);
 
 
-        checkUserExistence(getActivity());
+        //checkUserExistence(getActivity());
+
+
         progressBar=view.findViewById(R.id.progressbar);
         recyclerView=view.findViewById(R.id.myhome_frag_recyclerview);
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
 
         fBuildingsList=new ArrayList<>();
-
+        getfirstdata();
 
         spinKitProgress.setVisibility(View.VISIBLE);
 
@@ -161,7 +163,7 @@ public class MyhomeFragment extends Fragment {
 
             }
         });
-
+/*
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -181,7 +183,7 @@ public class MyhomeFragment extends Fragment {
 
                         }).create().show();
             }
-        });
+        });*/
     }
 
     private void checkUserExistence(FragmentActivity activity) {
@@ -271,6 +273,7 @@ public class MyhomeFragment extends Fragment {
         spinKitProgress.setVisibility(View.VISIBLE);
         Log.d(TAG, "getfirstdata: ttt2 "+userID);
 
+        userID=firebaseUser.getUid();
         db.collection(getString(R.string.col_fWorkerBuilding)).whereEqualTo("f_uid",userID)
                 .orderBy("updated_at", Query.Direction.DESCENDING).limit(10)
                 .get().
@@ -433,13 +436,13 @@ public class MyhomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        mAuth.addAuthStateListener(mAuthListener);
+       // mAuth.addAuthStateListener(mAuthListener);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        mAuth.removeAuthStateListener(mAuthListener);
+       // mAuth.removeAuthStateListener(mAuthListener);
     }
 
 
