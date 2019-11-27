@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         db=FirebaseFirestore.getInstance();
         mAuth=FirebaseAuth.getInstance();
+        //firebaseUser=mAuth.getCurrentUser();
         firebaseUser=mAuth.getCurrentUser();
         //userId=firebaseUser.getUid();
         normalfunc=new Normalfunc(this);
