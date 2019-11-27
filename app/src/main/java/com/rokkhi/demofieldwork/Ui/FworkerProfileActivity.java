@@ -50,6 +50,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import com.rokkhi.demofieldwork.MainActivity;
 import com.rokkhi.demofieldwork.Model.AllStringValues;
 import com.rokkhi.demofieldwork.Model.CustomListAdapter;
 import com.rokkhi.demofieldwork.Model.FPayments;
@@ -875,7 +876,7 @@ return;
     private void stayAtMainActvity() {
 //        Intent intent= new Intent(FworkerProfileActivity.this,MainActivity.class);
 //    ;
-        startActivity(new Intent(FworkerProfileActivity.this, MyHomeActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        startActivity(new Intent(FworkerProfileActivity.this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
 
         finish();
 

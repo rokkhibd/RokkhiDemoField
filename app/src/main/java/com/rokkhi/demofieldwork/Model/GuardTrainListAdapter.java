@@ -20,6 +20,8 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -48,6 +50,7 @@ public class GuardTrainListAdapter extends RecyclerView.Adapter<GuardTrainListAd
     View v;
     FirebaseFirestore firebaseFirestore;
     FGuardTrack fGuardTrack;
+    FirebaseAuth mAuth;
     Normalfunc normalfunc;
 
     public GuardTrainListAdapter(Context context, List<FGuardTrack> fGuardTrackList) {
@@ -63,6 +66,7 @@ public class GuardTrainListAdapter extends RecyclerView.Adapter<GuardTrainListAd
         v= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_guardtrack_list,parent,false);
         GuardTrainViewHolder bv=new GuardTrainViewHolder(v);
         firebaseFirestore=FirebaseFirestore.getInstance();
+        mAuth=FirebaseAuth.getInstance();
 
 
         return bv;
@@ -123,7 +127,7 @@ public class GuardTrainListAdapter extends RecyclerView.Adapter<GuardTrainListAd
         return fGuardTrackList.size();
     }
 
-    public class GuardTrainViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class GuardTrainViewHolder extends RecyclerView.ViewHolder {
 
         ImageView guardImage;
         TextView gName;
@@ -137,22 +141,20 @@ public class GuardTrainListAdapter extends RecyclerView.Adapter<GuardTrainListAd
             startButton=itemView.findViewById(R.id.gtrain_start);
             endButton=itemView.findViewById(R.id.gtrain_end);
 
-            endButton.setOnClickListener(this);
-            itemView.setOnClickListener(this);
+            endButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showEndPermissionDialog(endButton);
+                }
+            });
+//            itemView.setOnClickListener(this);
 
 
         }
 
-        @Override
-        public void onClick(View v) {
-            if (v.getId()==R.id.gtrain_end){
-
-                showEndPermissionDialog();
-            }
-        }
     }
 
-    private void showEndPermissionDialog() {
+    private void showEndPermissionDialog(Button endButton) {
         AlertDialog.Builder alert = new AlertDialog.Builder(context);
         View view = LayoutInflater.from(context).inflate(R.layout.end_training_layout, null);
 
@@ -170,8 +172,10 @@ public class GuardTrainListAdapter extends RecyclerView.Adapter<GuardTrainListAd
             @Override
             public void onClick(View v) {
 
+                FirebaseUser firebaseUser=mAuth.getCurrentUser();
+                String userId=firebaseUser.getUid();
 
-                firebaseFirestore.collection(context.getString(R.string.col_GuardTrainerTrack)).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                firebaseFirestore.collection(context.getString(R.string.col_GuardTrainerTrack)).whereEqualTo("user_id",userId).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
@@ -188,6 +192,14 @@ public class GuardTrainListAdapter extends RecyclerView.Adapter<GuardTrainListAd
 
                                 Date date;
                                 date = Calendar.getInstance().getTime();
+
+                                String myFormat2 = "MMM d , hh:mm a "; //In which you need put here
+                                SimpleDateFormat sdf2 = new SimpleDateFormat(myFormat2);
+//                                holder.endButton.setText(sdf2.format(cal2.getTime()));
+
+                                endButton.setText(sdf2.format(date));
+
+
                                 DocumentReference docRef=firebaseFirestore.collection(context.getString(R.string.col_GuardTrainerTrack)).document(id);
 
 
@@ -212,14 +224,13 @@ public class GuardTrainListAdapter extends RecyclerView.Adapter<GuardTrainListAd
                         }
                     }
                 });
+            }
+        });
 
-
-
-
-
-
-
-
+        btn_no.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog1.dismiss();
             }
         });
     }
