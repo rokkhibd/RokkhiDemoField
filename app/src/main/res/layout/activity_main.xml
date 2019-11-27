@@ -142,8 +142,8 @@
 
                     <ImageView
                         android:id="@+id/visitor"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
                         android:layout_margin="5dp"
                         android:layout_centerHorizontal="true"
                         android:src="@drawable/building"
@@ -178,8 +178,8 @@
 
                     <ImageView
                         android:id="@+id/parcel"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
                         android:layout_margin="5dp"
                         android:layout_centerHorizontal="true"
                         android:src="@drawable/payment"
@@ -212,8 +212,8 @@
 
                     <ImageView
                         android:id="@+id/whitelist"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
                         android:layout_margin="5dp"
                         android:layout_centerHorizontal="true"
                         android:src="@drawable/notice_new"
@@ -262,8 +262,8 @@
 
                     <ImageView
                         android:id="@+id/notice"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
                         android:layout_margin="5dp"
                         android:layout_centerHorizontal="true"
                         android:src="@drawable/boy"
@@ -299,8 +299,8 @@
 
                     <ImageView
                         android:id="@+id/family"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
                         android:layout_margin="5dp"
                         android:layout_centerHorizontal="true"
                         android:src="@drawable/guard_avatar"

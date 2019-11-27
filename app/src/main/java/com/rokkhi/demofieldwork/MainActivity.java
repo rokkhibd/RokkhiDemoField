@@ -150,8 +150,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     userId=firebaseUser.getUid();
                     String user_Id= FirebaseAuth.getInstance().getUid();
-                    getFirstData();
-                    /*db.collection(getString(R.string.col_users)).document(userId).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+
+                    db.collection(getString(R.string.col_users)).document(user_Id).addSnapshotListener(new EventListener<DocumentSnapshot>() {
                         @Override
                         public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
 
@@ -182,61 +182,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 startActivity(intent);
                             }
                         }
-                    });*/
-
-                    db.collection(getString(R.string.col_fWorkers)).document(user_Id).addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                        @Override
-                        public void onEvent(@javax.annotation.Nullable DocumentSnapshot documentSnapshot, @javax.annotation.Nullable FirebaseFirestoreException e) {
-
-
-                            if (documentSnapshot!=null && documentSnapshot.exists()){
-//
-
-                                FWorkers fworkers=documentSnapshot.toObject(FWorkers.class);
-
-
-                                final List< String > usertoken = fworkers.getAtoken();
-
-                                FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(MainActivity.this, new OnSuccessListener<InstanceIdResult>() {
-                                    @Override
-                                    public void onSuccess(InstanceIdResult instanceIdResult) {
-                                        utoken = instanceIdResult.getToken();
-                                        editor.putString("token", utoken);
-                                        editor.apply();
-                                        // Log.d(TAG, "onSuccess: tokenxx "+ useertoken +"xx"+ utoken);
-                                        Log.d(TAG, "onSuccess: tttt7 "+signoutstate);
-                                        //signoutstate=true;
-
-                                        if (MainActivity.this!=null){
-
-                                            if (usertoken != null && !usertoken.contains(utoken)  ) {
-                                                String logID= db.collection(getString(R.string.col_loginsession)).document().getId();
-                                                LogSession logSession= new LogSession(logID,userId,utoken,"FieldWork", Calendar.getInstance().getTime());
-                                                db.collection(getString(R.string.col_loginsession)).document(logID).set(logSession)
-                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                            @Override
-                                                            public void onComplete(@NonNull Task<Void> task) {
-                                                                Toast.makeText(MainActivity.this,"Welcome!",Toast.LENGTH_SHORT).show();
-
-                                                            }
-                                                        });
-                                            }
-                                        }
-
-
-
-
-                                    }
-                                });
-
-
-                            }else {
-
-                                Intent intent=new Intent(MainActivity.this, FworkerProfileActivity.class);
-                                startActivity(intent);
-                            }
-                        }
                     });
+
+
 
                 }
             }
@@ -244,38 +192,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    public void getFirstData(){
 
-        String userId= FirebaseAuth.getInstance().getUid();
-        db.collection(getString(R.string.col_users)).document(userId).addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-
-                if (e!=null){
-                    Log.w(TAG, "Listen failed.", e);
-                    return;
-                }
-                if (documentSnapshot!=null && documentSnapshot.exists()){
-
-                    Users users= documentSnapshot.toObject(Users.class);
-
-                    userName.setText(users.getName());
-                    userPhone.setText(users.getPhone());
-
-                    if (users.getThumb()!=null){
-                        if(!users.getThumb().isEmpty() && !users.getThumb().equals("none")){
-
-                            Glide.with(MainActivity.this).load(users.getThumb()).error(R.drawable.error_icon).into(userPic);
-                        }
-                    }
-
-                }else {
-                    Intent intent=new Intent(MainActivity.this, FworkerProfileActivity.class);
-                    startActivity(intent);
-                }
-            }
-        });
-    }
 
     public void gotoLogIN(){
         List<String> whitelistedCountries = new ArrayList<String>();
