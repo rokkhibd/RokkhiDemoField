@@ -28,7 +28,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="20dp"
         android:gravity="top"
-        android:text="number"
+        android:text="name"
         android:textColor="@color/black"
         android:textSize="15sp"
         app:layout_constraintStart_toEndOf="@+id/propic"

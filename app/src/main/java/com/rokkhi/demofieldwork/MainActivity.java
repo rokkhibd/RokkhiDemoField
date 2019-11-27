@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ import com.rokkhi.demofieldwork.Ui.MyHomeActivity;
 import com.rokkhi.demofieldwork.Ui.NoticeActivity;
 import com.rokkhi.demofieldwork.Ui.PaymentHistoryActivity;
 import com.rokkhi.demofieldwork.Ui.ProfileActivity;
+import com.rokkhi.demofieldwork.Utils.Normalfunc;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,6 +53,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     FirebaseUser firebaseUser;
     String userId;
 
+    boolean signoutstate=false;
+
+    Normalfunc normalfunc;
+
     RelativeLayout mrootview;
     private static final String TAG = "xxx";
 
@@ -66,8 +72,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         db=FirebaseFirestore.getInstance();
         mAuth=FirebaseAuth.getInstance();
         firebaseUser=mAuth.getCurrentUser();
-        userId=firebaseUser.getUid();
-
+        //userId=firebaseUser.getUid();
+        normalfunc=new Normalfunc(this);
 
         buldng_rel=findViewById(R.id.buildngs_relative);
         payment_rel=findViewById(R.id.payment_relative);
@@ -123,8 +129,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     if(!users.getThumb().isEmpty() && !users.getThumb().equals("none")){
 
                                         Glide.with(MainActivity.this).load(users.getThumb()).error(R.drawable.error_icon).into(userPic);
-                                    }
 
+                                    }
                                 }
 
 
@@ -172,6 +178,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
                         MainActivity.super.onBackPressed();
 
                     }
@@ -209,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(intent);
 
         }else if (v.getId()==R.id.logout_image){
-
+            normalfunc.removeTokenId();
             mAuth.signOut();
 
         }else if (v.getId()==R.id.edit_image){

@@ -212,7 +212,10 @@ public class GuardTrackListActivity extends AppCompatActivity implements View.On
     }
 
    public void showAllScanData() {
-       db.collection(getString(R.string.col_GuardTrainerTrack)).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+       String userId=firebaseUser.getUid();
+
+       db.collection(getString(R.string.col_GuardTrainerTrack)).whereEqualTo("user_id",userId).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
            @Override
            public void onComplete(@NonNull Task<QuerySnapshot> task) {
                if (task.isSuccessful()){
@@ -229,7 +232,7 @@ public class GuardTrackListActivity extends AppCompatActivity implements View.On
                    spinkit.setVisibility(View.GONE);
                }else {
 
-                   Toast.makeText(GuardTrackListActivity.this, "Data loading failed", Toast.LENGTH_SHORT).show();
+                   Toast.makeText(GuardTrackListActivity.this, "No Data Found", Toast.LENGTH_SHORT).show();
                    spinkit.setVisibility(View.GONE);
                }
            }

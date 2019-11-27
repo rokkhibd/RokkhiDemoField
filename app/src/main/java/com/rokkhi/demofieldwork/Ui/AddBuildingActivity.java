@@ -466,15 +466,15 @@ public class AddBuildingActivity extends AppCompatActivity {
                             String status = fBuildings.getStatus();
 
                             if (status.equalsIgnoreCase("Done")) {
-
+                                shoeAlertforPendingHouse();
                             } if (status.equalsIgnoreCase("Meeting Pending")) {
                                 shoeAlertforPendingHouse();
                             } if (status.equalsIgnoreCase("Cancelled")){
-
+                                shoeAlertforhouseNotfound();
                             } if (status.equalsIgnoreCase("Followup")){
-
+                                shoeAlertforPendingHouse();
                             } if (status.equalsIgnoreCase("Meeting Done")){
-
+                                shoeAlertforPendingHouse();
                             }
                             progressDialog.dismiss();
                         }
