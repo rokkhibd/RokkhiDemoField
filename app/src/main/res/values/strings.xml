@@ -30,4 +30,6 @@
     <string name="col_fNotification">fNotification</string>
     <string name="col_fPeopleType">fPeopleType</string>
     <string name="col_GuardTrainerTrack">guardTrainerTrack</string>
+    <string name="col_guards">guards</string>
+    <string name="end_train"> আপনি কি গার্ড  ট্রেইনিং এর সমাপ্ত ঘটাতে চাচ্ছেন ?</string>
 </resources>

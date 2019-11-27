@@ -11,11 +11,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.github.ybq.android.spinkit.style.Wave;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -60,11 +63,16 @@ public class GuardTrackListActivity extends AppCompatActivity implements View.On
     Date date;
     DocumentReference doc_ref;
     FGuardTrack fGuardTrack;
+
     String in,out;
+    String build_id;
+    String guard_id;
 
     RecyclerView recyclerView;
     GuardTrainListAdapter guardTrainListAdapter;
     List<FGuardTrack> fGuardTrackList;
+
+    ProgressBar spinkit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,17 +92,23 @@ public class GuardTrackListActivity extends AppCompatActivity implements View.On
         fab=findViewById(R.id.guard_floatingbtn);
         txt=findViewById(R.id.text);
         recyclerView=findViewById(R.id.guard_track_recycler);
+        spinkit=findViewById(R.id.spin_kit);
+
+        Wave wave=new Wave();
+
+        spinkit.setIndeterminateDrawable(wave);
 
         fGuardTrack=new FGuardTrack();
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
-
+        showAllScanData();
 
         fab.setOnClickListener(this);
         qrScan=new IntentIntegrator(this);
         qrScan.setBeepEnabled(false);
+        qrScan.setPrompt("Put your Camera infront of a QR code");
 
         airLocation = new AirLocation(this, true, true, new AirLocation.Callbacks() {
             @Override
@@ -154,8 +168,14 @@ public class GuardTrackListActivity extends AppCompatActivity implements View.On
                 if (result.getContents()==null){
                     Toast.makeText(this, "No data found", Toast.LENGTH_SHORT).show();
                 }else {
-                    txt.setText(result.getContents().toString());
-                    //saveScandataToDB();
+                    //txt.setText(result.getContents().toString());
+
+                    String string=result.getContents().toString();
+
+                    String[] parts=string.split("-");
+                    build_id=parts[0];
+                    guard_id=parts[1];
+                    saveScandataToDB();
                 }
             }
         }
@@ -174,7 +194,7 @@ public class GuardTrackListActivity extends AppCompatActivity implements View.On
         String doc_id=doc_ref.getId();
 
 
-         fGuardTrack=new FGuardTrack(userId,date,date,"",doc_id,"",late,lang,"");
+         fGuardTrack=new FGuardTrack(userId,date,date,build_id,doc_id,guard_id,late,lang,"In");
 
 
         db.collection(getString(R.string.col_GuardTrainerTrack)).document(doc_id).set(fGuardTrack).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -184,6 +204,7 @@ public class GuardTrackListActivity extends AppCompatActivity implements View.On
 
                     Toast.makeText(GuardTrackListActivity.this, "Data Saved Done...", Toast.LENGTH_SHORT).show();
                     showAllScanData();
+                    spinkit.setVisibility(View.GONE);
                 }
             }
         });
@@ -201,6 +222,15 @@ public class GuardTrackListActivity extends AppCompatActivity implements View.On
                        FGuardTrack fGuardTrack=doc.toObject(FGuardTrack.class);
                        fGuardTrackList.add(fGuardTrack);
                    }
+
+                   guardTrainListAdapter=new GuardTrainListAdapter(GuardTrackListActivity.this,fGuardTrackList);
+                   recyclerView.setAdapter(guardTrainListAdapter);
+
+                   spinkit.setVisibility(View.GONE);
+               }else {
+
+                   Toast.makeText(GuardTrackListActivity.this, "Data loading failed", Toast.LENGTH_SHORT).show();
+                   spinkit.setVisibility(View.GONE);
                }
            }
        });

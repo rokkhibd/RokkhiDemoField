@@ -3,13 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
+    android:background="@drawable/round_edittext"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/propic"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
@@ -25,7 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="20dp"
         android:gravity="top"
         android:text="number"
         android:textColor="@color/black"
@@ -34,12 +35,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/type"
+        android:id="@+id/gHouse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:text="type"
+        android:layout_marginTop="5dp"
+        android:text="house name"
         android:textStyle="bold"
         android:textColor="@color/link_blue"
         android:textSize="14sp"
@@ -62,6 +63,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
+        android:layout_marginTop="5dp"
         android:id="@+id/gtrain_end"
         android:layout_width="wrap_content"
         android:layout_height="25dp"
@@ -70,7 +72,7 @@
         android:background="@drawable/less_round_button_red"
         android:paddingStart="5dp"
         android:paddingEnd="5dp"
-        android:text="not found"
+        android:text="End"
         android:textColor="@color/darkRed"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"

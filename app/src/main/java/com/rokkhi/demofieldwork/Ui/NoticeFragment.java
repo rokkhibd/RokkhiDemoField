@@ -86,11 +86,8 @@ public class NoticeFragment extends Fragment {
 
 
     public void  getAlltheNotices(){
-        /*progressDialog.setMessage("Executing Action...");
-        progressDialog.setCancelable(false);
-        progressDialog.show();
-*/
-        db.collection(getString(R.string.col_fNotification)).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+       db.collection(getString(R.string.col_fNotification)).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()){
